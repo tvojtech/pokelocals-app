@@ -18,11 +18,11 @@ function SubmitButton() {
   );
 }
 
-export function FileUpload({ projectId }: { projectId: string }) {
+export function FileUpload({ tournamentId }: { tournamentId: string }) {
   const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(formData: FormData) {
-    const result = await uploadTournamentFile(formData, projectId);
+    const result = await uploadTournamentFile(formData, tournamentId);
 
     if (result.error) {
       setError(result.error);

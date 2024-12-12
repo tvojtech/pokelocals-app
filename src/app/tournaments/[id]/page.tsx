@@ -1,5 +1,5 @@
 import { FileUpload } from "@/app/components/FileUpload";
-import { QRCodeSVG } from "qrcode.react";
+import { QRCode } from "@/app/tournaments/[id]/QRCode";
 
 export default async function TournamentDetail({
   params,
@@ -9,12 +9,9 @@ export default async function TournamentDetail({
   const { id } = await params;
   return (
     <div className="max-w-md mx-auto mt-8">
-      <QRCodeSVG
-        value={`http://192.168.101.14:3000/tournaments/${id}/pairings`}
-        className="w-60 h-60 m-10"
-      />
+      <QRCode tournamentId={id} />
 
-      <FileUpload projectId={id} />
+      <FileUpload tournamentId={id} />
     </div>
   );
 }

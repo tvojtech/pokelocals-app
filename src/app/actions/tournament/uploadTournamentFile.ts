@@ -10,7 +10,7 @@ import { Tournament } from "./types";
 
 export async function uploadTournamentFile(
   formData: FormData,
-  projectId: string
+  tournamentId: string
 ) {
   const file = formData.get("file") as File;
 
@@ -25,7 +25,7 @@ export async function uploadTournamentFile(
     const json = toJson(xmlString);
 
     // Ensure the upload directory exists
-    const uploadDir = path.join(`${STORAGE_BASE_PATH}/${projectId}`);
+    const uploadDir = path.join(`${STORAGE_BASE_PATH}/${tournamentId}`);
     await ensureDir(uploadDir);
 
     const fileCount = (await readdir(uploadDir)).length;

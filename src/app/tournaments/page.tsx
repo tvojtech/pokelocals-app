@@ -1,15 +1,6 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-import { useCallback } from "react";
-
-import { createTournament } from "@/app/actions/tournament";
+import Link from "next/link";
+import { v4 as uuid } from "uuid";
 
 export default function Tournaments() {
-  const router = useRouter();
-  const handleClick = useCallback(async () => {
-    const { id } = await createTournament();
-    router.push(`/tournaments/${id}`);
-  }, [router]);
-  return <button onClick={handleClick}>Create New Tournament</button>;
+  return <Link href={`/tournaments/${uuid()}`}>Create New Tournament</Link>;
 }

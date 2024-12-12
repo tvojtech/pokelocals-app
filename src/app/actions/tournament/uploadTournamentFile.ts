@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
+import { getStore } from "@netlify/blobs";
 import { XMLParser } from "fast-xml-parser";
-import { mkdir, readdir, writeFile } from "fs/promises";
 import { revalidatePath } from "next/cache";
-import path from "path";
-import { STORAGE_BASE_PATH } from "./common";
 import { Tournament } from "./types";
 
 export async function uploadTournamentFile(
@@ -22,43 +20,20 @@ export async function uploadTournamentFile(
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const xmlString = buffer.toString("utf-8");
-    const json = toJson(xmlString);
+    const tournament = xmlToObject(xmlString);
 
-    // Ensure the upload directory exists
-    const uploadDir = path.join(`${STORAGE_BASE_PATH}/${tournamentId}`);
-    await ensureDir(uploadDir);
-
-    const fileCount = (await readdir(uploadDir)).length;
-
-    // Generate a unique filename
-    const uniqueFilename = `${fileCount + 1}-${file.name}.json`;
-    const filePath = path.join(uploadDir, uniqueFilename);
-
-    // Write the file
-    await writeFile(filePath, json);
-
-    const fileUrl = `/uploads/${uniqueFilename}`;
+    const store = getStore("tournaments");
+    await store.setJSON(tournamentId, tournament);
 
     revalidatePath("/");
-    return { url: fileUrl };
+    return { success: true };
   } catch (error) {
     console.error("Error uploading file:", error);
     return { error: "Failed to upload file" };
   }
 }
 
-// Helper function to ensure a directory exists
-async function ensureDir(dirPath: string) {
-  try {
-    await mkdir(dirPath, { recursive: true });
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code !== "EEXIST") {
-      throw error;
-    }
-  }
-}
-
-function toJson(xmlString: string): string {
+function xmlToObject(xmlString: string): Tournament {
   const parser = new XMLParser({
     ignoreAttributes: false,
     attributeNamePrefix: "@_",
@@ -127,7 +102,7 @@ function toJson(xmlString: string): string {
       : [],
   };
 
-  return JSON.stringify(tournament);
+  return tournament;
 }
 
 const parseSubgroups = (subgroups: any) => {

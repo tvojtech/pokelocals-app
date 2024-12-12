@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@netlify/blobs": "^8.1.0",
     "@uidotdev/usehooks": "^2.4.1",
     "classnames": "^2.5.1",
     "edgedb": "^1.5.12",

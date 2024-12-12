@@ -1,8 +1,9 @@
 "use client";
 
-import { createTournament } from "@/app/actions/tournament";
 import { redirect } from "next/navigation";
 import { useCallback } from "react";
+
+import { createTournament } from "@/app/actions/tournament";
 
 export default function Tournaments() {
   const handleClick = useCallback(async () => {

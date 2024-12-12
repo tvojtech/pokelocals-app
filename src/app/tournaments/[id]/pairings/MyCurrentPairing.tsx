@@ -1,8 +1,9 @@
 "use client";
 
+import { useIsClient, useLocalStorage } from "@uidotdev/usehooks";
+
 import { Tournament } from "@/app/actions/tournament";
 import { PairingsRow } from "@/app/tournaments/[id]/pairings/PairingsRow";
-import { useIsClient, useLocalStorage } from "@uidotdev/usehooks";
 
 export const MyCurrentPairing: React.FC<{ tournament: Tournament }> = ({
   tournament,

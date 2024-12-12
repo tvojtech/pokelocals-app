@@ -1,8 +1,9 @@
 "use client";
 
-import { uploadTournamentFile } from "@/app/actions/tournament";
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
+
+import { uploadTournamentFile } from "@/app/actions/tournament";
 
 function SubmitButton() {
   const { pending } = useFormStatus();

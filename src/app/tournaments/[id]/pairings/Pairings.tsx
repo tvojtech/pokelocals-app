@@ -1,10 +1,11 @@
 "use client";
 
-import { Round, Tournament } from "@/app/actions/tournament";
-import { PairingsRow } from "@/app/tournaments/[id]/pairings/PairingsRow";
 import { useToggle } from "@uidotdev/usehooks";
 import classNames from "classnames";
 import React from "react";
+
+import { Round, Tournament } from "@/app/actions/tournament";
+import { PairingsRow } from "@/app/tournaments/[id]/pairings/PairingsRow";
 
 export const Pairings: React.FC<{ tournament: Tournament }> = ({
   tournament,

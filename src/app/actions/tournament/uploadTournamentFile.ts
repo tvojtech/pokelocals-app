@@ -24,7 +24,9 @@ export async function uploadTournamentFile(
     const tournament = xmlToObject(xmlString);
 
     const store = getStore("tournaments");
-    await store.setJSON(tournamentId, tournament);
+    await store.setJSON(tournamentId, tournament, {
+      metadata: { created: new Date().toISOString() },
+    });
 
     revalidatePath("/");
     return { success: true };

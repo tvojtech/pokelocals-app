@@ -25,6 +25,7 @@ const eslintConfig = [
       "simple-import-sort/exports": "warn",
       semi: "error",
       "prefer-const": "error",
+      "import/no-anonymous-default-export": "off",
     },
   },
 ];

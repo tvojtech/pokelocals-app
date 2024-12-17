@@ -25,7 +25,7 @@ export async function uploadTournamentFile(
 
     const store = getStore("tournaments");
     await store.setJSON(tournamentId, tournament, {
-      metadata: { created: new Date().toISOString() },
+      metadata: { uploadedAt: new Date().toISOString() },
     });
 
     revalidatePath("/");

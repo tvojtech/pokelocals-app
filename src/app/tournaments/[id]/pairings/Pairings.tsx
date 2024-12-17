@@ -12,7 +12,7 @@ export const Pairings: React.FC<{ tournament: Tournament }> = ({
 }) => {
   const [showPairings, toggleShowPairings] = useToggle(false);
   return (
-    <>
+    <div>
       <button onClick={() => toggleShowPairings()}>
         {showPairings ? "Hide Pairings" : "Show Pairings"}
       </button>
@@ -26,7 +26,7 @@ export const Pairings: React.FC<{ tournament: Tournament }> = ({
           />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

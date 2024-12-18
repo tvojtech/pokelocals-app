@@ -62,7 +62,7 @@ export const MyMatches: React.FC<{ tournament: Tournament }> = ({
         if (match?.outcome === "5") {
           opponent = "BYE";
         } else if (match?.player1 === me.userid) {
-          opponent = match?.player2!;
+          opponent = match?.player2;
         } else {
           opponent = match?.player1;
         }
@@ -70,7 +70,7 @@ export const MyMatches: React.FC<{ tournament: Tournament }> = ({
         return (
           <div key={idx}>
             R{round} at table {match?.tablenumber}: {outcome} vs.{" "}
-            {getPlayerName(opponent)}
+            {getPlayerName(opponent!)}
           </div>
         );
       })}

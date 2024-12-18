@@ -38,6 +38,7 @@ export const MyMatches: React.FC<{ tournament: Tournament }> = ({
       round: round.number,
     }))
     .filter(({ match }) => match !== undefined)
+    .filter(({ match }) => !!match?.outcome)
     .reverse();
 
   const getPlayerName = getPlayerNameForId(tournament.players);

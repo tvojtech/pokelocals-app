@@ -1,10 +1,12 @@
 "use client";
 
-import { useLocalStorage, useToggle } from "@uidotdev/usehooks";
+import { useToggle } from "@uidotdev/usehooks";
 import React from "react";
 
-export const MyID: React.FC = () => {
-  const [myId, setMyId] = useLocalStorage<string | undefined>("myPokemonId");
+export const MyID: React.FC<{
+  myId?: string;
+  onChangeId: (id: string | undefined) => void;
+}> = ({ myId, onChangeId: setMyId }) => {
   const [showInput, toggleShowInput] = useToggle(!myId);
   const inputRef = React.useRef<HTMLInputElement>(null);
 

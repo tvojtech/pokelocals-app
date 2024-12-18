@@ -1,35 +1,11 @@
-import { useLocalStorage } from "@uidotdev/usehooks";
-
-import { Tournament } from "@/app/actions/tournament";
+import { Player, Pod, Tournament } from "@/app/actions/tournament";
 import { getPlayerNameForId, MatchOutcome } from "@/app/pokemonUtils";
 
-export const MyMatches: React.FC<{ tournament: Tournament }> = ({
-  tournament,
-}) => {
-  const [myId] = useLocalStorage<string | undefined>("myPokemonId");
-
-  if (!myId) {
-    return null;
-  }
-
-  const { players, pods } = tournament;
-
-  const me = players.find((player) => player.userid === myId);
-
-  if (!me) {
-    console.log("me not found");
-    return null;
-  }
-
-  const myPod = pods.find((pod) =>
-    pod.subgroups.some((subgroup) => subgroup.players.includes(me.userid))
-  );
-
-  if (!myPod) {
-    console.log("myPod not found");
-    return null;
-  }
-
+export const MyMatches: React.FC<{
+  me: Player;
+  pod: Pod;
+  tournament: Tournament;
+}> = ({ me, pod: myPod, tournament }) => {
   const myMatches = myPod.rounds
     .map((round) => ({
       match: round.matches.find(

@@ -5,6 +5,12 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --yale-blue: #1b4079;
+  --air-force-blue: #4d7c8a;
+  --cambridge-blue: #7f9c96;
+  --cambridge-blue-2: #8fad88;
+  --mindaro: #cbdf90;
 }
 
 @media (prefers-color-scheme: dark) {

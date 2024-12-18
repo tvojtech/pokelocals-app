@@ -8,7 +8,7 @@ export default async function TournamentDetail({
 }) {
   const { id } = await params;
   return (
-    <div className="max-w-md mx-auto mt-8">
+    <div className="max-w-md mx-auto mt-8 space-y-4 flex flex-col items-center">
       <QRCode tournamentId={id} />
 
       <FileUpload tournamentId={id} />

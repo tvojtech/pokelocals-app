@@ -1,6 +1,5 @@
 import { loadTournament } from "@/app/actions/tournament";
-import { MyCurrentPairing } from "@/app/tournaments/[id]/pairings/MyCurrentPairing";
-import { MyID } from "@/app/tournaments/[id]/pairings/MyID";
+import { MyInformation } from "@/app/tournaments/[id]/pairings/MyInformation";
 import { Pairings } from "@/app/tournaments/[id]/pairings/Pairings";
 
 export default async function TournamentPairings({
@@ -14,8 +13,7 @@ export default async function TournamentPairings({
 
   return (
     <div className="max-w-md mx-auto mt-8 space-y-4">
-      <MyID />
-      <MyCurrentPairing tournament={tournament} />
+      <MyInformation tournament={tournament} />
       <Pairings tournament={tournament} />
     </div>
   );

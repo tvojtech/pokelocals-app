@@ -17,7 +17,6 @@ export const Pairings: React.FC<{ tournament: Tournament }> = ({
         {showPairings ? "Hide Pairings" : "Show Pairings"}
       </button>
       <div className={classNames({ hidden: !showPairings }, "space-y-4")}>
-        <h1>Pairings</h1>
         {tournament.pods.map((pod, idx) => (
           <PairingsSection
             key={idx}

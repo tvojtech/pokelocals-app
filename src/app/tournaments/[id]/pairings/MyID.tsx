@@ -1,19 +1,9 @@
 "use client";
 
-import { useIsClient, useLocalStorage, useToggle } from "@uidotdev/usehooks";
+import { useLocalStorage, useToggle } from "@uidotdev/usehooks";
 import React from "react";
 
 export const MyID: React.FC = () => {
-  const isClient = useIsClient();
-
-  if (!isClient) {
-    return null;
-  }
-
-  return <MyIDInternal />;
-};
-
-const MyIDInternal: React.FC = () => {
   const [myId, setMyId] = useLocalStorage<string | undefined>("myPokemonId");
   const [showInput, toggleShowInput] = useToggle(!myId);
   const inputRef = React.useRef<HTMLInputElement>(null);

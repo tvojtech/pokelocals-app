@@ -1,10 +1,5 @@
-import { Match, Player, Tournament } from "@/app/actions/tournament";
-import { guessFullName } from "@/app/utils";
-
-const getPlayerNameForId = (players: Player[]) => (id: string) => {
-  const player = players.find((player) => player.userid === id);
-  return guessFullName(player);
-};
+import { Match, Tournament } from "@/app/actions/tournament";
+import { getPlayerNameForId } from "@/app/pokemonUtils";
 
 export const PairingsRow: React.FC<{
   tournament: Tournament;

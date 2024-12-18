@@ -1,23 +1,11 @@
 "use client";
 
-import { useIsClient, useLocalStorage } from "@uidotdev/usehooks";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 import { Tournament } from "@/app/actions/tournament";
 import { PairingsRow } from "@/app/tournaments/[id]/pairings/PairingsRow";
 
-export const MyCurrentPairing: React.FC<{ tournament: Tournament }> = ({
-  tournament,
-}) => {
-  const isClient = useIsClient();
-
-  if (!isClient) {
-    return null;
-  }
-
-  return <MyCurrentPairingInternal tournament={tournament} />;
-};
-
-const MyCurrentPairingInternal: React.FC<{
+export const MyCurrentPairing: React.FC<{
   tournament: Tournament;
 }> = ({ tournament }) => {
   const [myId] = useLocalStorage<string | undefined>("myPokemonId");

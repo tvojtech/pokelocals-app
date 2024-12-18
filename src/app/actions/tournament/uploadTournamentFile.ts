@@ -3,6 +3,7 @@
 
 import { getStore } from "@netlify/blobs";
 import { XMLParser } from "fast-xml-parser";
+import fs from "fs";
 import { revalidatePath } from "next/cache";
 
 import { Tournament } from "./types";
@@ -23,10 +24,18 @@ export async function uploadTournamentFile(
     const xmlString = buffer.toString("utf-8");
     const tournament = xmlToObject(xmlString);
 
-    const store = getStore("tournaments");
-    await store.setJSON(tournamentId, tournament, {
-      metadata: { uploadedAt: new Date().toISOString() },
-    });
+    if (process.env.NODE_ENV !== "development") {
+      const store = getStore("tournaments");
+      await store.setJSON(tournamentId, tournament, {
+        metadata: { uploadedAt: new Date().toISOString() },
+      });
+    } else {
+      fs.writeFileSync(
+        `/tmp/${tournamentId}.json`,
+        JSON.stringify(tournament),
+        "utf-8"
+      );
+    }
 
     revalidatePath("/");
     return { success: true };

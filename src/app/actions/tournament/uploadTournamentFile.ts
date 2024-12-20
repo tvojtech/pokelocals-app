@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
 import { getStore } from "@netlify/blobs";
-import { XMLParser } from "fast-xml-parser";
 import fs from "fs";
 import { revalidatePath } from "next/cache";
 
-import { Match, Player, Pod, Round, Subgroup, Tournament } from "./types";
+import { PlayerScore, Tournament } from "@/app/actions/tournament/types";
+import { xmlToObject } from "@/app/actions/tournament/xml";
 
 export async function uploadTournamentFile(
   formData: FormData,
@@ -22,7 +21,7 @@ export async function uploadTournamentFile(
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const xmlString = buffer.toString("utf-8");
-    const tournament = xmlToObject(xmlString);
+    const tournament = calculatePlayerScores(xmlToObject(xmlString));
 
     if (process.env.NODE_ENV !== "development") {
       const store = getStore("tournaments");
@@ -45,113 +44,67 @@ export async function uploadTournamentFile(
   }
 }
 
-function xmlToObject(xmlString: string): Tournament {
-  const parser = new XMLParser({
-    ignoreAttributes: false,
-    attributeNamePrefix: "@_",
+function calculatePlayerScores(tournament: Tournament) {
+  const { players, pods } = tournament;
+
+  let scores: Record<string, PlayerScore> = players.reduce(
+    (acc, player) => ({
+      ...acc,
+      [player.userid]: { wins: 0, ties: 0, losses: 0 },
+    }),
+    {} as Record<string, PlayerScore>
+  );
+
+  const addScore = createScoreCalculator(scores);
+
+  pods.forEach((pod) => {
+    pod.rounds.forEach((round) => {
+      round.matches.forEach((match) => {
+        const matchOutcome = match.outcome;
+        if (!matchOutcome || matchOutcome === "0") {
+          // not finished match
+          return;
+        } else if (matchOutcome === "1" || matchOutcome === "2") {
+          scores = addScore(
+            (matchOutcome === "1" ? match.player1 : match.player2)!,
+            "win"
+          );
+          scores = addScore(
+            (matchOutcome === "1" ? match.player2 : match.player1)!,
+            "loss"
+          );
+        } else if (matchOutcome === "3") {
+          scores = addScore(match.player1, "tie");
+          scores = addScore(match.player2!, "tie");
+        } else if (matchOutcome === "5") {
+          scores = addScore(match.player1, "win");
+        }
+      });
+    });
   });
-  const jsonData = parser.parse(xmlString);
 
-  const tournament: Tournament = {
-    type: Number(jsonData.tournament["@_type"]),
-    stage: Number(jsonData.tournament["@_stage"]),
-    version: jsonData.tournament["@_version"],
-    gametype: jsonData.tournament["@_gametype"],
-    mode: jsonData.tournament["@_mode"],
-    data: {
-      name: jsonData.tournament.data.name,
-      id: jsonData.tournament.data.id,
-      city: jsonData.tournament.data.city,
-      state: jsonData.tournament.data.state || null,
-      country: jsonData.tournament.data.country,
-      roundtime: Number(jsonData.tournament.data.roundtime),
-      finalsroundtime: Number(jsonData.tournament.data.finalsroundtime),
-      startdate: jsonData.tournament.data.startdate,
-      lessswiss: jsonData.tournament.data.lessswiss === "true",
-      autotablenumber: jsonData.tournament.data.autotablenumber === "true",
-      overflowtablestart: Number(jsonData.tournament.data.overflowtablestart),
-    },
-    timeelapsed: Number(jsonData.tournament.timeelapsed),
-    players: parsePlayers(jsonData.tournament.players.player),
-    pods: parsePods(jsonData.tournament.pods.pod),
+  return { ...tournament, scores };
+}
+
+const createScoreCalculator =
+  (playerScores: Record<string, PlayerScore>) =>
+  (player: string, outcome: "win" | "loss" | "tie") => {
+    if (outcome === "win") {
+      playerScores[player] = {
+        ...playerScores[player],
+        wins: playerScores[player].wins + 1,
+      };
+    } else if (outcome === "loss") {
+      playerScores[player] = {
+        ...playerScores[player],
+        losses: playerScores[player].losses + 1,
+      };
+    } else if (outcome === "tie") {
+      playerScores[player] = {
+        ...playerScores[player],
+        ties: playerScores[player].ties + 1,
+      };
+    }
+
+    return playerScores;
   };
-
-  return tournament;
-}
-
-const parsePlayers = (players: any) => {
-  return parseXmlArray<any, Player>(
-    (p: any) => ({
-      userid: p["@_userid"],
-      firstname: p.firstname,
-      lastname: p.lastname,
-      birthdate: p.birthdate,
-      starter: p.starter === "true",
-      order: Number(p.order),
-      seed: Number(p.seed),
-      creationdate: p.creationdate,
-      lastmodifieddate: p.lastmodifieddate,
-    }),
-    players
-  );
-};
-
-const parsePods = (pods: any) => {
-  return parseXmlArray<any, Pod>(
-    (pod: any) => ({
-      category: pod["@_category"],
-      stage: pod["@_stage"],
-      subgroups: parseSubgroups(pod.subgroups.subgroup),
-      rounds: parseRounds(pod.rounds.round),
-    }),
-    pods
-  );
-};
-
-const parseSubgroups = (subgroups: any) => {
-  return parseXmlArray<any, Subgroup>(
-    (sg: any) => ({
-      number: sg["@_number"],
-      players: sg.players.player.map((p: any) => p["@_userid"]),
-    }),
-    subgroups
-  );
-};
-
-const parseMatches = (matches: any) => {
-  return parseXmlArray<any, Match>(
-    (m: any) => ({
-      outcome: m["@_outcome"],
-      player1: m.player1 ? m.player1["@_userid"] : m.player["@_userid"],
-      // in case of BYE player2 is not present
-      player2: m.player1 ? m.player2["@_userid"] : undefined,
-      tablenumber: Number(m.tablenumber),
-    }),
-    matches
-  );
-};
-
-const parseRounds = (rounds: any) => {
-  return parseXmlArray<any, Round>(
-    (round: any) => ({
-      number: round["@_number"],
-      type: round["@_type"],
-      stage: round["@_stage"],
-      matches: parseMatches(round.matches.match),
-    }),
-    rounds
-  );
-};
-
-function parseXmlArray<T, ReturnType>(
-  mapper: (data: T) => ReturnType,
-  data?: T
-) {
-  if (!data) {
-    return [];
-  }
-  if (Array.isArray(data)) {
-    return data.map(mapper);
-  }
-  return [mapper(data)];
-}

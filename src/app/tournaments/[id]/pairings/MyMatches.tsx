@@ -1,5 +1,6 @@
 import { Player, Pod, Tournament } from "@/app/actions/tournament";
 import { getPlayerNameForId, MatchOutcome } from "@/app/pokemonUtils";
+import { PlayerScore } from "@/app/tournaments/[id]/pairings/PlayerScore";
 
 export const MyMatches: React.FC<{
   me: Player;
@@ -37,18 +38,26 @@ export const MyMatches: React.FC<{
             match?.outcome === "1" ? MatchOutcome.LOSS : MatchOutcome.WIN;
         }
 
-        if (match?.outcome === "5") {
-          opponent = "BYE";
-        } else if (match?.player1 === me.userid) {
+        if (match?.player1 === me.userid) {
           opponent = match?.player2;
         } else {
           opponent = match?.player1;
         }
 
+        if (!opponent) {
+          return (
+            <div key={idx}>
+              R{round}: <span className="font-bold">BYE</span>
+            </div>
+          );
+        }
+
         return (
           <div key={idx}>
-            R{round} at table {match?.tablenumber}: {outcome} vs.{" "}
-            {getPlayerName(opponent!)}
+            R{round} at table {match?.tablenumber}:{" "}
+            <span className="font-bold">{outcome}</span> vs.{" "}
+            {getPlayerName(opponent)}
+            <PlayerScore score={tournament.scores[opponent]} />
           </div>
         );
       })}

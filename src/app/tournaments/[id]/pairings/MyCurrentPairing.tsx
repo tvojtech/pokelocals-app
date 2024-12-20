@@ -16,9 +16,15 @@ export const MyCurrentPairing: React.FC<{
     return null;
   }
 
+  const opponent =
+    myPairing.player1 === me.userid ? myPairing.player2 : myPairing.player1;
+
   return (
     <div className="grid grid-cols-3">
-      <PairingsRow match={myPairing} tournament={tournament} />
+      <PairingsRow
+        match={{ ...myPairing, player1: me.userid, player2: opponent }}
+        tournament={tournament}
+      />
     </div>
   );
 };

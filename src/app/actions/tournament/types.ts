@@ -10,6 +10,12 @@ export interface Player {
   lastmodifieddate: string;
 }
 
+export type PlayerScore = {
+  wins: number;
+  ties: number;
+  losses: number;
+};
+
 export interface TournamentData {
   name: string;
   id: string;
@@ -34,6 +40,7 @@ export interface Tournament {
   timeelapsed: number;
   players: Player[];
   pods: Pod[];
+  scores: Record<string, PlayerScore>;
 }
 
 export interface Pod {

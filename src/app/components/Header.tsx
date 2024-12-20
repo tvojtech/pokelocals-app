@@ -1,13 +1,15 @@
 "use client";
 
+import { useToggle } from "@uidotdev/usehooks";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+
+import { Drawer } from "@/app/components/Drawer";
 // import Drawer from "./Drawer";
 
 export default function Header() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isDrawerOpen, toggleDrawer] = useToggle(false);
 
   return (
     <header className="bg-gray-800 text-white">
@@ -32,15 +34,11 @@ export default function Header() {
             </Link>
           </li> */}
         </ul>
-        <button
-          className="md:hidden"
-          onClick={() => setIsDrawerOpen(true)}
-          aria-label="Open menu"
-        >
+        <button onClick={() => toggleDrawer()} aria-label="Open menu">
           <Menu size={24} />
         </button>
       </nav>
-      {/* <Drawer isOpen={isDrawerOpen} setIsOpen={setIsOpen} /> */}
+      <Drawer isOpen={isDrawerOpen} onClose={() => toggleDrawer(false)} />
     </header>
   );
 }

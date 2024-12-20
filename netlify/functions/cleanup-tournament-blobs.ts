@@ -14,7 +14,7 @@ export default async () => {
         const uploadedAt = new Date(metadata.metadata.uploadedAt);
         const diff = now.getTime() - uploadedAt.getTime();
         const diffDays = diff / (1000 * 3600 * 24);
-        if (diffDays > 7) {
+        if (diffDays > 2) {
           store.delete(blob.key);
         }
       } else {
@@ -25,5 +25,5 @@ export default async () => {
 };
 
 export const config: Config = {
-  schedule: "@daily",
+  schedule: "@hourly",
 };

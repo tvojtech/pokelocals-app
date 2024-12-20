@@ -34,9 +34,9 @@ export default function Header() {
             </Link>
           </li> */}
         </ul>
-        <button onClick={() => toggleDrawer()} aria-label="Open menu">
+        {/* <button onClick={() => toggleDrawer()} aria-label="Open menu">
           <Menu size={24} />
-        </button>
+        </button> */}
       </nav>
       <Drawer isOpen={isDrawerOpen} onClose={() => toggleDrawer(false)} />
     </header>

@@ -56,7 +56,7 @@ export const MyMatches: React.FC<{
           <div key={idx}>
             R{round} at table {match?.tablenumber}:{" "}
             <span className="font-bold">{outcome}</span> vs.{" "}
-            {getPlayerName(opponent)}
+            {getPlayerName(opponent)}{" "}
             <PlayerScore score={tournament.scores[opponent]} />
           </div>
         );

@@ -12,9 +12,12 @@ export default async function TournamentPairings({
   const tournament = await loadTournament(id);
 
   return (
-    <div className="max-w-lg mx-auto mt-8 space-y-4">
-      <MyInformation tournament={tournament} />
-      <Pairings tournament={tournament} />
-    </div>
+    <>
+      <h1 className="text-3xl font-bold text-center">{tournament.data.name}</h1>
+      <div className="max-w-lg mx-auto mt-8 space-y-10">
+        <MyInformation tournament={tournament} />
+        <Pairings tournament={tournament} />
+      </div>
+    </>
   );
 }

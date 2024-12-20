@@ -1,10 +1,13 @@
 "use client";
 
-import { useIsClient, useLocalStorage } from "@uidotdev/usehooks";
+import { useIsClient } from "@uidotdev/usehooks";
+import { SquareArrowOutUpRight } from "lucide-react";
 
 import { Tournament } from "@/app/actions/tournament";
+import { Alert } from "@/app/components/Alert";
+import { useDrawer } from "@/app/components/Header";
+import { useMyPokemonId } from "@/app/hooks";
 import { MyCurrentPairing } from "@/app/tournaments/[id]/pairings/MyCurrentPairing";
-import { MyID } from "@/app/tournaments/[id]/pairings/MyID";
 import { MyMatches } from "@/app/tournaments/[id]/pairings/MyMatches";
 
 export const MyInformation: React.FC<{ tournament: Tournament }> = ({
@@ -22,10 +25,28 @@ export const MyInformation: React.FC<{ tournament: Tournament }> = ({
 const MyInformationInternal: React.FC<{ tournament: Tournament }> = ({
   tournament,
 }) => {
-  const [myId, setMyId] = useLocalStorage<string | undefined>("myPokemonId");
+  const { myId } = useMyPokemonId();
+  const { toggleDrawer } = useDrawer();
+
+  const alert = (
+    <Alert
+      message={
+        <>
+          To view your pairings set up your Pokemon ID{" "}
+          <button onClick={() => toggleDrawer(true)}>
+            <div className="flex flex-row items-center gap-x-0.5">
+              here
+              <SquareArrowOutUpRight size={20} />
+            </div>
+          </button>
+        </>
+      }
+      type="warning"
+    />
+  );
 
   if (!myId) {
-    return <MyID myId={myId} onChangeId={setMyId} />;
+    return alert;
   }
 
   const { players, pods } = tournament;
@@ -34,7 +55,7 @@ const MyInformationInternal: React.FC<{ tournament: Tournament }> = ({
 
   if (!me) {
     console.log("me not found");
-    return <MyID myId={myId} onChangeId={setMyId} />;
+    return alert;
   }
 
   const myPod = pods.find((pod) =>
@@ -43,12 +64,11 @@ const MyInformationInternal: React.FC<{ tournament: Tournament }> = ({
 
   if (!myPod) {
     console.log("myPod not found");
-    return <MyID myId={myId} onChangeId={setMyId} />;
+    return alert;
   }
 
   return (
     <>
-      <MyID myId={myId} onChangeId={setMyId} />
       <MyCurrentPairing me={me} pod={myPod} tournament={tournament} />
       <MyMatches me={me} pod={myPod} tournament={tournament} />
     </>

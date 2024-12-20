@@ -1,15 +1,40 @@
 "use client";
 
-import { useToggle } from "@uidotdev/usehooks";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Drawer } from "@/app/components/Drawer";
+import { PokemonIdForm } from "@/app/components/PokemonIdForm";
 // import Drawer from "./Drawer";
 
+export const useDrawer = () => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const isDrawerOpen = searchParams.has("menu");
+
+  const toggleDrawer = (isOpen?: boolean) => {
+    if (isOpen === undefined) {
+      isOpen = !isDrawerOpen;
+    }
+    const params = new URLSearchParams(searchParams.toString());
+    if (isOpen) {
+      params.set("menu", "1");
+    } else {
+      params.delete("menu");
+    }
+    const url = pathname + "?" + params.toString();
+    router.replace(url);
+  };
+
+  return { isDrawerOpen, toggleDrawer };
+};
+
 export default function Header() {
-  const [isDrawerOpen, toggleDrawer] = useToggle(false);
+  const { isDrawerOpen, toggleDrawer } = useDrawer();
 
   return (
     <header className="bg-gray-800 text-white">
@@ -34,11 +59,13 @@ export default function Header() {
             </Link>
           </li> */}
         </ul>
-        {/* <button onClick={() => toggleDrawer()} aria-label="Open menu">
+        <button onClick={() => toggleDrawer()} aria-label="Open menu">
           <Menu size={24} />
-        </button> */}
+        </button>
       </nav>
-      <Drawer isOpen={isDrawerOpen} onClose={() => toggleDrawer(false)} />
+      <Drawer isOpen={isDrawerOpen} onClose={() => toggleDrawer(false)}>
+        <PokemonIdForm />
+      </Drawer>
     </header>
   );
 }

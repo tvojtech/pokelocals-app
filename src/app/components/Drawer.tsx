@@ -2,10 +2,9 @@ import classNames from "classnames";
 import { X } from "lucide-react";
 import React from "react";
 
-export const Drawer: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
-  isOpen,
-  onClose,
-}) => {
+export const Drawer: React.FC<
+  React.PropsWithChildren<{ isOpen: boolean; onClose: () => void }>
+> = ({ children, isOpen, onClose }) => {
   return (
     <div className="relative">
       <div
@@ -26,10 +25,7 @@ export const Drawer: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
           </button>
         </div>
 
-        <div className="p-4">
-          <h2 className="text-xl font-bold">Drawer Content</h2>
-          <p>This is the content of the drawer.</p>
-        </div>
+        <div className="p-4">{children}</div>
       </div>
     </div>
   );

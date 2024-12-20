@@ -1,6 +1,6 @@
 import { Match, Tournament } from "@/app/actions/tournament";
 import { getPlayerNameForId } from "@/app/pokemonUtils";
-import { PlayerScore } from "@/app/tournaments/[id]/pairings/PlayerScore";
+import { PlayerScore } from "@/app/tournaments/[id]/my-pairings/PlayerScore";
 
 export const PairingsRow: React.FC<{
   tournament: Tournament;
@@ -9,7 +9,7 @@ export const PairingsRow: React.FC<{
   const getPlayerName = getPlayerNameForId(tournament.players);
   return (
     <>
-      <div className="flex flex-col items-start justify-center">
+      <div className="flex flex-col items-start justify-center pl-2">
         <div>{getPlayerName(match.player1)}</div>
         <div>
           <PlayerScore score={tournament.scores[match.player1]} />
@@ -18,7 +18,7 @@ export const PairingsRow: React.FC<{
       <div className="flex items-center justify-center">
         Table {match.tablenumber}
       </div>
-      <div className="flex flex-col items-start justify-center">
+      <div className="flex flex-col items-end justify-center pr-2">
         {match.player2 ? (
           <>
             <div>{getPlayerName(match.player2)}</div>

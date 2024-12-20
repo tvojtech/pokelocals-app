@@ -7,8 +7,8 @@ import { Tournament } from "@/app/actions/tournament";
 import { Alert } from "@/app/components/Alert";
 import { useDrawer } from "@/app/components/Header";
 import { useMyPokemonId } from "@/app/hooks";
-import { MyCurrentPairing } from "@/app/tournaments/[id]/pairings/MyCurrentPairing";
-import { MyMatches } from "@/app/tournaments/[id]/pairings/MyMatches";
+import { MyCurrentPairing } from "@/app/tournaments/[id]/my-pairings/MyCurrentPairing";
+import { MyMatches } from "@/app/tournaments/[id]/my-pairings/MyMatches";
 
 export const MyInformation: React.FC<{ tournament: Tournament }> = ({
   tournament,

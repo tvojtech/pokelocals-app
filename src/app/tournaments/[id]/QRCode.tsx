@@ -23,7 +23,7 @@ export const QRCode: React.FC<{ tournamentId: string }> = ({
 
   return (
     <QRCodeSVG
-      value={`${origin}/tournaments/${tournamentId}/pairings`}
+      value={`${origin}/tournaments/${tournamentId}/my-pairings`}
       className="w-60 h-60 m-10"
     />
   );

@@ -1,5 +1,5 @@
 import { Player, Pod, Tournament } from "@/app/actions/tournament";
-import { PairingsRow } from "@/app/tournaments/[id]/pairings/PairingsRow";
+import { PairingsRow } from "@/app/tournaments/[id]/my-pairings/PairingsRow";
 
 export const MyCurrentPairing: React.FC<{
   me: Player;

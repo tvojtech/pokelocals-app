@@ -2,9 +2,9 @@ import { SquareArrowOutUpRight } from "lucide-react";
 import Link from "next/link";
 
 import { loadTournament } from "@/app/actions/tournament";
-import { Pairings } from "@/app/tournaments/[id]/my-pairings/Pairings";
+import { MyInformation } from "@/app/tournaments/[id]/my-pairings/MyInformation";
 
-export default async function TournamentPairings({
+export default async function MyPairings({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -19,13 +19,13 @@ export default async function TournamentPairings({
       <div className="max-w-lg mx-auto mt-8 space-y-10">
         <div className="flex justify-end">
           <Link
-            href={`/tournaments/${id}/my-pairings`}
+            href={`/tournaments/${id}/pairings`}
             className="flex items-center gap-1 text-blue-700 font-bold text-xl"
           >
-            My pairings <SquareArrowOutUpRight size={20} />
+            Pairings <SquareArrowOutUpRight size={20} />
           </Link>
         </div>
-        <Pairings tournament={tournament} />
+        <MyInformation tournament={tournament} />
       </div>
     </>
   );

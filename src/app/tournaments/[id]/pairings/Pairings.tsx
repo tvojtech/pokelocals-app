@@ -39,15 +39,17 @@ const PairingsSection: React.FC<{ round: Round; tournament: Tournament }> = ({
         Round {round.number}
       </h2>
       <div className="grid grid-cols-3 align-center gap-2">
-        {round.matches.map((match, idx) => (
-          <React.Fragment key={idx}>
-            <PairingsRow match={match} tournament={tournament} />
-            <div
-              className="border-t border-t-gray-200"
-              style={{ gridColumn: "1 / 5" }}
-            />
-          </React.Fragment>
-        ))}
+        {round.matches
+          .toSorted((a, b) => a.tablenumber - b.tablenumber)
+          .map((match, idx) => (
+            <React.Fragment key={idx}>
+              <PairingsRow match={match} tournament={tournament} />
+              <div
+                className="border-t border-t-gray-200"
+                style={{ gridColumn: "1 / 5" }}
+              />
+            </React.Fragment>
+          ))}
       </div>
     </div>
   );

@@ -8,10 +8,20 @@ export default async function TournamentDetail({
 }) {
   const { id } = await params;
   return (
-    <div className="max-w-md mx-auto mt-8 space-y-4 flex flex-col items-center">
-      <QRCode tournamentId={id} />
+    <>
+      <h1 className="text-3xl font-bold text-center print:hidden">
+        Tournament
+      </h1>
+      <h1 className="text-3xl font-bold text-center hidden print:block">
+        Pairings
+      </h1>
+      <div className="max-w-lg mx-auto mt-8 space-y-10 flex flex-col items-center justify-center print:h-dvh">
+        <QRCode tournamentId={id} />
 
-      <FileUpload tournamentId={id} />
-    </div>
+        <div className="print:hidden">
+          <FileUpload tournamentId={id} />
+        </div>
+      </div>
+    </>
   );
 }

@@ -8,9 +8,14 @@ export default {
   ],
   theme: {
     extend: {
+      transitionProperty: {
+        height: "height",
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+
+        primary: "var(--primary)",
       },
     },
   },

@@ -20,7 +20,7 @@ export default async function TournamentPairings({
         <div className="flex justify-end">
           <Link
             href={`/tournaments/${id}/my-pairings`}
-            className="flex items-center gap-1 text-blue-700 font-bold text-xl"
+            className="flex items-center gap-1 text-primary font-bold text-xl"
           >
             My pairings <SquareArrowOutUpRight size={20} />
           </Link>

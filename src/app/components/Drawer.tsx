@@ -1,30 +1,47 @@
 import classNames from "classnames";
-import { X } from "lucide-react";
 import React from "react";
 
-export const Drawer: React.FC<
-  React.PropsWithChildren<{ isOpen: boolean; onClose: () => void }>
-> = ({ children, isOpen, onClose }) => {
+type DrawerProps = {
+  isOpen: boolean;
+  position?: "left" | "right";
+};
+
+export const Drawer: React.FC<React.PropsWithChildren<DrawerProps>> = ({
+  children,
+  isOpen,
+  position = "right",
+}) => {
+  const positionClasses: Record<Required<DrawerProps>["position"], string> = {
+    left: "left-0 top-16 h-full w-96",
+    right: "right-0 top-16 h-full w-96",
+  };
+
+  const transformClasses: Record<
+    Required<DrawerProps>["position"],
+    { open: string; closed: string }
+  > = {
+    left: {
+      open: "translate-x-0",
+      closed: "-translate-x-full",
+    },
+    right: {
+      open: "translate-x-0",
+      closed: "translate-x-full",
+    },
+  };
+
   return (
     <div className="relative">
       <div
         className={classNames(
-          "fixed top-19 right-0 h-full bg-gray-800 text-white w-96 transform transition-transform duration-300",
+          "fixed text-white transform transition-transform duration-300 border-blue-400 border-4 bg-blue-400",
+          positionClasses[position],
           {
-            "translate-x-0": isOpen,
-            "translate-x-full": !isOpen,
+            [transformClasses[position].open]: isOpen,
+            [transformClasses[position].closed]: !isOpen,
           }
         )}
       >
-        <div className="flex justify-end">
-          <button
-            onClick={onClose}
-            className="p-2 bg-transparent text-white rounded m-4"
-          >
-            <X size={24} />
-          </button>
-        </div>
-
         <div className="p-4">{children}</div>
       </div>
     </div>

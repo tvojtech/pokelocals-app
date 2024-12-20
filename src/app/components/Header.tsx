@@ -1,11 +1,12 @@
 "use client";
 
-import { Menu } from "lucide-react";
+import classNames from "classnames";
+import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { Drawer } from "@/app/components/Drawer";
+import { Avatar } from "@/app/components/Avatar";
 import { PokemonIdForm } from "@/app/components/PokemonIdForm";
 // import Drawer from "./Drawer";
 
@@ -37,35 +38,52 @@ export default function Header() {
   const { isDrawerOpen, toggleDrawer } = useDrawer();
 
   return (
-    <header className="bg-gray-800 text-white">
-      <nav className="container mx-auto p-4 flex justify-between items-center">
-        <Link href="/" className="mr-6 flex items-center space-x-2">
-          <Image src="/logo.png" alt="logo" width={36} height={36} />
-        </Link>
-        <ul className="hidden md:flex space-x-4">
-          {/* <li>
-            <Link href="/" className="hover:text-gray-300">
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link href="/about" className="hover:text-gray-300">
-              About
-            </Link>
-          </li>
-          <li>
-            <Link href="/contact" className="hover:text-gray-300">
-              Contact
-            </Link>
-          </li> */}
-        </ul>
-        <button onClick={() => toggleDrawer()} aria-label="Open menu">
-          <Menu size={24} />
-        </button>
+    <header className="bg-slate-100 border-b-2 shadow-sm text-gray-800 print:hidden">
+      <nav>
+        <div className="container mx-auto p-4 flex justify-between items-center h-16">
+          <Link href="/" className="mr-6 flex items-center space-x-2">
+            <Image src="/logo.png" alt="logo" width={36} height={36} />
+          </Link>
+          <ul className="hidden space-x-4">
+            {/* <li>
+              <Link href="/about" className="hover:text-gray-300">
+                About
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" className="hover:text-gray-300">
+                Contact
+              </Link>
+            </li> */}
+          </ul>
+          <button
+            className="hidden"
+            onClick={() => toggleDrawer()}
+            aria-label="Open menu"
+          >
+            {isDrawerOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+          <Link href="/profile">
+            <Avatar />
+          </Link>
+        </div>
       </nav>
-      <Drawer isOpen={isDrawerOpen} onClose={() => toggleDrawer(false)}>
+      <div
+        className={classNames(
+          "transition-height ease-in-out duration-1000 overflow-hidden",
+          {
+            "h-52": isDrawerOpen,
+            "h-0": !isDrawerOpen,
+          }
+        )}
+      >
+        <div className="p-4">
+          <PokemonIdForm />
+        </div>
+      </div>
+      {/* <Drawer isOpen={isDrawerOpen} position="left">
         <PokemonIdForm />
-      </Drawer>
+      </Drawer> */}
     </header>
   );
 }

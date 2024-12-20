@@ -27,6 +27,8 @@ export const MyMatches: React.FC<{
           outcome = MatchOutcome.BYE;
         } else if (match?.outcome === "3") {
           outcome = MatchOutcome.TIE;
+        } else if (match?.outcome === "0") {
+          return null;
         } else if (match?.player1 === me.userid) {
           outcome =
             match?.outcome === "1" ? MatchOutcome.WIN : MatchOutcome.LOSS;

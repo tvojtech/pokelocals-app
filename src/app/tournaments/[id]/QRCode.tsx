@@ -1,23 +1,16 @@
 "use client";
 
-import { useIsClient } from "@uidotdev/usehooks";
 import { QRCodeSVG } from "qrcode.react";
 import React from "react";
 
-const useOrigin = () => {
-  const isClient = useIsClient();
-  if (!isClient) {
-    return undefined;
-  }
-  return window.location.origin;
-};
+import { useWindowLocation } from "@/app/hooks";
 
 export const QRCode: React.FC<{ tournamentId: string }> = ({
   tournamentId,
 }) => {
-  const origin = useOrigin();
+  const location = useWindowLocation();
 
-  if (!origin) {
+  if (!location?.origin) {
     return null;
   }
 

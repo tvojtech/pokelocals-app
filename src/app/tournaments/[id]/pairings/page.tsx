@@ -2,6 +2,7 @@ import { SquareArrowOutUpRight } from "lucide-react";
 import Link from "next/link";
 
 import { loadTournament } from "@/app/actions/tournament";
+import { QRCodeOverlay } from "@/app/components/QRCodeOverlay";
 import { Pairings } from "@/app/tournaments/[id]/my-pairings/Pairings";
 
 export default async function TournamentPairings({
@@ -17,13 +18,14 @@ export default async function TournamentPairings({
     <>
       <h1 className="text-3xl font-bold text-center">{tournament.data.name}</h1>
       <div className="max-w-lg mx-auto mt-8 space-y-10">
-        <div className="flex justify-end">
+        <div className="flex justify-between">
           <Link
             href={`/tournaments/${id}/my-pairings`}
             className="flex items-center gap-1 text-primary font-bold text-xl"
           >
             My pairings <SquareArrowOutUpRight size={20} />
           </Link>
+          <QRCodeOverlay />
         </div>
         <Pairings tournament={tournament} />
       </div>

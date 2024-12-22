@@ -31,13 +31,13 @@ export const Drawer: React.FC<
         )}
       >
         <div className="p-4">
-          <div className="flex justify-between border-b border-slate-300 px-4 pb-4">
+          <div className="flex justify-between border-b border-slate-300 pb-4">
             <Logo />
             <button onClick={onClose}>
               <X size={24} />
             </button>
           </div>
-          <div className="p-4">{children}</div>
+          <div className="py-4">{children}</div>
         </div>
       </div>
     </div>

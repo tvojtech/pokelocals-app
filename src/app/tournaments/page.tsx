@@ -12,7 +12,6 @@ export default function Tournaments() {
     setIsLoading(true);
     const { id } = await createTournament();
     router.push(`/tournaments/${id}`);
-    setIsLoading(false);
   }, [router]);
   return (
     <button onClick={handleClick}>

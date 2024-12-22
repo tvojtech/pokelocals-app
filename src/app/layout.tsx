@@ -6,6 +6,7 @@ import { Suspense } from "react";
 
 import Footer from "@/app/components/Footer";
 import Header from "@/app/components/Header";
+import { PokemonIdForm } from "@/app/components/PokemonIdForm";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,9 +39,13 @@ export default function RootLayout({
       >
         <Suspense>
           <Header />
-          <main className="flex-grow container mx-auto px-4 py-8">
-            {children}
-          </main>
+          <div className="flex-grow grid grid-cols-1 lg:grid-cols-[20rem_1fr] gap-4 h-full">
+            <nav className="print:hidden hidden lg:block border-r p-4">
+              <PokemonIdForm />
+            </nav>
+            <main className="container mx-auto px-4 py-8">{children}</main>
+          </div>
+
           <Footer />
         </Suspense>
       </body>

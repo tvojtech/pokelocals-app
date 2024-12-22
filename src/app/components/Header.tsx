@@ -54,12 +54,20 @@ export default function Header() {
               </Link>
             </li> */}
           </ul>
-          <button onClick={() => toggleDrawer()} aria-label="Open menu">
+          <button
+            onClick={() => toggleDrawer()}
+            aria-label="Open menu"
+            className="lg:hidden"
+          >
             <Menu size={24} />
           </button>
         </div>
       </nav>
-      <Drawer isOpen={isDrawerOpen} onClose={() => toggleDrawer(false)}>
+      <Drawer
+        isOpen={isDrawerOpen}
+        onClose={() => toggleDrawer(false)}
+        className="lg:hidden"
+      >
         <PokemonIdForm />
       </Drawer>
     </header>

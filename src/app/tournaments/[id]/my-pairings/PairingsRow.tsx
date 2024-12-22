@@ -21,7 +21,7 @@ export const PairingsRow: React.FC<{
       <div className="flex flex-col items-end justify-center pr-2">
         {match.player2 ? (
           <>
-            <div>{getPlayerName(match.player2)}</div>
+            <div className="text-end">{getPlayerName(match.player2)}</div>
             <div>
               <PlayerScore score={tournament.scores[match.player2]} />
             </div>

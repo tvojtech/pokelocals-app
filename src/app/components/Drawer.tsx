@@ -7,10 +7,14 @@ import React from "react";
 import { Logo } from "@/app/components/Logo";
 
 export const Drawer: React.FC<
-  React.PropsWithChildren<{ isOpen: boolean; onClose: () => void }>
-> = ({ isOpen, onClose, children }) => {
+  React.PropsWithChildren<{
+    isOpen: boolean;
+    onClose: () => void;
+    className?: string;
+  }>
+> = ({ isOpen, onClose, className, children }) => {
   return (
-    <div className="relative">
+    <div className={classNames("relative", className)}>
       {/* Overlay */}
       {isOpen && (
         <div

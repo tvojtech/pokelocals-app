@@ -7,7 +7,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Drawer } from "@/app/components/Drawer";
 import { Logo } from "@/app/components/Logo";
 import { PokemonIdForm } from "@/app/components/PokemonIdForm";
-// import Drawer from "./Drawer";
 
 export const useDrawer = () => {
   const searchParams = useSearchParams();

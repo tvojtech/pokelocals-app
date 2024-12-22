@@ -34,32 +34,30 @@ const PokemonIdFormInternal: React.FC = () => {
       className="space-y-2"
     >
       <label className="block">My pokemon ID:</label>
-      <div className="flex gap-2">
-        <>
-          <input
-            type="text"
-            defaultValue={myId}
-            ref={inputRef}
-            placeholder="Enter your Pokemon ID"
-            disabled={!isEditing}
-            readOnly={!isEditing}
-            className="outline-2 border border-slate-300 p-1 px-2 text-black disabled:bg-slate-100 flex-shrink flex-grow"
-          />
-          {isEditing ? (
-            <>
-              <button type="submit">
-                <Check size={24} className="text-green-700" />
-              </button>
-              <button type="reset">
-                <Ban size={24} className="text-red-500" />
-              </button>
-            </>
-          ) : (
-            <button onClick={() => setIsEditing(true)}>
-              <Edit size={24} className="text-yellow-400" />
+      <div className="flex gap-3 pl-4">
+        <input
+          type="text"
+          defaultValue={myId}
+          ref={inputRef}
+          placeholder="Enter your Pokemon ID"
+          disabled={!isEditing}
+          readOnly={!isEditing}
+          className="outline-2 border border-slate-300 p-1 px-2 text-black disabled:bg-slate-100 w-48"
+        />
+        {isEditing ? (
+          <>
+            <button type="submit">
+              <Check size={24} className="text-green-700" />
             </button>
-          )}
-        </>
+            <button type="reset">
+              <Ban size={24} className="text-red-500" />
+            </button>
+          </>
+        ) : (
+          <button onClick={() => setIsEditing(true)}>
+            <Edit size={24} className="text-yellow-400" />
+          </button>
+        )}
       </div>
     </form>
   );

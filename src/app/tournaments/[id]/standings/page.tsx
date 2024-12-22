@@ -1,8 +1,7 @@
 import { loadTournament } from "@/app/actions/tournament";
-import { Pairings } from "@/app/tournaments/[id]/my-pairings/Pairings";
 import { PageTypes } from "@/app/tournaments/[id]/PageTypes";
 
-export default async function TournamentPairings({
+export default async function TournamentStandings({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -15,8 +14,7 @@ export default async function TournamentPairings({
     <>
       <h1 className="text-3xl font-bold text-center">{tournament.data.name}</h1>
       <div className="max-w-lg mx-auto mt-8 space-y-10">
-        <PageTypes id={id} selectedPage="pairings" />
-        <Pairings tournament={tournament} />
+        <PageTypes id={id} selectedPage="standings" />
       </div>
     </>
   );

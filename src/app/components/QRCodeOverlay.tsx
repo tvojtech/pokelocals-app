@@ -1,7 +1,7 @@
 "use client";
 
 import { useToggle } from "@uidotdev/usehooks";
-import { SquareArrowOutUpRight } from "lucide-react";
+import { QrCode } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import React from "react";
 
@@ -18,10 +18,9 @@ export const QRCodeOverlay: React.FC = () => {
   const buttonContent = (
     <button
       onClick={() => toggle()}
-      className="flex items-center gap-1 text-primary font-bold text-xl"
+      className="flex items-center gap-1 text-primary font-light text-xl"
     >
-      QR Code
-      <SquareArrowOutUpRight size={20} />
+      <QrCode size={24} />
     </button>
   );
 

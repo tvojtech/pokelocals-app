@@ -1,40 +1,23 @@
 "use client";
 
-import { useState } from "react";
-import { useFormStatus } from "react-dom";
+import { useActionState } from "react";
 
 import { uploadTournamentFile } from "@/app/actions/tournament";
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 disabled:bg-gray-300"
-    >
-      {pending ? "Uploading..." : "Upload"}
-    </button>
-  );
-}
+import { Alert } from "@/app/components/Alert";
 
 export function FileUpload({ tournamentId }: { tournamentId: string }) {
-  const [error, setError] = useState<string | null>(null);
+  const uploadFileAction = async (prevState: unknown, formData: FormData) => {
+    return await uploadTournamentFile(formData, tournamentId);
+  };
 
-  async function handleSubmit(formData: FormData) {
-    const result = await uploadTournamentFile(formData, tournamentId);
-
-    if (result.error) {
-      setError(result.error);
-    } else {
-      setError(null);
-    }
-  }
+  const [state, formAction, isPending] = useActionState(
+    uploadFileAction,
+    undefined
+  );
 
   return (
     <>
-      <form action={handleSubmit} className="space-y-4">
+      <form action={formAction} className="space-y-4">
         <div>
           <label
             htmlFor="file"
@@ -54,9 +37,15 @@ export function FileUpload({ tournamentId }: { tournamentId: string }) {
                       hover:file:bg-gray-200"
           />
         </div>
-        <SubmitButton />
+        <button
+          type="submit"
+          disabled={isPending}
+          className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 disabled:bg-gray-300"
+        >
+          {isPending ? "Uploading..." : "Upload"}
+        </button>
       </form>
-      {error && <p className="mt-4 text-red-500">{error}</p>}
+      {state?.error && <Alert message={state.error} type="error" />}
     </>
   );
 }

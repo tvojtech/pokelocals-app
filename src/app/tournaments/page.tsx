@@ -1,21 +1,26 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useActionState, useTransition } from "react";
 
-import { createTournament } from "@/app/actions/tournament";
+import { createTournamentAction } from "@/app/actions/tournament";
 
 export default function Tournaments() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  const handleClick = useCallback(async () => {
-    setIsLoading(true);
-    const { id } = await createTournament();
-    router.push(`/tournaments/${id}`);
-  }, [router]);
+
+  const [, formAction] = useActionState(() => {
+    startTransition(async () => {
+      const result = await createTournamentAction();
+      router.push(`/tournaments/${result.id}`);
+    });
+  }, undefined);
+
   return (
-    <button onClick={handleClick}>
-      {isLoading ? "Creating..." : "New Tournament"}
-    </button>
+    <form action={formAction}>
+      <button type="submit" disabled={isPending}>
+        {isPending ? "Creating..." : "New Tournament"}
+      </button>
+    </form>
   );
 }

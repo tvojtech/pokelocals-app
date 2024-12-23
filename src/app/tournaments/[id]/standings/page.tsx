@@ -1,4 +1,5 @@
 import { loadTournament } from "@/app/actions/tournament";
+import { Alert } from "@/app/components/Alert";
 import { PageTypes } from "@/app/tournaments/[id]/PageTypes";
 
 export default async function TournamentStandings({
@@ -9,6 +10,10 @@ export default async function TournamentStandings({
   const { id } = await params;
 
   const tournament = await loadTournament(id);
+
+  if (!tournament) {
+    return <Alert type="warning" message="Pairings not published yet." />;
+  }
 
   return (
     <>

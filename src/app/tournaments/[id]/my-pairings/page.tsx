@@ -1,4 +1,5 @@
 import { loadTournament } from "@/app/actions/tournament";
+import { Alert } from "@/app/components/Alert";
 import { MyInformation } from "@/app/tournaments/[id]/my-pairings/MyInformation";
 import { PageTypes } from "@/app/tournaments/[id]/PageTypes";
 
@@ -10,6 +11,10 @@ export default async function MyPairings({
   const { id } = await params;
 
   const tournament = await loadTournament(id);
+
+  if (!tournament) {
+    return <Alert type="warning" message="Pairings not published yet." />;
+  }
 
   return (
     <>

@@ -1,6 +1,7 @@
-import classNames from "classnames";
 import Image from "next/image";
 import React from "react";
+
+import { cn } from "@/app/ui/utils";
 
 type AvatarProps = {
   className?: string;
@@ -16,7 +17,7 @@ export const Avatar: React.FC<React.PropsWithChildren<AvatarProps>> = ({
 }) => {
   return (
     <div
-      className={classNames(
+      className={cn(
         "rounded-full w-10 h-10 flex items-center justify-center bg-primary text-white font-bold text-xl",
         className
       )}

@@ -1,7 +1,7 @@
-import classNames from "classnames";
 import Link from "next/link";
 
 import { QRCodeOverlay } from "@/app/components/QRCodeOverlay";
+import { cn } from "@/app/ui/utils";
 
 export enum PageTypesEnum {
   "my-pairings" = "my-pairings",
@@ -25,7 +25,7 @@ export const PageTypes: React.FC<{
       <Link
         key={key}
         href={`/tournaments/${id}/${key}`}
-        className={classNames(
+        className={cn(
           "flex items-center gap-1 text-primary text-xl",
           selectedPage === key ? "font-bold" : "font-light"
         )}

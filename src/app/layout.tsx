@@ -2,11 +2,12 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
 import { Suspense } from "react";
 
 import Footer from "@/app/components/Footer";
 import Header from "@/app/components/Header";
-import { PokemonIdForm } from "@/app/components/PokemonIdForm";
+import { Sidebar } from "@/app/components/Sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,17 +38,19 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-dvh bg-slate-50`}
       >
-        <Suspense>
-          <Header />
-          <div className="flex-grow grid grid-cols-1 lg:grid-cols-[20rem_1fr] gap-4 h-full">
-            <nav className="print:hidden hidden lg:block border-r p-4">
-              <PokemonIdForm />
-            </nav>
-            <main className="container mx-auto px-4 py-8">{children}</main>
-          </div>
+        <SessionProvider>
+          <Suspense>
+            <Header />
+            <div className="flex-grow grid grid-cols-1 lg:grid-cols-[20rem_1fr] gap-4 h-full">
+              <nav className="print:hidden hidden lg:block border-r p-4">
+                <Sidebar />
+              </nav>
+              <main className="container mx-auto px-4 py-8">{children}</main>
+            </div>
 
-          <Footer />
-        </Suspense>
+            <Footer />
+          </Suspense>
+        </SessionProvider>
       </body>
     </html>
   );

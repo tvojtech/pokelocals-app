@@ -1,10 +1,10 @@
 "use client";
 
-import classNames from "classnames";
 import { X } from "lucide-react";
 import React from "react";
 
 import { Logo } from "@/app/components/Logo";
+import { cn } from "@/app/ui/utils";
 
 export const Drawer: React.FC<
   React.PropsWithChildren<{
@@ -14,7 +14,7 @@ export const Drawer: React.FC<
   }>
 > = ({ isOpen, onClose, className, children }) => {
   return (
-    <div className={classNames("relative", className)}>
+    <div className={cn("relative", className)}>
       {/* Overlay */}
       {isOpen && (
         <div
@@ -25,9 +25,9 @@ export const Drawer: React.FC<
 
       {/* Drawer */}
       <div
-        className={classNames(
+        className={cn(
           "fixed top-0 left-0 h-full w-80 bg-slate-50 z-50 transform transition-transform duration-300 ease-in-out",
-          { "translate-x-0": isOpen, "-translate-x-full": !isOpen }
+          isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         <div className="p-4">

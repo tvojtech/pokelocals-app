@@ -6,7 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Drawer } from "@/app/components/Drawer";
 import { Logo } from "@/app/components/Logo";
-import { PokemonIdForm } from "@/app/components/PokemonIdForm";
+import { Sidebar } from "@/app/components/Sidebar";
 
 export const useDrawer = () => {
   const searchParams = useSearchParams();
@@ -68,7 +68,7 @@ export default function Header() {
         onClose={() => toggleDrawer(false)}
         className="lg:hidden"
       >
-        <PokemonIdForm />
+        <Sidebar />
       </Drawer>
     </header>
   );

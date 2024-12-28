@@ -7,6 +7,12 @@ type LogoProps = {
 
 export const Logo: React.FC<LogoProps> = ({ height = 32, width = 137 }) => {
   return (
-    <Image priority src="/logo.svg" alt="logo" height={height} width={width} />
+    <Image
+      priority
+      src="/images/logo.svg"
+      alt="logo"
+      height={height}
+      width={width}
+    />
   );
 };

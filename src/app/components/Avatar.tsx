@@ -33,7 +33,7 @@ export const Avatar: React.FC<React.PropsWithChildren<AvatarProps>> = ({
       ) : (
         children || (
           <Image
-            src="/avatar.svg"
+            src="/images/avatar.svg"
             alt={alt}
             className="rounded-full"
             width={36}

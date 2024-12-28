@@ -1,11 +1,10 @@
 "use client";
 
-import { LogIn, LogOut } from "lucide-react";
+import { LogIn, LogOut, UserRoundPen } from "lucide-react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 
 import { Avatar } from "@/app/components/Avatar";
-import { PokemonIdForm } from "@/app/components/PokemonIdForm";
 
 export const Sidebar: React.FC = () => {
   const { data: session } = useSession();
@@ -49,7 +48,13 @@ export const Sidebar: React.FC = () => {
           Login
         </Link>
       )}
-      <PokemonIdForm />
+      <Link
+        href="/profile"
+        className="flex items-center gap-2 pointer rounded-md p-2 hover:bg-slate-200"
+      >
+        <UserRoundPen size={18} />
+        Profile
+      </Link>
     </div>
   );
 };

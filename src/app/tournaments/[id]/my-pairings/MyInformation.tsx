@@ -1,6 +1,7 @@
 "use client";
 
 import { useIsClient } from "@uidotdev/usehooks";
+import Link from "next/link";
 
 import { Tournament } from "@/app/actions/tournament";
 import { Alert } from "@/app/components/Alert";
@@ -27,8 +28,18 @@ const MyInformationInternal: React.FC<{ tournament: Tournament }> = ({
 
   const alert = (
     <Alert
+      title="No Pokemon ID"
       message={
-        <>To view your pairings fill in Pokemon ID in profile settings.</>
+        <>
+          To view your pairings fill in Pokemon ID in{" "}
+          <Link
+            href="/profile"
+            className="inline gap-1 items-center text-primary font-bold"
+          >
+            profile
+          </Link>
+          .
+        </>
       }
       type="warning"
     />

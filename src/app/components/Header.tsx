@@ -1,14 +1,29 @@
 "use client";
 
-import { LogOut, Menu } from "lucide-react";
+import { LogIn, LogOut, Menu, User2, UserRoundPen } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 
-import { Avatar } from "@/app/components/Avatar";
 import { Drawer } from "@/app/components/Drawer";
 import { Logo } from "@/app/components/Logo";
 import { Sidebar } from "@/app/components/Sidebar";
+import { cn } from "@/app/ui/utils";
+
+const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
+  children,
+  className,
+  ...props
+}) => {
+  return (
+    <Link
+      className={cn("flex items-center gap-2 hover:text-primary", className)}
+      {...props}
+    >
+      {children}
+    </Link>
+  );
+};
 
 export const useDrawer = () => {
   const searchParams = useSearchParams();
@@ -45,27 +60,27 @@ export default function Header() {
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Logo />
           </Link>
-          <ul className="hidden lg:flex space-x-4">
+          <ul className="hidden lg:flex lg:items-center space-x-4">
+            {!session?.user && (
+              <li>
+                <HeaderLink href="/profile">
+                  <UserRoundPen size={18} />
+                  Profile
+                </HeaderLink>
+              </li>
+            )}
             <li>
               {!session?.user ? (
-                <Link href="/login" className="hover:text-primary">
+                <HeaderLink href="/login">
+                  <LogIn size={18} />
                   Login
-                </Link>
+                </HeaderLink>
               ) : (
                 <div className="flex items-center gap-2">
-                  <Link
-                    href="/profile"
-                    className="flex items-center gap-2 hover:text-primary"
-                  >
-                    {session.user?.image && (
-                      <Avatar
-                        src={session.user?.image}
-                        alt="avatar"
-                        className="bg-transparent"
-                      />
-                    )}
+                  <HeaderLink href="/profile">
+                    <User2 size={18} />
                     {session.user?.email}
-                  </Link>
+                  </HeaderLink>
                   <button
                     onClick={() => signOut()}
                     className="pointer rounded-md p-2 hover:bg-slate-200 hover:text-primary"

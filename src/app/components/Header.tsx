@@ -1,9 +1,11 @@
 "use client";
 
-import { Menu } from "lucide-react";
+import { LogOut, Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 
+import { Avatar } from "@/app/components/Avatar";
 import { Drawer } from "@/app/components/Drawer";
 import { Logo } from "@/app/components/Logo";
 import { Sidebar } from "@/app/components/Sidebar";
@@ -34,26 +36,48 @@ export const useDrawer = () => {
 
 export default function Header() {
   const { isDrawerOpen, toggleDrawer } = useDrawer();
+  const { data: session } = useSession();
 
   return (
     <header className="bg-slate-50 border-b-2 shadow-sm text-gray-800 print:hidden">
       <nav>
-        <div className="px-4 md:px-10 py-4 flex justify-between items-center h-16">
+        <div className="lg:container lg:mx-auto px-4 md:px-10 py-4 flex justify-between items-center h-16">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Logo />
           </Link>
-          <ul className="hidden space-x-4">
-            {/* <li>
-              <Link href="/about" className="hover:text-gray-300">
-                About
-              </Link>
-            </li>
+          <ul className="hidden lg:flex space-x-4">
             <li>
-              <Link href="/contact" className="hover:text-gray-300">
-                Contact
-              </Link>
-            </li> */}
+              {!session?.user ? (
+                <Link href="/login" className="hover:text-primary">
+                  Login
+                </Link>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Link
+                    href="/profile"
+                    className="flex items-center gap-2 hover:text-primary"
+                  >
+                    {session.user?.image && (
+                      <Avatar
+                        src={session.user?.image}
+                        alt="avatar"
+                        className="bg-transparent"
+                      />
+                    )}
+                    {session.user?.email}
+                  </Link>
+                  <button
+                    onClick={() => signOut()}
+                    className="pointer rounded-md p-2 hover:bg-slate-200 hover:text-primary"
+                    title="Logout"
+                  >
+                    <LogOut size={18} />
+                  </button>
+                </div>
+              )}
+            </li>
           </ul>
+
           <button
             onClick={() => toggleDrawer()}
             aria-label="Open menu"

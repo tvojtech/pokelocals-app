@@ -41,10 +41,7 @@ export default function RootLayout({
         <SessionProvider>
           <Suspense>
             <Header />
-            <div className="flex-grow grid grid-cols-1 lg:grid-cols-[20rem_1fr] gap-4 h-full">
-              <nav className="print:hidden hidden lg:block border-r p-4">
-                <Sidebar />
-              </nav>
+            <div className="flex-grow h-full">
               <main className="container mx-auto px-4 py-8">{children}</main>
             </div>
 

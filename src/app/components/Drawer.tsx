@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 import React from "react";
 
 import { Logo } from "@/app/components/Logo";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export const Drawer: React.FC<
@@ -31,11 +32,13 @@ export const Drawer: React.FC<
         )}
       >
         <div className="p-4">
-          <div className="flex justify-between border-b border-slate-300 pb-4">
-            <Logo />
-            <button onClick={onClose}>
-              <X size={24} />
-            </button>
+          <div className="flex justify-between border-b border-slate-300 pb-4 ">
+            <div className="h-8">
+              <Logo />
+            </div>
+            <Button onClick={onClose} variant="link" size="icon">
+              <X />
+            </Button>
           </div>
           <div className="py-4">{children}</div>
         </div>

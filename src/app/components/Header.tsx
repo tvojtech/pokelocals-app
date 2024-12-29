@@ -8,6 +8,7 @@ import { signOut, useSession } from "next-auth/react";
 import { Drawer } from "@/app/components/Drawer";
 import { Logo } from "@/app/components/Logo";
 import { Sidebar } from "@/app/components/Sidebar";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
@@ -17,7 +18,7 @@ const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
 }) => {
   return (
     <Link
-      className={cn("flex items-center gap-2 hover:text-primary", className)}
+      className={cn(buttonVariants({ variant: "link" }), className)}
       {...props}
     >
       {children}
@@ -57,10 +58,10 @@ export default function Header() {
     <header className="bg-slate-50 border-b-2 shadow-sm text-gray-800 print:hidden">
       <nav>
         <div className="lg:container lg:mx-auto px-4 md:px-10 py-4 flex justify-between items-center h-16">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
+          <Link href="/">
             <Logo />
           </Link>
-          <ul className="hidden lg:flex lg:items-center space-x-4">
+          <ul className="hidden lg:flex lg:items-center">
             {!session?.user && (
               <li>
                 <HeaderLink href="/profile">
@@ -76,30 +77,32 @@ export default function Header() {
                   Login
                 </HeaderLink>
               ) : (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center">
                   <HeaderLink href="/profile">
                     <User2 size={18} />
                     {session.user?.email}
                   </HeaderLink>
-                  <button
+                  <Button
+                    variant="ghost"
                     onClick={() => signOut()}
-                    className="pointer rounded-md p-2 hover:bg-slate-200 hover:text-primary"
                     title="Logout"
                   >
                     <LogOut size={18} />
-                  </button>
+                  </Button>
                 </div>
               )}
             </li>
           </ul>
 
-          <button
+          <Button
             onClick={() => toggleDrawer()}
             aria-label="Open menu"
             className="lg:hidden"
+            variant="link"
+            size="icon"
           >
-            <Menu size={24} />
-          </button>
+            <Menu />
+          </Button>
         </div>
       </nav>
       <Drawer

@@ -17,7 +17,6 @@
     "@netlify/functions": "^2.8.2",
     "@uidotdev/usehooks": "^2.4.1",
     "class-variance-authority": "^0.7.1",
-    "classnames": "^2.5.1",
     "clsx": "^2.1.1",
     "edgedb": "^1.5.12",
     "fast-xml-parser": "^4.5.0",

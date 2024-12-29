@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { QRCodeOverlay } from "@/app/components/QRCodeOverlay";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export enum PageTypesEnum {
@@ -26,7 +27,8 @@ export const PageTypes: React.FC<{
         key={key}
         href={`/tournaments/${id}/${key}`}
         className={cn(
-          "flex items-center gap-1 text-primary text-xl",
+          buttonVariants({ variant: "link" }),
+          "text-xl",
           selectedPage === key ? "font-bold" : "font-light"
         )}
       >
@@ -36,7 +38,7 @@ export const PageTypes: React.FC<{
 
   return (
     <div className="flex justify-between">
-      <div className="flex justify-between gap-4">{links}</div>
+      <div>{links}</div>
       <QRCodeOverlay />
     </div>
   );

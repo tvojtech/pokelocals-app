@@ -1,33 +1,29 @@
 "use client";
 
-import { LogIn, LogOut, UserRoundPen } from "lucide-react";
+import { LogIn, LogOut, User2, UserRoundPen } from "lucide-react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 
-import { Avatar } from "@/app/components/Avatar";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export const Sidebar: React.FC = () => {
   const { data: session } = useSession();
   return (
-    <div className="flex flex-col h-full space-y-4">
+    <div className="flex flex-col h-full">
       {session ? (
-        <div>
+        <div className="px-4 py-2">
           <div className="flex items-center gap-2">
-            {session.user?.image && (
-              <Avatar
-                src={session.user?.image}
-                alt="avatar"
-                className="bg-transparent"
-              />
-            )}
-            {session.user?.email}
-            <button
+            <User2 size={18} />
+            <p className="text-sm">{session.user?.email}</p>
+            <Button
               onClick={() => signOut()}
-              className="pointer rounded-md p-2 hover:bg-slate-200"
               title="Logout"
+              variant="link"
+              size="icon"
             >
-              <LogOut size={18} />
-            </button>
+              <LogOut />
+            </Button>
           </div>
           {/* <div className="flex justify-end">
             <button
@@ -42,17 +38,17 @@ export const Sidebar: React.FC = () => {
       ) : (
         <Link
           href="/login"
-          className="flex items-center gap-2 pointer rounded-md p-2 hover:bg-slate-200"
+          className={cn(buttonVariants({ variant: "ghost" }), "justify-start")}
         >
-          <LogIn size={18} />
+          <LogIn />
           Login
         </Link>
       )}
       <Link
         href="/profile"
-        className="flex items-center gap-2 pointer rounded-md p-2 hover:bg-slate-200"
+        className={cn(buttonVariants({ variant: "ghost" }), "justify-start")}
       >
-        <UserRoundPen size={18} />
+        <UserRoundPen />
         Profile
       </Link>
     </div>

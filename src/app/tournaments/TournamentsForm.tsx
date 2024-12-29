@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useActionState, useTransition } from "react";
 
 import { createTournamentAction } from "@/app/actions/tournament";
+import { Button } from "@/components/ui/button";
 
 export const TournamentsForm: React.FC = () => {
   const [isPending, startTransition] = useTransition();
@@ -18,9 +19,9 @@ export const TournamentsForm: React.FC = () => {
 
   return (
     <form action={formAction}>
-      <button type="submit" disabled={isPending}>
+      <Button type="submit" disabled={isPending}>
         {isPending ? "Creating..." : "New Tournament"}
-      </button>
+      </Button>
     </form>
   );
 };

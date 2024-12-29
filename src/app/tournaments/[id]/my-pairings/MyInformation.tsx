@@ -8,6 +8,7 @@ import { Alert } from "@/app/components/Alert";
 import { useMyPokemonId } from "@/app/hooks";
 import { MyCurrentPairing } from "@/app/tournaments/[id]/my-pairings/MyCurrentPairing";
 import { MyMatches } from "@/app/tournaments/[id]/my-pairings/MyMatches";
+import { buttonVariants } from "@/components/ui/button";
 
 export const MyInformation: React.FC<{ tournament: Tournament }> = ({
   tournament,
@@ -34,7 +35,7 @@ const MyInformationInternal: React.FC<{ tournament: Tournament }> = ({
           To view your pairings fill in Pokemon ID in{" "}
           <Link
             href="/profile"
-            className="inline gap-1 items-center text-primary font-bold"
+            className={(buttonVariants({ variant: "link" }), "font-bold")}
           >
             profile
           </Link>

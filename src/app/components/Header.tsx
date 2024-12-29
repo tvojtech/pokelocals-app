@@ -8,7 +8,7 @@ import { signOut, useSession } from "next-auth/react";
 import { Drawer } from "@/app/components/Drawer";
 import { Logo } from "@/app/components/Logo";
 import { Sidebar } from "@/app/components/Sidebar";
-import { cn } from "@/app/ui/utils";
+import { cn } from "@/lib/utils";
 
 const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
   children,

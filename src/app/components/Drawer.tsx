@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 import React from "react";
 
 import { Logo } from "@/app/components/Logo";
-import { cn } from "@/app/ui/utils";
+import { cn } from "@/lib/utils";
 
 export const Drawer: React.FC<
   React.PropsWithChildren<{

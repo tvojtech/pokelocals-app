@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { QRCodeOverlay } from "@/app/components/QRCodeOverlay";
-import { cn } from "@/app/ui/utils";
+import { cn } from "@/lib/utils";
 
 export enum PageTypesEnum {
   "my-pairings" = "my-pairings",

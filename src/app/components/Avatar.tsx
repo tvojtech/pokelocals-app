@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-import { cn } from "@/app/ui/utils";
+import { cn } from "@/lib/utils";
 
 type AvatarProps = {
   className?: string;

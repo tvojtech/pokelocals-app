@@ -7,6 +7,7 @@ export type AppPermission =
   | "tournaments:edit"
   | "tournaments:delete";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const hasPermission = (user: User, permission: AppPermission) => {
   return true;
 };

@@ -7,7 +7,6 @@ import { Suspense } from "react";
 
 import Footer from "@/app/components/Footer";
 import Header from "@/app/components/Header";
-import { Sidebar } from "@/app/components/Sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

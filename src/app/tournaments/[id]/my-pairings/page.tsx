@@ -12,16 +12,22 @@ export default async function MyPairings({
 
   const tournament = await loadTournament(id);
 
-  if (!tournament) {
-    return <Alert type="warning" message="Pairings not published yet." />;
-  }
-
   return (
     <>
-      <h1 className="text-3xl font-bold text-center">{tournament.data.name}</h1>
+      {tournament && (
+        <h1 className="text-3xl font-bold text-center">
+          {tournament.data.name}
+        </h1>
+      )}
       <div className="max-w-lg mx-auto mt-8 space-y-10">
-        <PageTypes id={id} selectedPage="my-pairings" />
-        <MyInformation tournament={tournament} />
+        {!tournament ? (
+          <Alert type="warning" message="Pairings not published yet." />
+        ) : (
+          <>
+            <PageTypes id={id} selectedPage="my-pairings" />
+            <MyInformation tournament={tournament} />
+          </>
+        )}
       </div>
     </>
   );

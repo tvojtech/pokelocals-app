@@ -31,10 +31,10 @@ const PokemonIdFormInternal: React.FC = () => {
     <form
       action={onSubmit}
       onReset={() => setIsEditing(false)}
-      className="space-y-2"
+      className="space-y-2 w-full"
     >
       <label className="block">My pokemon ID:</label>
-      <div className="flex gap-3 pl-4">
+      <div className="flex gap-3 px-4">
         <input
           type="text"
           defaultValue={myId}
@@ -42,7 +42,7 @@ const PokemonIdFormInternal: React.FC = () => {
           placeholder="Enter your Pokemon ID"
           disabled={!isEditing}
           readOnly={!isEditing}
-          className="outline-2 border border-slate-300 p-1 px-2 text-black disabled:bg-slate-100 w-48"
+          className="outline-2 border border-slate-300 p-1 px-2 text-black disabled:bg-slate-100 flex-grow"
         />
         {isEditing ? (
           <>

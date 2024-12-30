@@ -1,7 +1,8 @@
-import Link from "next/link";
+import { SearchParams } from "next/dist/server/request/search-params";
+import { redirect } from "next/navigation";
 
 import { QRCodeOverlay } from "@/app/components/QRCodeOverlay";
-import { buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export enum PageTypesEnum {
@@ -16,24 +17,50 @@ const pageTypeToTextMappping: Record<PageTypesEnum, string> = {
   [PageTypesEnum["standings"]]: "Standings",
 };
 
+const handleClick = ({
+  searchParams,
+  key,
+  id,
+}: {
+  searchParams: SearchParams;
+  key: string;
+  id: string;
+}) => {
+  const params = new URLSearchParams();
+  Object.entries(searchParams).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      value.forEach((v) => params.append(key, v));
+    } else {
+      params.set(key, value ?? "");
+    }
+  });
+  params.set("w", key);
+  console.log(params.toString());
+  redirect(`/tournaments/${id}/pairings?${params.toString()}`);
+};
+
 export const PageTypes: React.FC<{
   id: string;
   selectedPage: "my-pairings" | "pairings" | "standings";
-}> = ({ id, selectedPage }) => {
+  searchParams: SearchParams;
+}> = ({ id, selectedPage, searchParams }) => {
   const links = Object.keys(PageTypesEnum)
     .filter((type) => type !== PageTypesEnum.standings)
     .map((key) => (
-      <Link
+      <Button
         key={key}
-        href={`/tournaments/${id}/${key}`}
+        onClick={async () => {
+          "use server";
+          handleClick({ searchParams, key, id });
+        }}
+        variant="link"
         className={cn(
-          buttonVariants({ variant: "link" }),
           "text-xl",
           selectedPage === key ? "font-bold" : "font-light"
         )}
       >
         {pageTypeToTextMappping[key as PageTypesEnum]}
-      </Link>
+      </Button>
     ));
 
   return (

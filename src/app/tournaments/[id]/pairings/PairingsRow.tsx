@@ -1,6 +1,6 @@
 import { Match, Tournament } from "@/app/actions/tournament";
 import { getPlayerNameForId } from "@/app/pokemonUtils";
-import { PlayerScore } from "@/app/tournaments/[id]/my-pairings/PlayerScore";
+import { PlayerScore } from "@/app/tournaments/[id]/pairings/PlayerScore";
 
 export const PairingsRow: React.FC<{
   tournament: Tournament;

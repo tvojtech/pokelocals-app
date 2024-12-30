@@ -3,7 +3,7 @@
 import React from "react";
 
 import { Round, Tournament } from "@/app/actions/tournament";
-import { PairingsRow } from "@/app/tournaments/[id]/my-pairings/PairingsRow";
+import { PairingsRow } from "@/app/tournaments/[id]/pairings/PairingsRow";
 
 export const Pairings: React.FC<{ tournament: Tournament }> = ({
   tournament,

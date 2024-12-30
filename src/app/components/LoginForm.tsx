@@ -73,7 +73,7 @@ export function LoginForm() {
         >
           <LoginButton
             type="submit"
-            className="bg-[#5865F2] focus:ring-blue-400"
+            className="bg-[#5865F2] focus:ring-blue-400 hover:bg-[#5865F2]"
           >
             <Image
               src="/images/discord-mark-white.svg"

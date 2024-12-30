@@ -32,7 +32,7 @@ const LoginButton: React.FC<React.ComponentProps<typeof Button>> = ({
 
 export function LoginForm() {
   return (
-    <Card className="w-full max-w-lg">
+    <Card>
       <CardHeader>
         <CardTitle>Sign in</CardTitle>
         <CardDescription>Choose your preferred sign-in method</CardDescription>

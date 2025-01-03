@@ -9,7 +9,7 @@ export const Logo: React.FC<LogoProps> = ({ height = 32, width = 137 }) => {
   return (
     <Image
       priority
-      src="/images/logo-alpha.svg"
+      src="/images/logo-beta.svg"
       alt="logo"
       height={height}
       width={width}

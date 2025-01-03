@@ -18,12 +18,11 @@ export const QRCode: React.FC<{ tournamentId: string }> = ({
     return null;
   }
 
-  const myPairingsUrl = `${origin}/tournaments/${tournamentId}/my-pairings`;
   const pairingsUrl = `${origin}/tournaments/${tournamentId}/pairings`;
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <p className="print:block hidden">{myPairingsUrl}</p>
+      <p className="print:block hidden">{pairingsUrl}</p>
       <Link
         href={pairingsUrl}
         target="_blank"
@@ -34,7 +33,7 @@ export const QRCode: React.FC<{ tournamentId: string }> = ({
       >
         Show pairings <SquareArrowOutUpRight size={20} />
       </Link>
-      <QRCodeSVG value={myPairingsUrl} className="w-60 h-60 m-10" />
+      <QRCodeSVG value={pairingsUrl} className="w-60 h-60 m-10" />
     </div>
   );
 };

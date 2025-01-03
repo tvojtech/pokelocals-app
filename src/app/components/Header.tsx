@@ -1,15 +1,23 @@
 "use client";
 
 import { useToggle } from "@uidotdev/usehooks";
-import { LogIn, LogOut, Menu, User2, UserRoundPen } from "lucide-react";
+import { LogIn, LogOut, Menu, User2, UserRoundPen, X } from "lucide-react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import React from "react";
 
-import { Drawer } from "@/app/components/Drawer";
 import { Logo } from "@/app/components/Logo";
 import { Sidebar } from "@/app/components/Sidebar";
 import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
 const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
@@ -28,7 +36,6 @@ const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
 };
 
 export default function Header() {
-  const [isDrawerOpen, toggleDrawer] = useToggle(false);
   const { data: session } = useSession();
 
   return (
@@ -71,24 +78,63 @@ export default function Header() {
             </li>
           </ul>
 
-          <Button
-            onClick={() => toggleDrawer()}
-            aria-label="Open menu"
-            className="lg:hidden"
-            variant="link"
-            size="icon"
-          >
-            <Menu />
-          </Button>
+          <Sheet>
+            <SheetTrigger>
+              <Menu />
+            </SheetTrigger>
+            <SheetContent
+              side="left"
+              className="p-4"
+              aria-describedby={undefined}
+            >
+              <SheetHeader>
+                <SheetTitle className="pb-4 pl-4 border-b flex justify-between items-center">
+                  <Logo />
+                  <SheetClose asChild>
+                    <Button variant="link" size="icon">
+                      <X />
+                    </Button>
+                  </SheetClose>
+                </SheetTitle>
+              </SheetHeader>
+              <div className="space-y-2 p-4">
+                {!session && (
+                  <Link
+                    href="/login"
+                    className={cn(
+                      buttonVariants({ variant: "ghost" }),
+                      "justify-start w-full"
+                    )}
+                  >
+                    <LogIn />
+                    Login
+                  </Link>
+                )}
+              </div>
+              {session && (
+                <div className="absolute bottom-0 right-0 h-32 w-full p-4">
+                  <div className="border rounded-sm border-l-8 h-full p-4">
+                    <div className="px-4 py-2">
+                      <div className="flex items-center gap-2">
+                        <User2 size={18} />
+                        <p className="text-sm">{session.user?.email}</p>
+                        <Button
+                          onClick={() => signOut()}
+                          title="Logout"
+                          variant="link"
+                          size="icon"
+                        >
+                          <LogOut />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </SheetContent>
+          </Sheet>
         </div>
       </nav>
-      <Drawer
-        isOpen={isDrawerOpen}
-        onClose={() => toggleDrawer(false)}
-        className="lg:hidden"
-      >
-        <Sidebar />
-      </Drawer>
     </header>
   );
 }

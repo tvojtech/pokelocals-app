@@ -10,22 +10,32 @@ import { cn } from "@/lib/utils";
 export const Sidebar: React.FC = () => {
   const { data: session } = useSession();
   return (
-    <div className="flex flex-col h-full">
-      {session ? (
-        <div className="px-4 py-2">
-          <div className="flex items-center gap-2">
-            <User2 size={18} />
-            <p className="text-sm">{session.user?.email}</p>
-            <Button
-              onClick={() => signOut()}
-              title="Logout"
-              variant="link"
-              size="icon"
-            >
-              <LogOut />
-            </Button>
-          </div>
-          {/* <div className="flex justify-end">
+    <div className="h-full">
+      <div className="flex-grow">
+        <Link
+          href="/profile"
+          className={cn(buttonVariants({ variant: "ghost" }), "justify-start")}
+        >
+          <UserRoundPen />
+          Profile
+        </Link>
+      </div>
+      <div className="border rounded-sm border-l-4 mt-4">
+        {session ? (
+          <div className="px-4 py-2">
+            <div className="flex items-center gap-2">
+              <User2 size={18} />
+              <p className="text-sm">{session.user?.email}</p>
+              <Button
+                onClick={() => signOut()}
+                title="Logout"
+                variant="link"
+                size="icon"
+              >
+                <LogOut />
+              </Button>
+            </div>
+            {/* <div className="flex justify-end">
             <button
               onClick={() => signOut()}
               className="flex items-center gap-2 pointer rounded-md p-2 hover:bg-slate-200"
@@ -34,23 +44,20 @@ export const Sidebar: React.FC = () => {
               Logout
             </button>
           </div> */}
-        </div>
-      ) : (
-        <Link
-          href="/login"
-          className={cn(buttonVariants({ variant: "ghost" }), "justify-start")}
-        >
-          <LogIn />
-          Login
-        </Link>
-      )}
-      <Link
-        href="/profile"
-        className={cn(buttonVariants({ variant: "ghost" }), "justify-start")}
-      >
-        <UserRoundPen />
-        Profile
-      </Link>
+          </div>
+        ) : (
+          <Link
+            href="/login"
+            className={cn(
+              buttonVariants({ variant: "ghost" }),
+              "justify-start"
+            )}
+          >
+            <LogIn />
+            Login
+          </Link>
+        )}
+      </div>
     </div>
   );
 };

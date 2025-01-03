@@ -1,9 +1,10 @@
 "use client";
 
+import { useToggle } from "@uidotdev/usehooks";
 import { LogIn, LogOut, Menu, User2, UserRoundPen } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import React from "react";
 
 import { Drawer } from "@/app/components/Drawer";
 import { Logo } from "@/app/components/Logo";
@@ -26,32 +27,8 @@ const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
   );
 };
 
-export const useDrawer = () => {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
-
-  const isDrawerOpen = searchParams.has("menu");
-
-  const toggleDrawer = (isOpen?: boolean) => {
-    if (isOpen === undefined) {
-      isOpen = !isDrawerOpen;
-    }
-    const params = new URLSearchParams(searchParams.toString());
-    if (isOpen) {
-      params.set("menu", "1");
-    } else {
-      params.delete("menu");
-    }
-    const url = pathname + "?" + params.toString();
-    router.replace(url);
-  };
-
-  return { isDrawerOpen, toggleDrawer };
-};
-
 export default function Header() {
-  const { isDrawerOpen, toggleDrawer } = useDrawer();
+  const [isDrawerOpen, toggleDrawer] = useToggle(false);
   const { data: session } = useSession();
 
   return (

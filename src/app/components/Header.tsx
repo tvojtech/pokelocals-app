@@ -1,42 +1,34 @@
 "use client";
 
 import { useToggle } from "@uidotdev/usehooks";
-import { LogIn, LogOut, Menu, User2, UserRoundPen, X } from "lucide-react";
+import { LogIn, LogOut, Menu, Settings2, User2, X } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import React from "react";
 
 import { Logo } from "@/app/components/Logo";
-import { Sidebar } from "@/app/components/Sidebar";
 import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
-const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
-  children,
-  className,
-  ...props
-}) => {
+const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({ children, className, ...props }) => {
   return (
-    <Link
-      className={cn(buttonVariants({ variant: "link" }), className)}
-      {...props}
-    >
+    <Link className={cn(buttonVariants({ variant: "link" }), className)} {...props}>
       {children}
     </Link>
   );
 };
 
 export default function Header() {
+  const [isDrawerOpen, toggleDrawer] = useToggle(false);
   const { data: session } = useSession();
+  const router = useRouter();
+
+  const sidebarButtonClickHandler = (link: string) => () => {
+    toggleDrawer(false);
+    router.push(link);
+  };
 
   return (
     <header className="bg-slate-50 border-b-2 shadow-sm text-gray-800 print:hidden">
@@ -49,8 +41,8 @@ export default function Header() {
             {!session?.user && (
               <li>
                 <HeaderLink href="/profile">
-                  <UserRoundPen size={18} />
-                  Profile
+                  <Settings2 size={18} />
+                  Settings
                 </HeaderLink>
               </li>
             )}
@@ -66,11 +58,7 @@ export default function Header() {
                     <User2 size={18} />
                     {session.user?.email}
                   </HeaderLink>
-                  <Button
-                    variant="ghost"
-                    onClick={() => signOut()}
-                    title="Logout"
-                  >
+                  <Button variant="ghost" onClick={() => signOut()} title="Logout">
                     <LogOut size={18} />
                   </Button>
                 </div>
@@ -78,19 +66,15 @@ export default function Header() {
             </li>
           </ul>
 
-          <Sheet>
-            <SheetTrigger>
+          <Sheet open={isDrawerOpen} onOpenChange={(open) => toggleDrawer(open)}>
+            <SheetTrigger className="lg:hidden">
               <Menu />
             </SheetTrigger>
-            <SheetContent
-              side="left"
-              className="p-4"
-              aria-describedby={undefined}
-            >
+            <SheetContent side="left" className="p-4" aria-describedby={undefined}>
               <SheetHeader>
                 <SheetTitle className="pb-4 pl-4 border-b flex justify-between items-center">
                   <Logo />
-                  <SheetClose asChild>
+                  <SheetClose asChild onClick={() => toggleDrawer(false)}>
                     <Button variant="link" size="icon">
                       <X />
                     </Button>
@@ -98,17 +82,23 @@ export default function Header() {
                 </SheetTitle>
               </SheetHeader>
               <div className="space-y-2 p-4">
+                <Button
+                  onClick={sidebarButtonClickHandler("/profile")}
+                  variant="ghost"
+                  className="justify-start w-full"
+                >
+                  <Settings2 />
+                  Settings
+                </Button>
                 {!session && (
-                  <Link
-                    href="/login"
-                    className={cn(
-                      buttonVariants({ variant: "ghost" }),
-                      "justify-start w-full"
-                    )}
+                  <Button
+                    onClick={sidebarButtonClickHandler("/login")}
+                    variant="ghost"
+                    className="justify-start w-full"
                   >
                     <LogIn />
                     Login
-                  </Link>
+                  </Button>
                 )}
               </div>
               {session && (
@@ -118,12 +108,7 @@ export default function Header() {
                       <div className="flex items-center gap-2">
                         <User2 size={18} />
                         <p className="text-sm">{session.user?.email}</p>
-                        <Button
-                          onClick={() => signOut()}
-                          title="Logout"
-                          variant="link"
-                          size="icon"
-                        >
+                        <Button onClick={() => signOut()} title="Logout" variant="link" size="icon">
                           <LogOut />
                         </Button>
                       </div>

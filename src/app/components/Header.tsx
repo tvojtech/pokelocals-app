@@ -1,14 +1,23 @@
 "use client";
 
-import { LogIn, LogOut, Menu, User2, UserRoundPen } from "lucide-react";
+import { useToggle } from "@uidotdev/usehooks";
+import { LogIn, LogOut, Menu, Settings2, User2, X } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import React from "react";
 
-import { Drawer } from "@/app/components/Drawer";
 import { Logo } from "@/app/components/Logo";
-import { Sidebar } from "@/app/components/Sidebar";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
 const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
@@ -26,33 +35,15 @@ const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
   );
 };
 
-export const useDrawer = () => {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
+export default function Header() {
+  const [isDrawerOpen, toggleDrawer] = useToggle(false);
+  const { data: session } = useSession();
   const router = useRouter();
 
-  const isDrawerOpen = searchParams.has("menu");
-
-  const toggleDrawer = (isOpen?: boolean) => {
-    if (isOpen === undefined) {
-      isOpen = !isDrawerOpen;
-    }
-    const params = new URLSearchParams(searchParams.toString());
-    if (isOpen) {
-      params.set("menu", "1");
-    } else {
-      params.delete("menu");
-    }
-    const url = pathname + "?" + params.toString();
-    router.replace(url);
+  const sidebarButtonClickHandler = (link: string) => () => {
+    toggleDrawer(false);
+    router.push(link);
   };
-
-  return { isDrawerOpen, toggleDrawer };
-};
-
-export default function Header() {
-  const { isDrawerOpen, toggleDrawer } = useDrawer();
-  const { data: session } = useSession();
 
   return (
     <header className="bg-slate-50 border-b-2 shadow-sm text-gray-800 print:hidden">
@@ -65,8 +56,8 @@ export default function Header() {
             {!session?.user && (
               <li>
                 <HeaderLink href="/profile">
-                  <UserRoundPen size={18} />
-                  Profile
+                  <Settings2 size={18} />
+                  Settings
                 </HeaderLink>
               </li>
             )}
@@ -94,24 +85,69 @@ export default function Header() {
             </li>
           </ul>
 
-          <Button
-            onClick={() => toggleDrawer()}
-            aria-label="Open menu"
-            className="lg:hidden"
-            variant="link"
-            size="icon"
+          <Sheet
+            open={isDrawerOpen}
+            onOpenChange={(open) => toggleDrawer(open)}
           >
-            <Menu />
-          </Button>
+            <SheetTrigger className="lg:hidden">
+              <Menu />
+            </SheetTrigger>
+            <SheetContent
+              side="left"
+              className="p-4"
+              aria-describedby={undefined}
+            >
+              <SheetHeader>
+                <SheetTitle className="pb-4 px-2 border-b flex justify-between items-center">
+                  <Logo />
+                  <SheetClose asChild onClick={() => toggleDrawer(false)}>
+                    <div role="button">
+                      <X />
+                    </div>
+                  </SheetClose>
+                </SheetTitle>
+              </SheetHeader>
+              <div className="space-y-4 p-4 px-2">
+                {session ? (
+                  <div className="space-y-2">
+                    <p className="text-md">{session.user?.email}</p>
+                    <div className="flex justify-end">
+                      <Button
+                        onClick={() => signOut()}
+                        title="Logout"
+                        variant="default"
+                        className="w-full uppercase flex justify-center items-center"
+                      >
+                        Logout
+                        <LogOut />
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <Button
+                    title="Sign in"
+                    variant="default"
+                    onClick={sidebarButtonClickHandler("/login")}
+                    className="w-full uppercase flex justify-center items-center"
+                  >
+                    <LogIn />
+                    Sign in
+                  </Button>
+                )}
+                <Separator className="-mx-2 w-[calc(100%+1rem)]" />
+                <Button
+                  onClick={sidebarButtonClickHandler("/profile")}
+                  variant="ghost"
+                  className="justify-start w-full"
+                >
+                  <Settings2 />
+                  Settings
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </nav>
-      <Drawer
-        isOpen={isDrawerOpen}
-        onClose={() => toggleDrawer(false)}
-        className="lg:hidden"
-      >
-        <Sidebar />
-      </Drawer>
     </header>
   );
 }

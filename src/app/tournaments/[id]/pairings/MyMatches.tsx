@@ -1,6 +1,6 @@
-import { Player, Pod, Tournament } from "@/app/actions/tournament";
-import { getPlayerNameForId, MatchOutcome } from "@/app/pokemonUtils";
-import { PlayerScore } from "@/app/tournaments/[id]/pairings/PlayerScore";
+import { Player, Pod, Tournament } from '@/app/actions/tournament';
+import { getPlayerNameForId, MatchOutcome } from '@/app/pokemonUtils';
+import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
 
 export const MyMatches: React.FC<{
   me: Player;
@@ -8,9 +8,9 @@ export const MyMatches: React.FC<{
   tournament: Tournament;
 }> = ({ me, pod: myPod, tournament }) => {
   const myMatches = myPod.rounds
-    .map((round) => ({
+    .map(round => ({
       match: round.matches.find(
-        (match) => match.player1 === me.userid || match.player2 === me.userid
+        match => match.player1 === me.userid || match.player2 === me.userid
       ),
       round: round.number,
     }))
@@ -24,18 +24,18 @@ export const MyMatches: React.FC<{
     <div className="grid grid-cols-1 gap-2">
       {myMatches.map(({ match, round }, idx) => {
         let outcome: MatchOutcome, opponent;
-        if (match?.outcome === "5") {
+        if (match?.outcome === '5') {
           outcome = MatchOutcome.BYE;
-        } else if (match?.outcome === "3") {
+        } else if (match?.outcome === '3') {
           outcome = MatchOutcome.TIE;
-        } else if (match?.outcome === "0") {
+        } else if (match?.outcome === '0') {
           return null;
         } else if (match?.player1 === me.userid) {
           outcome =
-            match?.outcome === "1" ? MatchOutcome.WIN : MatchOutcome.LOSS;
+            match?.outcome === '1' ? MatchOutcome.WIN : MatchOutcome.LOSS;
         } else {
           outcome =
-            match?.outcome === "1" ? MatchOutcome.LOSS : MatchOutcome.WIN;
+            match?.outcome === '1' ? MatchOutcome.LOSS : MatchOutcome.WIN;
         }
 
         if (match?.player1 === me.userid) {
@@ -54,9 +54,9 @@ export const MyMatches: React.FC<{
 
         return (
           <div key={idx}>
-            R{round} at table {match?.tablenumber}:{" "}
-            <span className="font-bold">{outcome}</span> vs.{" "}
-            {getPlayerName(opponent)}{" "}
+            R{round} at table {match?.tablenumber}:{' '}
+            <span className="font-bold">{outcome}</span> vs.{' '}
+            {getPlayerName(opponent)}{' '}
             <PlayerScore score={tournament.scores[opponent]} />
           </div>
         );

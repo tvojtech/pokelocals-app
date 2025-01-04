@@ -1,13 +1,13 @@
-"use server";
+'use server';
 
-import { getStore } from "@netlify/blobs";
-import fs from "fs";
+import { getStore } from '@netlify/blobs';
+import fs from 'fs';
 
-import { Tournament } from "@/app/actions/tournament/types";
+import { Tournament } from '@/app/actions/tournament/types';
 
 export async function loadTournament(tournamentId: string) {
-  if (process.env.NODE_ENV !== "development") {
-    const store = getStore("tournaments");
+  if (process.env.NODE_ENV !== 'development') {
+    const store = getStore('tournaments');
     const tournamentFile = await store.get(tournamentId);
     if (!tournamentFile) {
       return undefined;
@@ -18,7 +18,7 @@ export async function loadTournament(tournamentId: string) {
       return undefined;
     }
     return JSON.parse(
-      fs.readFileSync(`/tmp/${tournamentId}.json`, "utf-8")
+      fs.readFileSync(`/tmp/${tournamentId}.json`, 'utf-8')
     ) as Tournament;
   }
 }

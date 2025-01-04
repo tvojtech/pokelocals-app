@@ -1,6 +1,6 @@
-import { Match, Tournament } from "@/app/actions/tournament";
-import { getPlayerNameForId } from "@/app/pokemonUtils";
-import { PlayerScore } from "@/app/tournaments/[id]/pairings/PlayerScore";
+import { Match, Tournament } from '@/app/actions/tournament';
+import { getPlayerNameForId } from '@/app/pokemonUtils';
+import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
 
 export const PairingsRow: React.FC<{
   tournament: Tournament;
@@ -27,7 +27,7 @@ export const PairingsRow: React.FC<{
             </div>
           </>
         ) : (
-          "BYE"
+          'BYE'
         )}
       </div>
     </>

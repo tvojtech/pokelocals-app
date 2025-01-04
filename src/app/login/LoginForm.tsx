@@ -1,15 +1,15 @@
-import Image from "next/image";
+import Image from 'next/image';
 
-import { signIn } from "@/app/auth";
-import { Button } from "@/components/ui/button";
+import { signIn } from '@/app/auth';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 const LoginButton: React.FC<React.ComponentProps<typeof Button>> = ({
   children,
@@ -20,11 +20,10 @@ const LoginButton: React.FC<React.ComponentProps<typeof Button>> = ({
     <Button
       type="submit"
       className={cn(
-        "shadow-lg active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 w-full flex-wrap",
+        'shadow-lg active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 w-full flex-wrap',
         className
       )}
-      {...props}
-    >
+      {...props}>
       {children}
     </Button>
   );
@@ -67,14 +66,12 @@ export function LoginForm() {
         </div> */}
         <form
           action={async () => {
-            "use server";
-            await signIn("discord", { redirectTo: "/" });
-          }}
-        >
+            'use server';
+            await signIn('discord', { redirectTo: '/' });
+          }}>
           <LoginButton
             type="submit"
-            className="bg-[#5865F2] focus:ring-blue-400 hover:bg-[#5865F2]"
-          >
+            className="bg-[#5865F2] focus:ring-blue-400 hover:bg-[#5865F2]">
             <Image
               src="/images/discord-mark-white.svg"
               alt="discord"

@@ -1,7 +1,7 @@
 import {
   TournamentDetailPage,
   TournamentDetailPageProps,
-} from "@/app/tournaments/[id]/TournamentDetailPage";
+} from '@/app/tournaments/[id]/TournamentDetailPage';
 
 export default async function TournamentDetail(
   props: TournamentDetailPageProps

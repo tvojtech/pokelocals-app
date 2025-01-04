@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { SquareArrowOutUpRight } from "lucide-react";
-import Link from "next/link";
-import { QRCodeSVG } from "qrcode.react";
-import React from "react";
+import { SquareArrowOutUpRight } from 'lucide-react';
+import Link from 'next/link';
+import { QRCodeSVG } from 'qrcode.react';
+import React from 'react';
 
-import { useWindowLocation } from "@/app/hooks";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { useWindowLocation } from '@/app/hooks';
+import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 export const QRCode: React.FC<{ tournamentId: string }> = ({
   tournamentId,
@@ -27,10 +27,9 @@ export const QRCode: React.FC<{ tournamentId: string }> = ({
         href={pairingsUrl}
         target="_blank"
         className={cn(
-          buttonVariants({ variant: "link" }),
-          "print:hidden font-bold text-xl"
-        )}
-      >
+          buttonVariants({ variant: 'link' }),
+          'print:hidden font-bold text-xl'
+        )}>
         Show pairings <SquareArrowOutUpRight size={20} />
       </Link>
       <QRCodeSVG value={pairingsUrl} className="w-60 h-60 m-10" />

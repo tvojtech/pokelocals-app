@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useIsClient } from "@uidotdev/usehooks";
-import { Ban, Check, Edit } from "lucide-react";
-import { useRef, useState } from "react";
+import { useIsClient } from '@uidotdev/usehooks';
+import { Ban, Check, Edit } from 'lucide-react';
+import { useRef, useState } from 'react';
 
-import { useMyPokemonId } from "@/app/hooks";
+import { useMyPokemonId } from '@/app/hooks';
 
 export const PokemonIdForm: React.FC = () => {
   const isClient = useIsClient();
@@ -31,8 +31,7 @@ const PokemonIdFormInternal: React.FC = () => {
     <form
       action={onSubmit}
       onReset={() => setIsEditing(false)}
-      className="space-y-2 w-full"
-    >
+      className="space-y-2 w-full">
       <label className="block">My pokemon ID:</label>
       <div className="flex gap-3 px-4">
         <input

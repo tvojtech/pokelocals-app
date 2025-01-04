@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { LogIn, LogOut, User2, UserRoundPen } from "lucide-react";
-import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
+import { LogIn, LogOut, User2, UserRoundPen } from 'lucide-react';
+import Link from 'next/link';
+import { signOut, useSession } from 'next-auth/react';
 
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Button, buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 export const Sidebar: React.FC = () => {
   const { data: session } = useSession();
@@ -14,8 +14,7 @@ export const Sidebar: React.FC = () => {
       <div className="flex-grow">
         <Link
           href="/profile"
-          className={cn(buttonVariants({ variant: "ghost" }), "justify-start")}
-        >
+          className={cn(buttonVariants({ variant: 'ghost' }), 'justify-start')}>
           <UserRoundPen />
           Profile
         </Link>
@@ -30,8 +29,7 @@ export const Sidebar: React.FC = () => {
                 onClick={() => signOut()}
                 title="Logout"
                 variant="link"
-                size="icon"
-              >
+                size="icon">
                 <LogOut />
               </Button>
             </div>
@@ -49,10 +47,9 @@ export const Sidebar: React.FC = () => {
           <Link
             href="/login"
             className={cn(
-              buttonVariants({ variant: "ghost" }),
-              "justify-start"
-            )}
-          >
+              buttonVariants({ variant: 'ghost' }),
+              'justify-start'
+            )}>
             <LogIn />
             Login
           </Link>

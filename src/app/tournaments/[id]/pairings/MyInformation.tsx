@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useIsClient } from "@uidotdev/usehooks";
-import Link from "next/link";
+import { useIsClient } from '@uidotdev/usehooks';
+import Link from 'next/link';
 
-import { Tournament } from "@/app/actions/tournament";
-import { Alert } from "@/app/components/Alert";
-import { useMyPokemonId } from "@/app/hooks";
-import { MyCurrentPairing } from "@/app/tournaments/[id]/pairings/MyCurrentPairing";
-import { MyMatches } from "@/app/tournaments/[id]/pairings/MyMatches";
-import { buttonVariants } from "@/components/ui/button";
+import { Tournament } from '@/app/actions/tournament';
+import { Alert } from '@/app/components/Alert';
+import { useMyPokemonId } from '@/app/hooks';
+import { MyCurrentPairing } from '@/app/tournaments/[id]/pairings/MyCurrentPairing';
+import { MyMatches } from '@/app/tournaments/[id]/pairings/MyMatches';
+import { buttonVariants } from '@/components/ui/button';
 
 export const MyInformation: React.FC<{ tournament: Tournament }> = ({
   tournament,
@@ -32,11 +32,10 @@ const MyInformationInternal: React.FC<{ tournament: Tournament }> = ({
       title="No Pokemon ID"
       message={
         <>
-          To view your pairings fill in Pokemon ID in{" "}
+          To view your pairings fill in Pokemon ID in{' '}
           <Link
             href="/profile"
-            className={(buttonVariants({ variant: "link" }), "font-bold")}
-          >
+            className={(buttonVariants({ variant: 'link' }), 'font-bold')}>
             profile
           </Link>
           .
@@ -52,19 +51,19 @@ const MyInformationInternal: React.FC<{ tournament: Tournament }> = ({
 
   const { players, pods } = tournament;
 
-  const me = players.find((player) => player.userid === myId);
+  const me = players.find(player => player.userid === myId);
 
   if (!me) {
-    console.log("me not found");
+    console.log('me not found');
     return alert;
   }
 
-  const myPod = pods.find((pod) =>
-    pod.subgroups.some((subgroup) => subgroup.players.includes(me.userid))
+  const myPod = pods.find(pod =>
+    pod.subgroups.some(subgroup => subgroup.players.includes(me.userid))
   );
 
   if (!myPod) {
-    console.log("myPod not found");
+    console.log('myPod not found');
     return alert;
   }
 

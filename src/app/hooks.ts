@@ -1,7 +1,7 @@
-import { useIsClient, useLocalStorage } from "@uidotdev/usehooks";
+import { useIsClient, useLocalStorage } from '@uidotdev/usehooks';
 
 export const useMyPokemonId = () => {
-  const [myId, setMyId] = useLocalStorage<string | undefined>("myPokemonId");
+  const [myId, setMyId] = useLocalStorage<string | undefined>('myPokemonId');
 
   return { myId, setMyId };
 };

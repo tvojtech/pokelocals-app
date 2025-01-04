@@ -1,21 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { XMLParser } from "fast-xml-parser";
+import { XMLParser } from 'fast-xml-parser';
 
-import { Match, Player, Pod, Round, Subgroup, Tournament } from "./types";
+import { Match, Player, Pod, Round, Subgroup, Tournament } from './types';
 
 export function xmlToObject(xmlString: string): Tournament {
   const parser = new XMLParser({
     ignoreAttributes: false,
-    attributeNamePrefix: "@_",
+    attributeNamePrefix: '@_',
   });
   const jsonData = parser.parse(xmlString);
 
   const tournament: Tournament = {
-    type: Number(jsonData.tournament["@_type"]),
-    stage: Number(jsonData.tournament["@_stage"]),
-    version: jsonData.tournament["@_version"],
-    gametype: jsonData.tournament["@_gametype"],
-    mode: jsonData.tournament["@_mode"],
+    type: Number(jsonData.tournament['@_type']),
+    stage: Number(jsonData.tournament['@_stage']),
+    version: jsonData.tournament['@_version'],
+    gametype: jsonData.tournament['@_gametype'],
+    mode: jsonData.tournament['@_mode'],
     data: {
       name: jsonData.tournament.data.name,
       id: jsonData.tournament.data.id,
@@ -25,8 +25,8 @@ export function xmlToObject(xmlString: string): Tournament {
       roundtime: Number(jsonData.tournament.data.roundtime),
       finalsroundtime: Number(jsonData.tournament.data.finalsroundtime),
       startdate: jsonData.tournament.data.startdate,
-      lessswiss: jsonData.tournament.data.lessswiss === "true",
-      autotablenumber: jsonData.tournament.data.autotablenumber === "true",
+      lessswiss: jsonData.tournament.data.lessswiss === 'true',
+      autotablenumber: jsonData.tournament.data.autotablenumber === 'true',
       overflowtablestart: Number(jsonData.tournament.data.overflowtablestart),
     },
     timeelapsed: Number(jsonData.tournament.timeelapsed),
@@ -41,11 +41,11 @@ export function xmlToObject(xmlString: string): Tournament {
 const parsePlayers = (players: any) => {
   return parseXmlArray<any, Player>(
     (p: any) => ({
-      userid: p["@_userid"],
+      userid: p['@_userid'],
       firstname: p.firstname,
       lastname: p.lastname,
       birthdate: p.birthdate,
-      starter: p.starter === "true",
+      starter: p.starter === 'true',
       order: Number(p.order),
       seed: Number(p.seed),
       creationdate: p.creationdate,
@@ -58,8 +58,8 @@ const parsePlayers = (players: any) => {
 const parsePods = (pods: any) => {
   return parseXmlArray<any, Pod>(
     (pod: any) => ({
-      category: pod["@_category"],
-      stage: pod["@_stage"],
+      category: pod['@_category'],
+      stage: pod['@_stage'],
       subgroups: parseSubgroups(pod.subgroups.subgroup),
       rounds: parseRounds(pod.rounds.round),
     }),
@@ -70,8 +70,8 @@ const parsePods = (pods: any) => {
 const parseSubgroups = (subgroups: any) => {
   return parseXmlArray<any, Subgroup>(
     (sg: any) => ({
-      number: sg["@_number"],
-      players: sg.players.player.map((p: any) => p["@_userid"]),
+      number: sg['@_number'],
+      players: sg.players.player.map((p: any) => p['@_userid']),
     }),
     subgroups
   );
@@ -80,10 +80,10 @@ const parseSubgroups = (subgroups: any) => {
 const parseMatches = (matches: any) => {
   return parseXmlArray<any, Match>(
     (m: any) => ({
-      outcome: m["@_outcome"],
-      player1: m.player1 ? m.player1["@_userid"] : m.player["@_userid"],
+      outcome: m['@_outcome'],
+      player1: m.player1 ? m.player1['@_userid'] : m.player['@_userid'],
       // in case of BYE player2 is not present
-      player2: m.player1 ? m.player2["@_userid"] : undefined,
+      player2: m.player1 ? m.player2['@_userid'] : undefined,
       tablenumber: Number(m.tablenumber),
     }),
     matches
@@ -93,9 +93,9 @@ const parseMatches = (matches: any) => {
 const parseRounds = (rounds: any) => {
   return parseXmlArray<any, Round>(
     (round: any) => ({
-      number: round["@_number"],
-      type: round["@_type"],
-      stage: round["@_stage"],
+      number: round['@_number'],
+      type: round['@_type'],
+      stage: round['@_stage'],
       matches: parseMatches(round.matches.match),
     }),
     rounds

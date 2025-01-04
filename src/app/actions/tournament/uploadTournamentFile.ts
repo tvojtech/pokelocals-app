@@ -1,30 +1,30 @@
-"use server";
+'use server';
 
-import { getStore } from "@netlify/blobs";
-import fs from "fs";
-import { revalidatePath } from "next/cache";
+import { getStore } from '@netlify/blobs';
+import fs from 'fs';
+import { revalidatePath } from 'next/cache';
 
-import { PlayerScore, Tournament } from "@/app/actions/tournament/types";
-import { xmlToObject } from "@/app/actions/tournament/xml";
+import { PlayerScore, Tournament } from '@/app/actions/tournament/types';
+import { xmlToObject } from '@/app/actions/tournament/xml';
 
 export async function uploadTournamentFile(
   formData: FormData,
   tournamentId: string
 ) {
-  const file = formData.get("file") as File;
+  const file = formData.get('file') as File;
 
   if (!file) {
-    return { error: "No file selected" };
+    return { error: 'No file selected' };
   }
 
   try {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const xmlString = buffer.toString("utf-8");
+    const xmlString = buffer.toString('utf-8');
     const tournament = calculatePlayerScores(xmlToObject(xmlString));
 
-    if (process.env.NODE_ENV !== "development") {
-      const store = getStore("tournaments");
+    if (process.env.NODE_ENV !== 'development') {
+      const store = getStore('tournaments');
       await store.setJSON(tournamentId, tournament, {
         metadata: { uploadedAt: new Date().toISOString() },
       });
@@ -32,15 +32,15 @@ export async function uploadTournamentFile(
       fs.writeFileSync(
         `/tmp/${tournamentId}.json`,
         JSON.stringify(tournament),
-        "utf-8"
+        'utf-8'
       );
     }
 
-    revalidatePath("/");
+    revalidatePath('/');
     return { success: true };
   } catch (error) {
-    console.error("Error uploading file:", error);
-    return { error: "Failed to upload file" };
+    console.error('Error uploading file:', error);
+    return { error: 'Failed to upload file' };
   }
 }
 
@@ -57,27 +57,27 @@ function calculatePlayerScores(tournament: Tournament) {
 
   const addScore = createScoreCalculator(scores);
 
-  pods.forEach((pod) => {
-    pod.rounds.forEach((round) => {
-      round.matches.forEach((match) => {
+  pods.forEach(pod => {
+    pod.rounds.forEach(round => {
+      round.matches.forEach(match => {
         const matchOutcome = match.outcome;
-        if (!matchOutcome || matchOutcome === "0") {
+        if (!matchOutcome || matchOutcome === '0') {
           // not finished match
           return;
-        } else if (matchOutcome === "1" || matchOutcome === "2") {
+        } else if (matchOutcome === '1' || matchOutcome === '2') {
           scores = addScore(
-            (matchOutcome === "1" ? match.player1 : match.player2)!,
-            "win"
+            (matchOutcome === '1' ? match.player1 : match.player2)!,
+            'win'
           );
           scores = addScore(
-            (matchOutcome === "1" ? match.player2 : match.player1)!,
-            "loss"
+            (matchOutcome === '1' ? match.player2 : match.player1)!,
+            'loss'
           );
-        } else if (matchOutcome === "3") {
-          scores = addScore(match.player1, "tie");
-          scores = addScore(match.player2!, "tie");
-        } else if (matchOutcome === "5") {
-          scores = addScore(match.player1, "win");
+        } else if (matchOutcome === '3') {
+          scores = addScore(match.player1, 'tie');
+          scores = addScore(match.player2!, 'tie');
+        } else if (matchOutcome === '5') {
+          scores = addScore(match.player1, 'win');
         }
       });
     });
@@ -88,18 +88,18 @@ function calculatePlayerScores(tournament: Tournament) {
 
 const createScoreCalculator =
   (playerScores: Record<string, PlayerScore>) =>
-  (player: string, outcome: "win" | "loss" | "tie") => {
-    if (outcome === "win") {
+  (player: string, outcome: 'win' | 'loss' | 'tie') => {
+    if (outcome === 'win') {
       playerScores[player] = {
         ...playerScores[player],
         wins: playerScores[player].wins + 1,
       };
-    } else if (outcome === "loss") {
+    } else if (outcome === 'loss') {
       playerScores[player] = {
         ...playerScores[player],
         losses: playerScores[player].losses + 1,
       };
-    } else if (outcome === "tie") {
+    } else if (outcome === 'tie') {
       playerScores[player] = {
         ...playerScores[player],
         ties: playerScores[player].ties + 1,

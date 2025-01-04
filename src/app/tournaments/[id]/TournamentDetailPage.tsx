@@ -1,6 +1,6 @@
-import { FileUpload } from "@/app/components/FileUpload";
-import { RestrictedPage } from "@/app/components/RestrictedPage";
-import { QRCode } from "@/app/tournaments/[id]/QRCode";
+import { FileUpload } from '@/app/components/FileUpload';
+import { RestrictedPage } from '@/app/components/RestrictedPage';
+import { QRCode } from '@/app/tournaments/[id]/QRCode';
 
 export type TournamentDetailPageProps = {
   params: Promise<{ id: string }>;

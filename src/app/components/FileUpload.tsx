@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useActionState } from "react";
+import { useActionState } from 'react';
 
-import { uploadTournamentFile } from "@/app/actions/tournament";
-import { Alert } from "@/app/components/Alert";
+import { uploadTournamentFile } from '@/app/actions/tournament';
+import { Alert } from '@/app/components/Alert';
 
 export function FileUpload({ tournamentId }: { tournamentId: string }) {
   const uploadFileAction = async (prevState: unknown, formData: FormData) => {
@@ -21,8 +21,7 @@ export function FileUpload({ tournamentId }: { tournamentId: string }) {
         <div>
           <label
             htmlFor="file"
-            className="block text-sm font-medium text-gray-700"
-          >
+            className="block text-sm font-medium text-gray-700">
             Choose a file
           </label>
           <input
@@ -40,9 +39,8 @@ export function FileUpload({ tournamentId }: { tournamentId: string }) {
         <button
           type="submit"
           disabled={isPending}
-          className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 disabled:bg-gray-300"
-        >
-          {isPending ? "Uploading..." : "Upload"}
+          className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 disabled:bg-gray-300">
+          {isPending ? 'Uploading...' : 'Upload'}
         </button>
       </form>
       {state?.error && <Alert message={state.error} type="error" />}

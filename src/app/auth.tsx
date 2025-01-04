@@ -1,14 +1,14 @@
-import { EdgeDBAdapter } from "@auth/edgedb-adapter";
-import NextAuth from "next-auth";
-import Discord from "next-auth/providers/discord";
+import { EdgeDBAdapter } from '@auth/edgedb-adapter';
+import NextAuth from 'next-auth';
+import Discord from 'next-auth/providers/discord';
 
-import { edgeDbClient } from "@/app/db";
+import { edgeDbClient } from '@/app/db';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  debug: process.env.NODE_ENV === "development",
+  debug: process.env.NODE_ENV === 'development',
   adapter: EdgeDBAdapter(edgeDbClient),
   providers: [Discord],
   session: {
-    strategy: "database",
+    strategy: 'database',
   },
 });

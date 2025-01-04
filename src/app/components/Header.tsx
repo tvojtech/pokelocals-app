@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useToggle } from "@uidotdev/usehooks";
-import { LogIn, LogOut, Menu, Settings2, User2, X } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
-import React from "react";
+import { useToggle } from '@uidotdev/usehooks';
+import { LogIn, LogOut, Menu, Settings2, User2, X } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { signOut, useSession } from 'next-auth/react';
+import React from 'react';
 
-import { Logo } from "@/app/components/Logo";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { Logo } from '@/app/components/Logo';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import {
   Sheet,
   SheetClose,
@@ -17,8 +17,8 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/sheet';
+import { cn } from '@/lib/utils';
 
 const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
   children,
@@ -27,9 +27,8 @@ const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
 }) => {
   return (
     <Link
-      className={cn(buttonVariants({ variant: "link" }), className)}
-      {...props}
-    >
+      className={cn(buttonVariants({ variant: 'link' }), className)}
+      {...props}>
       {children}
     </Link>
   );
@@ -76,8 +75,7 @@ export default function Header() {
                   <Button
                     variant="ghost"
                     onClick={() => signOut()}
-                    title="Logout"
-                  >
+                    title="Logout">
                     <LogOut size={18} />
                   </Button>
                 </div>
@@ -85,18 +83,14 @@ export default function Header() {
             </li>
           </ul>
 
-          <Sheet
-            open={isDrawerOpen}
-            onOpenChange={(open) => toggleDrawer(open)}
-          >
+          <Sheet open={isDrawerOpen} onOpenChange={open => toggleDrawer(open)}>
             <SheetTrigger className="lg:hidden">
               <Menu />
             </SheetTrigger>
             <SheetContent
               side="left"
               className="p-4"
-              aria-describedby={undefined}
-            >
+              aria-describedby={undefined}>
               <SheetHeader>
                 <SheetTitle className="pb-4 px-2 border-b flex justify-between items-center">
                   <Logo />
@@ -116,8 +110,7 @@ export default function Header() {
                         onClick={() => signOut()}
                         title="Logout"
                         variant="default"
-                        className="w-full uppercase flex justify-center items-center"
-                      >
+                        className="w-full uppercase flex justify-center items-center">
                         Logout
                         <LogOut />
                       </Button>
@@ -127,19 +120,17 @@ export default function Header() {
                   <Button
                     title="Sign in"
                     variant="default"
-                    onClick={sidebarButtonClickHandler("/login")}
-                    className="w-full uppercase flex justify-center items-center"
-                  >
+                    onClick={sidebarButtonClickHandler('/login')}
+                    className="w-full uppercase flex justify-center items-center">
                     <LogIn />
                     Sign in
                   </Button>
                 )}
                 <Separator className="-mx-2 w-[calc(100%+1rem)]" />
                 <Button
-                  onClick={sidebarButtonClickHandler("/profile")}
+                  onClick={sidebarButtonClickHandler('/profile')}
                   variant="ghost"
-                  className="justify-start w-full"
-                >
+                  className="justify-start w-full">
                   <Settings2 />
                   Settings
                 </Button>

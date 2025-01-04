@@ -1,4 +1,4 @@
-import { createClient } from "edgedb";
+import { createClient } from 'edgedb';
 
 export const edgeDbClient = createClient({
   instanceName: process.env.EDGEDB_INSTANCE_NAME,

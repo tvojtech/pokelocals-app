@@ -1,10 +1,10 @@
-import { SearchParams } from "next/dist/server/request/search-params";
+import { SearchParams } from 'next/dist/server/request/search-params';
 
-import { loadTournament } from "@/app/actions/tournament";
-import { Alert } from "@/app/components/Alert";
-import { PageTypes, PageTypesEnum } from "@/app/tournaments/[id]/PageTypes";
-import { MyInformation } from "@/app/tournaments/[id]/pairings/MyInformation";
-import { Pairings } from "@/app/tournaments/[id]/pairings/Pairings";
+import { loadTournament } from '@/app/actions/tournament';
+import { Alert } from '@/app/components/Alert';
+import { PageTypes, PageTypesEnum } from '@/app/tournaments/[id]/PageTypes';
+import { MyInformation } from '@/app/tournaments/[id]/pairings/MyInformation';
+import { Pairings } from '@/app/tournaments/[id]/pairings/Pairings';
 
 export type TournamentPairingsPageProps = {
   params: Promise<{ id: string }>;
@@ -21,8 +21,8 @@ export async function TournamentPairingsPage({
 
   const selectedPage: PageTypesEnum =
     Object.values(PageTypesEnum).find(
-      (pt) => pt === (Array.isArray(what) ? what[0] : what)
-    ) ?? PageTypesEnum["my-pairings"];
+      pt => pt === (Array.isArray(what) ? what[0] : what)
+    ) ?? PageTypesEnum['my-pairings'];
 
   const tournament = await loadTournament(id);
 
@@ -46,7 +46,7 @@ export async function TournamentPairingsPage({
             {selectedPage === PageTypesEnum.pairings && (
               <Pairings tournament={tournament} />
             )}
-            {selectedPage === PageTypesEnum["my-pairings"] && (
+            {selectedPage === PageTypesEnum['my-pairings'] && (
               <MyInformation tournament={tournament} />
             )}
             {selectedPage === PageTypesEnum.standings && <></>}

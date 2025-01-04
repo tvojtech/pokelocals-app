@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
+import React from 'react';
 
-import { Round, Tournament } from "@/app/actions/tournament";
-import { PairingsRow } from "@/app/tournaments/[id]/pairings/PairingsRow";
+import { Round, Tournament } from '@/app/actions/tournament';
+import { PairingsRow } from '@/app/tournaments/[id]/pairings/PairingsRow';
 
 export const Pairings: React.FC<{ tournament: Tournament }> = ({
   tournament,
@@ -38,7 +38,7 @@ const PairingsSection: React.FC<{ round: Round; tournament: Tournament }> = ({
               <PairingsRow match={match} tournament={tournament} />
               <div
                 className="border-t border-t-gray-200"
-                style={{ gridColumn: "1 / 5" }}
+                style={{ gridColumn: '1 / 5' }}
               />
             </React.Fragment>
           ))}

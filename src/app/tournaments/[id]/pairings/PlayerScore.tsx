@@ -1,4 +1,4 @@
-import { PlayerScore as PlayerScoreType } from "@/app/actions/tournament";
+import { PlayerScore as PlayerScoreType } from '@/app/actions/tournament';
 
 export const PlayerScore: React.FC<{ score: PlayerScoreType }> = ({
   score: { wins, losses, ties },

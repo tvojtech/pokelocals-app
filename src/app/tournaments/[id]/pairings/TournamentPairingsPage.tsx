@@ -7,6 +7,7 @@ import { PageTypes, PageTypesEnum } from '@/app/tournaments/[id]/PageTypes';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { MyInformation } from '@/app/tournaments/[id]/pairings/MyInformation';
 import { Pairings } from '@/app/tournaments/[id]/pairings/Pairings';
+import { Roster } from '@/app/tournaments/[id]/pairings/Roster';
 
 export type TournamentPairingsPageProps = {
   params: Promise<{ id: string }>;
@@ -56,6 +57,9 @@ export async function TournamentPairingsPage({
             )}
             {selectedPage === PageTypesEnum['my-pairings'] && (
               <MyInformation tournament={tournament} />
+            )}
+            {selectedPage === PageTypesEnum.roster && (
+              <Roster tournament={tournament} />
             )}
             {selectedPage === PageTypesEnum.standings && <></>}
           </>

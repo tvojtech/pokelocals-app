@@ -39,8 +39,8 @@ export function xmlToObject(xmlString: string): Tournament {
 }
 
 const parsePlayers = (players: any) => {
-  return parseXmlArray<any, Player>(
-    (p: any) => ({
+  return parseXmlArray<any, Player>((p: any) => {
+    return {
       userid: p['@_userid'],
       firstname: p.firstname,
       lastname: p.lastname,
@@ -50,9 +50,10 @@ const parsePlayers = (players: any) => {
       seed: Number(p.seed),
       creationdate: p.creationdate,
       lastmodifieddate: p.lastmodifieddate,
-    }),
-    players
-  );
+      late: !!p.late,
+      byes: p.byes ? Number(p.byes) : 0,
+    };
+  }, players);
 };
 
 const parsePods = (pods: any) => {

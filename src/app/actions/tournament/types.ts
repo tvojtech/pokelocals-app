@@ -8,6 +8,8 @@ export interface Player {
   seed: number;
   creationdate: string;
   lastmodifieddate: string;
+  late: boolean;
+  byes: number;
 }
 
 export type PlayerScore = {

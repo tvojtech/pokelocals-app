@@ -8,12 +8,14 @@ import { cn } from '@/lib/utils';
 export enum PageTypesEnum {
   'my-pairings' = 'my-pairings',
   'pairings' = 'pairings',
+  'roster' = 'roster',
   'standings' = 'standings',
 }
 
 const pageTypeToTextMappping: Record<PageTypesEnum, string> = {
   [PageTypesEnum['my-pairings']]: 'My Pairings',
   [PageTypesEnum['pairings']]: 'Pairings',
+  [PageTypesEnum['roster']]: 'Roster',
   [PageTypesEnum['standings']]: 'Standings',
 };
 
@@ -41,7 +43,7 @@ const handleClick = ({
 
 export const PageTypes: React.FC<{
   id: string;
-  selectedPage: 'my-pairings' | 'pairings' | 'standings';
+  selectedPage: PageTypesEnum;
   searchParams: SearchParams;
 }> = ({ id, selectedPage, searchParams }) => {
   const links = Object.keys(PageTypesEnum)

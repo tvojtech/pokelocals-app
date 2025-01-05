@@ -32,9 +32,7 @@ export async function TournamentPairingsPage({
   return (
     <>
       {tournament && (
-        <h1 className="text-3xl font-bold text-center">
-          {tournament.data.name}
-        </h1>
+        <h1 className="text-3xl font-bold">{tournament.data.name}</h1>
       )}
       <div className="max-w-lg mx-auto mt-8 space-y-10">
         {!tournament ? (

@@ -9,6 +9,7 @@ import { useMyPokemonId } from '@/app/hooks';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { MyCurrentPairing } from '@/app/tournaments/[id]/pairings/MyCurrentPairing';
 import { MyMatches } from '@/app/tournaments/[id]/pairings/MyMatches';
+import { guessFullName } from '@/app/utils';
 
 export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(
   ({ tournament }) => {
@@ -27,14 +28,23 @@ export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(
       return (
         <Alert
           type="error"
-          title="You are not registered in the tournament."
+          title="You are not registered in the tournament!"
           message={`Is your Pokemon ID correct? (ID: ${myId})`}
         />
       );
     }
 
     if (!pods || pods.length === 0) {
-      return <Alert type="warning" message="Pairings not published yet." />;
+      return (
+        <>
+          <Alert
+            type="info"
+            title="You are registered in the tournament."
+            message={`Your Pokemon ID: ${myId}. Your name: ${guessFullName(me)}`}
+          />
+          <Alert type="warning" message="Pairings not published yet." />
+        </>
+      );
     }
 
     const myPod = pods.find(pod =>

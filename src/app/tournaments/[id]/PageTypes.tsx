@@ -57,7 +57,7 @@ export const PageTypes: React.FC<{
         }}
         variant="link"
         className={cn(
-          'text-xl',
+          'text-xl p-0',
           selectedPage === key ? 'font-bold' : 'font-light'
         )}>
         {pageTypeToTextMappping[key as PageTypesEnum]}
@@ -66,7 +66,7 @@ export const PageTypes: React.FC<{
 
   return (
     <div className="flex justify-between items-center">
-      <div>{links}</div>
+      <div className="flex items-center gap-5">{links}</div>
       <QRCodeOverlay />
     </div>
   );

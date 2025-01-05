@@ -52,6 +52,7 @@ const parsePlayers = (players: any) => {
       lastmodifieddate: p.lastmodifieddate,
       late: !!p.late,
       byes: p.byes ? Number(p.byes) : 0,
+      ...(p.dropped ? { dropped: { round: Number(p.dropped.round) } } : {}),
     };
   }, players);
 };

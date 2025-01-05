@@ -4,8 +4,9 @@ import { getStore } from '@netlify/blobs';
 import fs from 'fs';
 import { revalidatePath } from 'next/cache';
 
-import { PlayerScore, Tournament } from '@/app/actions/tournament/types';
+import { Match, PlayerScore, Tournament } from '@/app/actions/tournament/types';
 import { xmlToObject } from '@/app/actions/tournament/xml';
+import { exhaustiveMatchingGuard } from '@/app/utils';
 
 export async function uploadTournamentFile(
   formData: FormData,
@@ -60,24 +61,15 @@ function calculatePlayerScores(tournament: Tournament) {
   pods.forEach(pod => {
     pod.rounds.forEach(round => {
       round.matches.forEach(match => {
-        const matchOutcome = match.outcome;
-        if (!matchOutcome || matchOutcome === '0') {
-          // not finished match
-          return;
-        } else if (matchOutcome === '1' || matchOutcome === '2') {
-          scores = addScore(
-            (matchOutcome === '1' ? match.player1 : match.player2)!,
-            'win'
-          );
-          scores = addScore(
-            (matchOutcome === '1' ? match.player2 : match.player1)!,
-            'loss'
-          );
-        } else if (matchOutcome === '3') {
-          scores = addScore(match.player1, 'tie');
-          scores = addScore(match.player2!, 'tie');
-        } else if (matchOutcome === '5') {
-          scores = addScore(match.player1, 'win');
+        const player1Result = mapOutcomeToPlayerResult(match, match.player1);
+        if (player1Result && player1Result !== PlayerResult.not_finished) {
+          scores = addScore(match.player1, player1Result);
+        }
+        if (match.player2) {
+          const player2Result = mapOutcomeToPlayerResult(match, match.player2);
+          if (player2Result && player2Result !== PlayerResult.not_finished) {
+            scores = addScore(match.player2, player2Result);
+          }
         }
       });
     });
@@ -86,24 +78,60 @@ function calculatePlayerScores(tournament: Tournament) {
   return { ...tournament, scores };
 }
 
+enum PlayerResult {
+  win = 'win',
+  loss = 'loss',
+  tie = 'tie',
+  not_finished = 'not_finished',
+}
+
+const mapOutcomeToPlayerResult = (
+  match: Match,
+  player: string
+): PlayerResult | undefined => {
+  const matchOutcome = match.outcome;
+  if (!matchOutcome || matchOutcome === '0') {
+    // not finished match
+    return PlayerResult.not_finished;
+  } else if (matchOutcome === '1') {
+    return player === match.player1 ? PlayerResult.win : PlayerResult.loss;
+  } else if (matchOutcome === '2') {
+    return player === match.player1 ? PlayerResult.loss : PlayerResult.win;
+  } else if (matchOutcome === '3') {
+    return PlayerResult.tie;
+  } else if (matchOutcome === '4' || matchOutcome === '5') {
+    return player === match.player1 ? PlayerResult.win : PlayerResult.loss;
+  } else if (matchOutcome === '8') {
+    return player === match.player1 ? PlayerResult.loss : PlayerResult.win;
+  }
+};
+
 const createScoreCalculator =
   (playerScores: Record<string, PlayerScore>) =>
-  (player: string, outcome: 'win' | 'loss' | 'tie') => {
-    if (outcome === 'win') {
-      playerScores[player] = {
-        ...playerScores[player],
-        wins: playerScores[player].wins + 1,
-      };
-    } else if (outcome === 'loss') {
-      playerScores[player] = {
-        ...playerScores[player],
-        losses: playerScores[player].losses + 1,
-      };
-    } else if (outcome === 'tie') {
-      playerScores[player] = {
-        ...playerScores[player],
-        ties: playerScores[player].ties + 1,
-      };
+  (player: string, outcome: PlayerResult) => {
+    switch (outcome) {
+      case PlayerResult.win:
+        playerScores[player] = {
+          ...playerScores[player],
+          wins: playerScores[player].wins + 1,
+        };
+        break;
+      case PlayerResult.loss:
+        playerScores[player] = {
+          ...playerScores[player],
+          losses: playerScores[player].losses + 1,
+        };
+        break;
+      case PlayerResult.tie:
+        playerScores[player] = {
+          ...playerScores[player],
+          ties: playerScores[player].ties + 1,
+        };
+        break;
+      case PlayerResult.not_finished:
+        break;
+      default:
+        exhaustiveMatchingGuard(outcome);
     }
 
     return playerScores;

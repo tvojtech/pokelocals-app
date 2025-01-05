@@ -63,7 +63,7 @@ export const PageTypes: React.FC<{
     ));
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between items-center">
       <div>{links}</div>
       <QRCodeOverlay />
     </div>

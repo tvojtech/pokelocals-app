@@ -6,7 +6,6 @@ import { QRCodeSVG } from 'qrcode.react';
 import React from 'react';
 
 import { useWindowLocation } from '@/app/hooks';
-import { Button } from '@/components/ui/button';
 
 export const QRCodeOverlay: React.FC = () => {
   const [isOpen, toggle] = useToggle(false);
@@ -17,9 +16,9 @@ export const QRCodeOverlay: React.FC = () => {
   }
 
   const buttonContent = (
-    <Button variant="link" onClick={() => toggle()} size="icon">
+    <div role="button" onClick={() => toggle()}>
       <QrCode />
-    </Button>
+    </div>
   );
 
   if (!isOpen) {

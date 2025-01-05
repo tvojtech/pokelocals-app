@@ -94,10 +94,8 @@ export default function Header() {
               <SheetHeader>
                 <SheetTitle className="pb-4 px-2 border-b flex justify-between items-center">
                   <Logo />
-                  <SheetClose asChild onClick={() => toggleDrawer(false)}>
-                    <div role="button">
-                      <X />
-                    </div>
+                  <SheetClose onClick={() => toggleDrawer(false)}>
+                    <X />
                   </SheetClose>
                 </SheetTitle>
               </SheetHeader>

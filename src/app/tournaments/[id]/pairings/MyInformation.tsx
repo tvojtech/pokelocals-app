@@ -1,76 +1,45 @@
 'use client';
 
-import { useIsClient } from '@uidotdev/usehooks';
-import Link from 'next/link';
+import React from 'react';
 
 import { Tournament } from '@/app/actions/tournament';
-import { Alert } from '@/app/components/Alert';
+import { clientOnlyComponent } from '@/app/components/clientOnlyComponent';
 import { useMyPokemonId } from '@/app/hooks';
+import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { MyCurrentPairing } from '@/app/tournaments/[id]/pairings/MyCurrentPairing';
 import { MyMatches } from '@/app/tournaments/[id]/pairings/MyMatches';
-import { buttonVariants } from '@/components/ui/button';
 
-export const MyInformation: React.FC<{ tournament: Tournament }> = ({
-  tournament,
-}) => {
-  const isClient = useIsClient();
+export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(
+  ({ tournament }) => {
+    const { myId } = useMyPokemonId();
 
-  if (!isClient) {
-    return null;
+    if (!myId) {
+      return <InlinePokemonIdCheckForm />;
+    }
+
+    const { players, pods } = tournament;
+
+    const me = players.find(player => player.userid === myId);
+
+    if (!me) {
+      console.log('me not found');
+      return null;
+    }
+
+    const myPod = pods.find(pod =>
+      pod.subgroups.some(subgroup => subgroup.players.includes(me.userid))
+    );
+
+    if (!myPod) {
+      console.log('myPod not found');
+      return null;
+    }
+
+    return (
+      <>
+        <MyCurrentPairing me={me} pod={myPod} tournament={tournament} />
+        <MyMatches me={me} pod={myPod} tournament={tournament} />
+      </>
+    );
   }
-
-  return <MyInformationInternal tournament={tournament} />;
-};
-
-const MyInformationInternal: React.FC<{ tournament: Tournament }> = ({
-  tournament,
-}) => {
-  const { myId } = useMyPokemonId();
-
-  const alert = (
-    <Alert
-      title="No Pokemon ID"
-      message={
-        <>
-          To view your pairings fill in Pokemon ID in{' '}
-          <Link
-            href="/profile"
-            className={(buttonVariants({ variant: 'link' }), 'font-bold')}>
-            profile
-          </Link>
-          .
-        </>
-      }
-      type="warning"
-    />
-  );
-
-  if (!myId) {
-    return alert;
-  }
-
-  const { players, pods } = tournament;
-
-  const me = players.find(player => player.userid === myId);
-
-  if (!me) {
-    console.log('me not found');
-    return alert;
-  }
-
-  const myPod = pods.find(pod =>
-    pod.subgroups.some(subgroup => subgroup.players.includes(me.userid))
-  );
-
-  if (!myPod) {
-    console.log('myPod not found');
-    return alert;
-  }
-
-  return (
-    <>
-      <MyCurrentPairing me={me} pod={myPod} tournament={tournament} />
-      <MyMatches me={me} pod={myPod} tournament={tournament} />
-    </>
-  );
-};
+);

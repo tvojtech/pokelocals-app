@@ -2,7 +2,9 @@ import { SearchParams } from 'next/dist/server/request/search-params';
 
 import { loadTournament } from '@/app/actions/tournament';
 import { Alert } from '@/app/components/Alert';
+import { QRCodeOverlay } from '@/app/components/QRCodeOverlay';
 import { PageTypes, PageTypesEnum } from '@/app/tournaments/[id]/PageTypes';
+import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { MyInformation } from '@/app/tournaments/[id]/pairings/MyInformation';
 import { Pairings } from '@/app/tournaments/[id]/pairings/Pairings';
 
@@ -35,7 +37,13 @@ export async function TournamentPairingsPage({
       )}
       <div className="max-w-lg mx-auto mt-8 space-y-10">
         {!tournament ? (
-          <Alert type="warning" message="Pairings not published yet." />
+          <>
+            <div className="flex justify-end items-center">
+              <QRCodeOverlay />
+            </div>
+            <InlinePokemonIdCheckForm />
+            <Alert type="warning" message="Pairings not published yet." />
+          </>
         ) : (
           <>
             <PageTypes

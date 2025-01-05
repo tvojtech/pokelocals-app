@@ -1,22 +1,12 @@
 'use client';
 
-import { useIsClient } from '@uidotdev/usehooks';
 import { Ban, Check, Edit } from 'lucide-react';
 import { useRef, useState } from 'react';
 
+import { clientOnlyComponent } from '@/app/components/clientOnlyComponent';
 import { useMyPokemonId } from '@/app/hooks';
 
-export const PokemonIdForm: React.FC = () => {
-  const isClient = useIsClient();
-
-  if (!isClient) {
-    return null;
-  }
-
-  return <PokemonIdFormInternal />;
-};
-
-const PokemonIdFormInternal: React.FC = () => {
+export const PokemonIdForm = clientOnlyComponent(() => {
   const { myId, setMyId } = useMyPokemonId();
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -53,11 +43,18 @@ const PokemonIdFormInternal: React.FC = () => {
             </button>
           </>
         ) : (
-          <button onClick={() => setIsEditing(true)}>
+          <button
+            type="button"
+            onClick={() => {
+              setIsEditing(true);
+              setTimeout(() => {
+                inputRef.current?.focus();
+              }, 0);
+            }}>
             <Edit size={24} className="text-yellow-400" />
           </button>
         )}
       </div>
     </form>
   );
-};
+});

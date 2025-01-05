@@ -42,7 +42,7 @@ export async function TournamentPairingsPage({
               <QRCodeOverlay />
             </div>
             <InlinePokemonIdCheckForm />
-            <Alert type="warning" message="Pairings not published yet." />
+            <Alert type="warning" message="Tournament not ready yet." />
           </>
         ) : (
           <>

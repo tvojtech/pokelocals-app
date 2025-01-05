@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { Tournament } from '@/app/actions/tournament';
+import { Alert } from '@/app/components/Alert';
 import { clientOnlyComponent } from '@/app/components/clientOnlyComponent';
 import { useMyPokemonId } from '@/app/hooks';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
@@ -23,7 +24,17 @@ export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(
 
     if (!me) {
       console.log('me not found');
-      return null;
+      return (
+        <Alert
+          type="error"
+          title="You are not registered in the tournament."
+          message={`Is your Pokemon ID correct? (ID: ${myId})`}
+        />
+      );
+    }
+
+    if (!pods || pods.length === 0) {
+      return <Alert type="warning" message="Pairings not published yet." />;
     }
 
     const myPod = pods.find(pod =>

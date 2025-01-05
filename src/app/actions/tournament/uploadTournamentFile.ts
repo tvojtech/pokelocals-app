@@ -37,7 +37,7 @@ export async function uploadTournamentFile(
       );
     }
 
-    revalidatePath('/');
+    revalidatePath('/tournaments/' + tournamentId, 'layout');
     return { success: true };
   } catch (error) {
     console.error('Error uploading file:', error);

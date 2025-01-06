@@ -55,16 +55,16 @@ export const Roster: React.FC<{ tournament: Tournament }> = ({
 
   return (
     <div className="space-y-4">
-      {[Division.Juniors, Division.Seniors, Division.Masters]
-        .filter(division => playersByDivision[division].length > 0)
-        .map((division, idx) => (
+      {[Division.Juniors, Division.Seniors, Division.Masters].map(
+        (division, idx) => (
           <PlayersSection
             key={idx}
             players={playersByDivision[division]}
             tournament={tournament}
             title={division}
           />
-        ))}
+        )
+      )}
     </div>
   );
 };
@@ -74,13 +74,8 @@ const PlayersSection: React.FC<{
   tournament: Tournament;
   title: string;
 }> = ({ players, tournament, title }) => {
-  if (!players) {
-    console.error('No players found', tournament);
-    return null;
-  }
-
   const getPlayerName = getPlayerNameForId(tournament.players);
-  const sortedPlayers = players.toSorted((p1, p2) => {
+  const sortedPlayers = [...players].sort((p1, p2) => {
     const p1Name = getPlayerName(p1.userid);
     const p2Name = getPlayerName(p2.userid);
     return p1Name.localeCompare(p2Name);

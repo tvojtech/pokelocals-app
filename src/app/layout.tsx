@@ -36,6 +36,10 @@ export default function RootLayout({
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-dvh bg-background`}>
+        <div id="build-info" aria-hidden="true" className="hidden">
+          COMMIT_REF: {process.env.COMMIT_REF}
+          BUILD_ID: {process.env.BUILD_ID}
+        </div>
         <SessionProvider>
           <Suspense>
             <Header />

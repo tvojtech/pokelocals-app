@@ -15,10 +15,10 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
-      "prettier --write ./src/**/*",
-      "eslint --fix ./src/**/*"
+      "prettier --write",
+      "eslint --fix"
     ],
-    "*.{css,md}": "prettier --write ./src/**/*"
+    "*.{css,md}": "prettier --write"
   },
   "dependencies": {
     "@auth/edgedb-adapter": "^1.7.4",

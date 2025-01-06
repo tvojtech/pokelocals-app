@@ -74,6 +74,11 @@ const PlayersSection: React.FC<{
   tournament: Tournament;
   title: string;
 }> = ({ players, tournament, title }) => {
+  if (!players) {
+    console.error('No players found', tournament);
+    return null;
+  }
+
   const getPlayerName = getPlayerNameForId(tournament.players);
   const sortedPlayers = players.toSorted((p1, p2) => {
     const p1Name = getPlayerName(p1.userid);

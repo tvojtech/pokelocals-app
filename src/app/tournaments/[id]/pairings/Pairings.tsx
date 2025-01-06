@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 
 import { Pod, Round, Tournament } from '@/app/actions/tournament';

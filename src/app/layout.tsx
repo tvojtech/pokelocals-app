@@ -6,7 +6,7 @@ import { SessionProvider } from 'next-auth/react';
 import { Suspense } from 'react';
 
 import Footer from '@/app/components/Footer';
-import Header from '@/app/components/Header';
+import { Header } from '@/app/components/Header';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

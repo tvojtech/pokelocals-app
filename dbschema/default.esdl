@@ -63,6 +63,13 @@ module default {
  
         constraint exclusive on ((.identifier, .token))
     }
+
+    type Feedback {
+        required property description -> str;
+        property createdAt -> datetime {
+            default := datetime_current();
+        };
+    }
 }
  
 # Disable the application of access policies within access policies

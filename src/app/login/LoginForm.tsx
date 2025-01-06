@@ -29,7 +29,7 @@ const LoginButton: React.FC<React.ComponentProps<typeof Button>> = ({
   );
 };
 
-export function LoginForm() {
+export function LoginForm({ returnUrl }: { returnUrl?: string }) {
   return (
     <Card>
       <CardHeader>
@@ -67,7 +67,7 @@ export function LoginForm() {
         <form
           action={async () => {
             'use server';
-            await signIn('discord', { redirectTo: '/' });
+            await signIn('discord', { redirectTo: returnUrl ?? '/' });
           }}>
           <LoginButton
             type="submit"

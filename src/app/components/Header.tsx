@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import React from 'react';
 
+import { clientOnlyComponent } from '@/app/components/clientOnlyComponent';
+import { FeedbackDialog } from '@/app/components/FeedbackDialog';
 import { Logo } from '@/app/components/Logo';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -34,7 +36,7 @@ const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
   );
 };
 
-export default function Header() {
+export const Header = clientOnlyComponent(() => {
   const [isDrawerOpen, toggleDrawer] = useToggle(false);
   const { data: session } = useSession();
   const router = useRouter();
@@ -118,20 +120,27 @@ export default function Header() {
                   <Button
                     title="Sign in"
                     variant="default"
-                    onClick={sidebarButtonClickHandler('/login')}
+                    onClick={sidebarButtonClickHandler(
+                      `/login?return=${encodeURIComponent(window.location.pathname + '?' + window.location.search)}`
+                    )}
                     className="w-full uppercase flex justify-center items-center">
                     <LogIn />
                     Sign in
                   </Button>
                 )}
                 <Separator className="-mx-2 w-[calc(100%+1rem)]" />
-                <Button
-                  onClick={sidebarButtonClickHandler('/profile')}
-                  variant="ghost"
-                  className="justify-start w-full">
-                  <Settings2 />
-                  Settings
-                </Button>
+                <div className="space-y-1">
+                  <Button
+                    onClick={sidebarButtonClickHandler('/profile')}
+                    variant="ghost"
+                    className="justify-start w-full">
+                    <Settings2 />
+                    Settings
+                  </Button>
+                  <FeedbackDialog
+                    afterSuccessfulSubmit={() => toggleDrawer(false)}
+                  />
+                </div>
               </div>
             </SheetContent>
           </Sheet>
@@ -139,4 +148,4 @@ export default function Header() {
       </nav>
     </header>
   );
-}
+});

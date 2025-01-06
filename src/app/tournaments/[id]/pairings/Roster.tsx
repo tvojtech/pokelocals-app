@@ -75,7 +75,7 @@ const PlayersSection: React.FC<{
   title: string;
 }> = ({ players, tournament, title }) => {
   const getPlayerName = getPlayerNameForId(tournament.players);
-  const sortedPlayers = players.toSorted((p1, p2) => {
+  const sortedPlayers = [...players].sort((p1, p2) => {
     const p1Name = getPlayerName(p1.userid);
     const p2Name = getPlayerName(p2.userid);
     return p1Name.localeCompare(p2Name);

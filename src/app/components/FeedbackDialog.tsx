@@ -1,6 +1,6 @@
 import { useToggle } from '@uidotdev/usehooks';
 import { Loader2, MessageCircle, X } from 'lucide-react';
-import { useActionState, useRef } from 'react';
+import { useActionState, useEffect, useRef } from 'react';
 
 import { submitFeedback } from '@/app/actions/feedback';
 import { Button } from '@/components/ui/button';
@@ -34,6 +34,15 @@ export const FeedbackDialog: React.FC<{
 
     return result;
   }, undefined);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (isOpen) {
+        textareaRef.current?.focus();
+      }
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, [isOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={open => toggle(open)}>

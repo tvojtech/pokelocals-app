@@ -24,7 +24,9 @@ const getPlayerDivision = (player: Player) => {
   }
 };
 
-const groupPlayersByDivision = (players: Player[]) => {
+const groupPlayersByDivision = (
+  players: Player[]
+): Record<Division, Player[]> => {
   return players.reduce(
     (acc, player) => {
       const division = getPlayerDivision(player);
@@ -33,7 +35,11 @@ const groupPlayersByDivision = (players: Player[]) => {
         [division]: [...(acc[division] || []), player],
       };
     },
-    {} as Record<Division, Player[]>
+    {
+      [Division.Juniors]: [],
+      [Division.Seniors]: [],
+      [Division.Masters]: [],
+    }
   );
 };
 
@@ -49,16 +55,16 @@ export const Roster: React.FC<{ tournament: Tournament }> = ({
 
   return (
     <div className="space-y-4">
-      {[Division.Juniors, Division.Seniors, Division.Masters].map(
-        (division, idx) => (
+      {[Division.Juniors, Division.Seniors, Division.Masters]
+        .filter(division => Object.keys(playersByDivision).includes(division))
+        .map((division, idx) => (
           <PlayersSection
             key={idx}
             players={playersByDivision[division]}
             tournament={tournament}
             title={division}
           />
-        )
-      )}
+        ))}
     </div>
   );
 };
@@ -69,7 +75,7 @@ const PlayersSection: React.FC<{
   title: string;
 }> = ({ players, tournament, title }) => {
   const getPlayerName = getPlayerNameForId(tournament.players);
-  const sortedPlayers = [...players].sort((p1, p2) => {
+  const sortedPlayers = players.toSorted((p1, p2) => {
     const p1Name = getPlayerName(p1.userid);
     const p2Name = getPlayerName(p2.userid);
     return p1Name.localeCompare(p2Name);

@@ -55,16 +55,16 @@ export const Roster: React.FC<{ tournament: Tournament }> = ({
 
   return (
     <div className="space-y-4">
-      {[Division.Juniors, Division.Seniors, Division.Masters].map(
-        (division, idx) => (
+      {[Division.Juniors, Division.Seniors, Division.Masters]
+        .filter(division => playersByDivision[division].length > 0)
+        .map((division, idx) => (
           <PlayersSection
             key={idx}
             players={playersByDivision[division]}
             tournament={tournament}
             title={division}
           />
-        )
-      )}
+        ))}
     </div>
   );
 };

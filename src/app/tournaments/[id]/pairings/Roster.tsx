@@ -56,7 +56,7 @@ export const Roster: React.FC<{ tournament: Tournament }> = ({
   return (
     <div className="space-y-4">
       {[Division.Juniors, Division.Seniors, Division.Masters]
-        .filter(division => Object.keys(playersByDivision).includes(division))
+        .filter(division => playersByDivision[division].length > 0)
         .map((division, idx) => (
           <PlayersSection
             key={idx}

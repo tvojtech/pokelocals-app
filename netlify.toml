@@ -1,2 +1,18 @@
 [build]
-  environment = { NODE_VERSION = "22" }
+  environment = { NODE_VERSION = "22", NPM_FLAGS = "--force", AUTH_TRUST_HOST = "true", EDGEDB_INSTANCE_NAME = "ptcgs-pairings/ptcg-pairings", AUTH_DISCORD_ID = "1320831279377154048", EMAIL_FROM = "tomas@vojtechovi.eu" }
+
+# Production deploy settings
+[context.production.environment]
+  AUTH_URL = "https://ptcg-pairings.netlify.app"
+  EDGEDB_BRANCH = "production"
+  NODE_ENV = "production"
+
+# Branch deploy settings (e.g., for staging)
+# [context.deploy-preview.environment]
+#   AUTH_URL = "https://staging-auth-url.com"
+
+# Specific branch deploy (e.g., for the "feature-branch")
+[context.develop.environment]
+  AUTH_URL = "https://develop--ptcg-pairings.netlify.app"
+  EDGEDB_BRANCH = "staging"
+  NODE_ENV = "staging"

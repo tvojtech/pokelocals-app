@@ -22,7 +22,10 @@ export const InlinePokemonIdCheckForm = clientOnlyComponent(() => {
 
   return (
     <form action={onSubmit} className="space-y-2">
-      <Alert type="info" message="Set your Pokemon ID to see your pairings." />
+      <Alert
+        type="info"
+        message="Enter your Pokemon ID to see your pairings."
+      />
       <Input
         ref={inputRef}
         type="text"

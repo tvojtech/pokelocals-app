@@ -1,6 +1,11 @@
-[build]
-  environment = { NODE_VERSION = "22", NPM_FLAGS = "--force", AUTH_TRUST_HOST = "true", EDGEDB_INSTANCE_NAME = "ptcgs-pairings/ptcg-pairings", AUTH_DISCORD_ID = "1320831279377154048", EMAIL_FROM = "tomas@vojtechovi.eu" }
-
+[build.environment]
+  NODE_VERSION = "22"
+  NPM_FLAGS = "--force"
+  AUTH_TRUST_HOST = "true"
+  AUTH_DISCORD_ID = "1320831279377154048"
+  EDGEDB_INSTANCE_NAME = "ptcgs-pairings/ptcg-pairings"
+  EMAIL_FROM = "tomas@vojtechovi.eu"
+  
 # Production deploy settings
 [context.production.environment]
   AUTH_URL = "https://ptcg-pairings.netlify.app"

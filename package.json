@@ -11,7 +11,7 @@
     "ts-check": "tsc --noEmit",
     "edge:g:interface": "npx @edgedb/generate interfaces",
     "edge:g:query": "npx @edgedb/generate queries",
-    "prepare": "husky"
+    "prepare": "husky --skip-ci"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [

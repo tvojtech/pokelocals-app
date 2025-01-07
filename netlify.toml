@@ -1,29 +1,3 @@
 [build.environment]
   NPM_FLAGS = "--force"
   NODE_VERSION = "22"
-  
-# Production deploy settings
-[context.production.environment]
-  AUTH_URL = "https://ptcg-pairings.netlify.app"
-  EDGEDB_BRANCH = "production"
-  NODE_ENV = "production"
-  NODE_VERSION = "22"
-  AUTH_TRUST_HOST = "true"
-  AUTH_DISCORD_ID = "1320831279377154048"
-  EDGEDB_INSTANCE_NAME = "ptcgs-pairings/ptcg-pairings"
-  EMAIL_FROM = "tomas@vojtechovi.eu"
-
-# Branch deploy settings (e.g., for staging)
-# [context.deploy-preview.environment]
-#   AUTH_URL = "https://staging-auth-url.com"
-
-# Specific branch deploy (e.g., for the "feature-branch")
-[context.develop.environment]
-  AUTH_URL = "https://develop--ptcg-pairings.netlify.app"
-  EDGEDB_BRANCH = "staging"
-  NODE_ENV = "staging"
-  NODE_VERSION = "22"
-  AUTH_TRUST_HOST = "true"
-  AUTH_DISCORD_ID = "1320831279377154048"
-  EDGEDB_INSTANCE_NAME = "ptcgs-pairings/ptcg-pairings"
-  EMAIL_FROM = "tomas@vojtechovi.eu"

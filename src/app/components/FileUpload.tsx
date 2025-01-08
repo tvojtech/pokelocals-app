@@ -7,7 +7,22 @@ import { Alert } from '@/app/components/Alert';
 
 export function FileUpload({ tournamentId }: { tournamentId: string }) {
   const uploadFileAction = async (prevState: unknown, formData: FormData) => {
-    return await uploadTournamentFile(formData, tournamentId);
+    const result = await uploadTournamentFile(formData, tournamentId);
+
+    // fixme: this is a workaround to fix returning stale pairings on first request
+    if (result.success) {
+      try {
+        await fetch('/tournaments/' + tournamentId + '/pairings');
+        console.log('Fetched new tournament pairings after tdf upload');
+      } catch (error) {
+        console.error(
+          'Failed to fetch new tournament pairings after tdf upload',
+          error
+        );
+      }
+    }
+
+    return result;
   };
 
   const [state, formAction, isPending] = useActionState(

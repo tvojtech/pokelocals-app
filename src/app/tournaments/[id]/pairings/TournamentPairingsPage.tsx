@@ -8,6 +8,7 @@ import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/Inline
 import { MyInformation } from '@/app/tournaments/[id]/pairings/MyInformation';
 import { Pairings } from '@/app/tournaments/[id]/pairings/Pairings';
 import { Roster } from '@/app/tournaments/[id]/pairings/Roster';
+import { Standings } from '@/app/tournaments/[id]/pairings/Standings';
 
 export type TournamentPairingsPageProps = {
   params: Promise<{ id: string }>;
@@ -61,7 +62,9 @@ export async function TournamentPairingsPage({
             {selectedPage === PageTypesEnum.roster && (
               <Roster tournament={tournament} />
             )}
-            {selectedPage === PageTypesEnum.standings && <></>}
+            {selectedPage === PageTypesEnum.standings && (
+              <Standings tournament={tournament} />
+            )}
           </>
         )}
       </div>

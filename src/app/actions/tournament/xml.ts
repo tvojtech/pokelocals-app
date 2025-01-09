@@ -1,7 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { XMLParser } from 'fast-xml-parser';
 
-import { Match, Player, Pod, Round, Subgroup, Tournament } from './types';
+import {
+  Division,
+  Match,
+  Player,
+  Pod,
+  Round,
+  Subgroup,
+  Tournament,
+} from './types';
 
 export function xmlToObject(xmlString: string): Tournament {
   const parser = new XMLParser({
@@ -33,10 +41,41 @@ export function xmlToObject(xmlString: string): Tournament {
     players: parsePlayers(jsonData.tournament.players.player),
     pods: parsePods(jsonData.tournament.pods.pod),
     scores: {},
+    standings: parseStandings(jsonData.tournament.standings.pod),
   };
 
   return tournament;
 }
+
+const divisionMap: Record<'0' | '1' | '2', Division> = {
+  '0': Division.JUNIORS,
+  '1': Division.SENIORS,
+  '2': Division.MASTERS,
+};
+
+const parseStandings = (standings: any): Tournament['standings'] => {
+  return (Array.isArray(standings) ? standings : [standings])
+    .map((standing: any) => ({
+      category: divisionMap[standing['@_category']],
+      type: standing['@_type'],
+      players: (Array.isArray(standing.player)
+        ? standing.player
+        : standing.player
+          ? [standing.player]
+          : []
+      ).map((p: any) => ({ id: p['@_id'], place: Number(p['@_place']) })),
+    }))
+    .reduce(
+      (acc: Tournament['standings'], standing) => ({
+        ...acc,
+        [standing.category]: {
+          ...(acc[standing.category] || {}),
+          [standing.type]: standing.players,
+        },
+      }),
+      {} as Tournament['standings']
+    );
+};
 
 const parsePlayers = (players: any) => {
   return parseXmlArray<any, Player>((p: any) => {

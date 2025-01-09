@@ -35,6 +35,17 @@ export interface TournamentData {
   overflowtablestart: number;
 }
 
+export enum Division {
+  JUNIORS = 'JUNIORS',
+  SENIORS = 'SENIORS',
+  MASTERS = 'MASTERS',
+}
+
+export interface DivisionStandings {
+  finished: { id: string; place: number }[];
+  dnf: { id: string }[];
+}
+
 export interface Tournament {
   type: number;
   stage: number;
@@ -46,6 +57,7 @@ export interface Tournament {
   players: Player[];
   pods: Pod[];
   scores: Record<string, PlayerScore>;
+  standings: Record<Division, DivisionStandings>;
 }
 
 export interface Pod {

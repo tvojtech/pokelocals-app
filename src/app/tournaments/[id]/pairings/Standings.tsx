@@ -1,0 +1,54 @@
+import { Separator } from '@radix-ui/react-separator';
+import React from 'react';
+
+import {
+  Division,
+  DivisionStandings,
+  Tournament,
+} from '@/app/actions/tournament';
+import { getPlayerNameForId } from '@/app/pokemonUtils';
+
+export const Standings: React.FC<{ tournament: Tournament }> = ({
+  tournament,
+}) => {
+  return (
+    <div className="space-y-4">
+      {[Division.JUNIORS, Division.SENIORS, Division.MASTERS].map(division => (
+        <StandingsSection
+          key={division}
+          division={division as Division}
+          standings={tournament.standings[division]}
+          tournament={tournament}
+        />
+      ))}
+    </div>
+  );
+};
+
+const StandingsSection: React.FC<{
+  division: Division;
+  standings: DivisionStandings;
+  tournament: Tournament;
+}> = ({ division, standings, tournament }) => {
+  const getPlayerName = getPlayerNameForId(tournament.players);
+  return (
+    <div>
+      <h2 className="w-full flex justify-center mt-10 border-b-2 mb-2 text-xl font-bold">
+        {division} ({standings.finished.length} players)
+      </h2>
+      <div className="flex flex-col gap-1">
+        {standings.finished
+          .toSorted((a, b) => a.place - b.place)
+          .map(({ id, place }, idx) => (
+            <React.Fragment key={idx}>
+              <div className="grid grid-cols-[3rem_1fr]">
+                <div>{place}.</div>
+                <div>{getPlayerName(id)}</div>
+              </div>
+              <Separator />
+            </React.Fragment>
+          ))}
+      </div>
+    </div>
+  );
+};

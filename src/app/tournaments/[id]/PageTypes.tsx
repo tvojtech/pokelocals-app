@@ -46,23 +46,21 @@ export const PageTypes: React.FC<{
   selectedPage: PageTypesEnum;
   searchParams: SearchParams;
 }> = ({ id, selectedPage, searchParams }) => {
-  const links = Object.keys(PageTypesEnum)
-    .filter(type => type !== PageTypesEnum.standings)
-    .map(key => (
-      <Button
-        key={key}
-        onClick={async () => {
-          'use server';
-          handleClick({ searchParams, key, id });
-        }}
-        variant="link"
-        className={cn(
-          'text-xl p-0',
-          selectedPage === key ? 'font-bold' : 'font-light'
-        )}>
-        {pageTypeToTextMappping[key as PageTypesEnum]}
-      </Button>
-    ));
+  const links = Object.keys(PageTypesEnum).map(key => (
+    <Button
+      key={key}
+      onClick={async () => {
+        'use server';
+        handleClick({ searchParams, key, id });
+      }}
+      variant="link"
+      className={cn(
+        'text-xl p-0',
+        selectedPage === key ? 'font-bold' : 'font-light'
+      )}>
+      {pageTypeToTextMappping[key as PageTypesEnum]}
+    </Button>
+  ));
 
   return (
     <div className="flex justify-between items-center">

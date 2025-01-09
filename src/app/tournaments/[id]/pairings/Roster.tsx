@@ -83,7 +83,7 @@ const PlayersSection: React.FC<{
   return (
     <div>
       <h2 className="w-full flex justify-center mt-10 border-b-2 mb-2 text-xl font-bold">
-        {title}
+        {title} ({sortedPlayers.length})
       </h2>
       <div className="flex flex-col gap-2">
         {sortedPlayers.map((player, idx) => (

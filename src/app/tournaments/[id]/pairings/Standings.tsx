@@ -1,4 +1,3 @@
-import { Separator } from '@radix-ui/react-separator';
 import React from 'react';
 
 import {
@@ -7,6 +6,8 @@ import {
   Tournament,
 } from '@/app/actions/tournament';
 import { getPlayerNameForId } from '@/app/pokemonUtils';
+import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
+import { Separator } from '@/components/ui/separator';
 
 export const Standings: React.FC<{ tournament: Tournament }> = ({
   tournament,
@@ -34,16 +35,20 @@ const StandingsSection: React.FC<{
   return (
     <div>
       <h2 className="w-full flex justify-center mt-10 border-b-2 mb-2 text-xl font-bold">
-        {division} ({standings.finished.length} players)
+        <p className="capitalize">{division.toLowerCase()}</p> (
+        {standings.finished.length} players)
       </h2>
       <div className="flex flex-col gap-1">
         {standings.finished
           .toSorted((a, b) => a.place - b.place)
           .map(({ id, place }, idx) => (
             <React.Fragment key={idx}>
-              <div className="grid grid-cols-[3rem_1fr]">
+              <div className="grid grid-cols-[3rem_1fr] px-4">
                 <div>{place}.</div>
-                <div>{getPlayerName(id)}</div>
+                <div className="flex items-center gap-2">
+                  {getPlayerName(id)}{' '}
+                  <PlayerScore score={tournament.scores[id]} />
+                </div>
               </div>
               <Separator />
             </React.Fragment>

@@ -46,6 +46,8 @@ export interface DivisionStandings {
   dnf: { id: string }[];
 }
 
+export type TournamentStandings = Record<Division, DivisionStandings>;
+
 export interface Tournament {
   type: number;
   stage: number;
@@ -57,7 +59,7 @@ export interface Tournament {
   players: Player[];
   pods: Pod[];
   scores: Record<string, PlayerScore>;
-  standings?: Record<Division, DivisionStandings>;
+  standings?: TournamentStandings;
 }
 
 export interface Pod {

@@ -9,6 +9,7 @@ import {
   Round,
   Subgroup,
   Tournament,
+  TournamentStandings,
 } from './types';
 
 export function xmlToObject(xmlString: string): Tournament {
@@ -70,14 +71,14 @@ const parseStandings = (standings: any): Tournament['standings'] => {
       ).map((p: any) => ({ id: p['@_id'], place: Number(p['@_place']) })),
     }))
     .reduce(
-      (acc: Tournament['standings'], standing) => ({
+      (acc: TournamentStandings, standing) => ({
         ...acc,
         [standing.category]: {
-          ...(acc[standing.category] || {}),
+          // ...(acc?.[standing.category] || {}),
           [standing.type]: standing.players,
         },
       }),
-      {} as Tournament['standings']
+      {} as TournamentStandings
     );
 };
 

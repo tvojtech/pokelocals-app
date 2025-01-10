@@ -5,7 +5,7 @@ import { loadTournament } from '@/app/actions/tournament';
 import { Alert } from '@/app/components/Alert';
 import { QRCodeOverlay } from '@/app/components/QRCodeOverlay';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 export enum PageTypes {
@@ -64,10 +64,14 @@ export default async function TournamentPairingsLayout({
               {Object.keys(PageTypes)
                 .filter(key => haveStandings || key !== PageTypes.standings)
                 .map(key => (
-                  <Link href={`/tournaments/${id}/pairings/${key}`} key={key}>
-                    <Button variant="link" className={cn('text-xl p-0')}>
-                      {pageTypeToTextMappping[key as PageTypes].title}
-                    </Button>
+                  <Link
+                    href={`/tournaments/${id}/pairings/${key}`}
+                    key={key}
+                    className={cn(
+                      buttonVariants({ variant: 'link' }),
+                      'text-xl p-0'
+                    )}>
+                    {pageTypeToTextMappping[key as PageTypes].title}
                   </Link>
                 ))}
             </div>

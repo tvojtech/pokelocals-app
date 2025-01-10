@@ -74,7 +74,7 @@ const parseStandings = (standings: any): Tournament['standings'] => {
       (acc: TournamentStandings, standing) => ({
         ...acc,
         [standing.category]: {
-          // ...(acc?.[standing.category] || {}),
+          ...(acc?.[standing.category] || {}),
           [standing.type]: standing.players,
         },
       }),

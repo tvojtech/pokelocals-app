@@ -1,26 +1,20 @@
 import React from 'react';
 
-import { Player, Tournament } from '@/app/actions/tournament';
+import { Division, Player, Tournament } from '@/app/actions/tournament';
 import { Alert } from '@/app/components/Alert';
 import { getPlayerNameForId } from '@/app/pokemonUtils';
 import { Separator } from '@/components/ui/separator';
-
-enum Division {
-  Juniors = 'Juniors',
-  Seniors = 'Seniors',
-  Masters = 'Masters',
-}
 
 const getPlayerDivision = (player: Player) => {
   // fixme: this changes every year, find a better way to determine division
   const birthYear = new Date(player.birthdate).getFullYear();
 
   if (birthYear >= 2013) {
-    return Division.Juniors;
+    return Division.JUNIORS;
   } else if (birthYear >= 2009) {
-    return Division.Seniors;
+    return Division.SENIORS;
   } else {
-    return Division.Masters;
+    return Division.MASTERS;
   }
 };
 
@@ -36,9 +30,9 @@ const groupPlayersByDivision = (
       };
     },
     {
-      [Division.Juniors]: [],
-      [Division.Seniors]: [],
-      [Division.Masters]: [],
+      [Division.JUNIORS]: [],
+      [Division.SENIORS]: [],
+      [Division.MASTERS]: [],
     }
   );
 };
@@ -55,14 +49,14 @@ export const Roster: React.FC<{ tournament: Tournament }> = ({
 
   return (
     <div className="space-y-4">
-      {[Division.Juniors, Division.Seniors, Division.Masters]
+      {[Division.JUNIORS, Division.SENIORS, Division.MASTERS]
         .filter(division => playersByDivision[division].length > 0)
         .map((division, idx) => (
           <PlayersSection
             key={idx}
             players={playersByDivision[division]}
             tournament={tournament}
-            title={division}
+            division={division}
           />
         ))}
     </div>
@@ -72,8 +66,8 @@ export const Roster: React.FC<{ tournament: Tournament }> = ({
 const PlayersSection: React.FC<{
   players: Player[];
   tournament: Tournament;
-  title: string;
-}> = ({ players, tournament, title }) => {
+  division: string;
+}> = ({ players, tournament, division }) => {
   const getPlayerName = getPlayerNameForId(tournament.players);
   const sortedPlayers = players.toSorted((p1, p2) => {
     const p1Name = getPlayerName(p1.userid);
@@ -82,13 +76,14 @@ const PlayersSection: React.FC<{
   });
   return (
     <div>
-      <h2 className="w-full flex justify-center mt-10 border-b-2 mb-2 text-xl font-bold">
-        {title} ({sortedPlayers.length})
+      <h2 className="w-full flex gap-1 justify-center mt-10 border-b-2 mb-2 text-xl font-bold">
+        <p className="capitalize">{division.toLowerCase()}</p>(
+        {sortedPlayers.length} players)
       </h2>
       <div className="flex flex-col gap-2">
         {sortedPlayers.map((player, idx) => (
           <React.Fragment key={idx}>
-            <div key={idx} className="grid grid-cols-2 gap-2">
+            <div key={idx} className="grid grid-cols-2 gap-2 px-4">
               <div>{getPlayerName(player.userid)}</div>
               <div className="flex items-center gap-2">
                 {player.late && (

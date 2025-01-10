@@ -57,7 +57,7 @@ export interface Tournament {
   players: Player[];
   pods: Pod[];
   scores: Record<string, PlayerScore>;
-  standings: Record<Division, DivisionStandings>;
+  standings?: Record<Division, DivisionStandings>;
 }
 
 export interface Pod {

@@ -14,14 +14,18 @@ export const Standings: React.FC<{ tournament: Tournament }> = ({
 }) => {
   return (
     <div className="space-y-4">
-      {[Division.JUNIORS, Division.SENIORS, Division.MASTERS].map(division => (
-        <StandingsSection
-          key={division}
-          division={division as Division}
-          standings={tournament.standings[division]}
-          tournament={tournament}
-        />
-      ))}
+      {[Division.JUNIORS, Division.SENIORS, Division.MASTERS]
+        .filter(division => tournament.standings?.[division])
+        .map(division =>
+          tournament.standings?.[division] ? (
+            <StandingsSection
+              key={division}
+              division={division as Division}
+              standings={tournament.standings[division]}
+              tournament={tournament}
+            />
+          ) : null
+        )}
     </div>
   );
 };

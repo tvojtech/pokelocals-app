@@ -1,6 +1,7 @@
 import { SearchParams } from 'next/dist/server/request/search-params';
 import { redirect } from 'next/navigation';
 
+import { Tournament } from '@/app/actions/tournament';
 import { QRCodeOverlay } from '@/app/components/QRCodeOverlay';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -45,22 +46,30 @@ export const PageTypes: React.FC<{
   id: string;
   selectedPage: PageTypesEnum;
   searchParams: SearchParams;
-}> = ({ id, selectedPage, searchParams }) => {
-  const links = Object.keys(PageTypesEnum).map(key => (
-    <Button
-      key={key}
-      onClick={async () => {
-        'use server';
-        handleClick({ searchParams, key, id });
-      }}
-      variant="link"
-      className={cn(
-        'text-xl p-0',
-        selectedPage === key ? 'font-bold' : 'font-light'
-      )}>
-      {pageTypeToTextMappping[key as PageTypesEnum]}
-    </Button>
-  ));
+  tournament: Tournament;
+}> = ({ id, selectedPage, searchParams, tournament }) => {
+  const haveStandings = !!tournament.standings;
+  if (!haveStandings && selectedPage === PageTypesEnum.standings) {
+    redirect(`/tournaments/${id}/pairings`);
+  }
+
+  const links = Object.keys(PageTypesEnum)
+    .filter(key => haveStandings || key !== PageTypesEnum.standings)
+    .map(key => (
+      <Button
+        key={key}
+        onClick={async () => {
+          'use server';
+          handleClick({ searchParams, key, id });
+        }}
+        variant="link"
+        className={cn(
+          'text-xl p-0',
+          selectedPage === key ? 'font-bold' : 'font-light'
+        )}>
+        {pageTypeToTextMappping[key as PageTypesEnum]}
+      </Button>
+    ));
 
   return (
     <div className="flex justify-between items-center">

@@ -52,6 +52,7 @@ export async function TournamentPairingsPage({
               id={id}
               selectedPage={selectedPage}
               searchParams={queryParams}
+              tournament={tournament}
             />
             {selectedPage === PageTypesEnum.pairings && (
               <Pairings tournament={tournament} />

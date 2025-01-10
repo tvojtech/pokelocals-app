@@ -41,7 +41,9 @@ export function xmlToObject(xmlString: string): Tournament {
     players: parsePlayers(jsonData.tournament.players.player),
     pods: parsePods(jsonData.tournament.pods.pod),
     scores: {},
-    standings: parseStandings(jsonData.tournament.standings.pod),
+    standings: jsonData.tournament?.standings?.pod
+      ? parseStandings(jsonData.tournament.standings.pod)
+      : undefined,
   };
 
   return tournament;

@@ -13,7 +13,7 @@ export const TournamentsForm: React.FC = () => {
   const [, formAction] = useActionState(() => {
     startTransition(async () => {
       const result = await createTournamentAction();
-      router.push(`/tournaments/${result.id}`);
+      router.push(`/tournaments/${result.id}/admin`);
     });
   }, undefined);
 

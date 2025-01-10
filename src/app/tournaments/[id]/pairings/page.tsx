@@ -1,10 +1,10 @@
-import {
-  TournamentPairingsPage,
-  TournamentPairingsPageProps,
-} from '@/app/tournaments/[id]/pairings/TournamentPairingsPage';
+import { redirect } from 'next/navigation';
+
+import { TournamentPairingsPageProps } from '@/app/tournaments/[id]/pairings/TournamentPairingsPage';
 
 export default async function TournamentPairings(
   props: TournamentPairingsPageProps
 ) {
-  return <TournamentPairingsPage {...props} />;
+  const { id } = await props.params;
+  redirect(`/tournaments/${id}/pairings/my`);
 }

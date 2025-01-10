@@ -1,14 +1,14 @@
 import { FileUpload } from '@/app/components/FileUpload';
 import { RestrictedPage } from '@/app/components/RestrictedPage';
-import { QRCode } from '@/app/tournaments/[id]/QRCode';
+import { QRCode } from '@/app/tournaments/[id]/admin/QRCode';
 
-export type TournamentDetailPageProps = {
+export type TournamentAdminPageProps = {
   params: Promise<{ id: string }>;
 };
 
-export async function TournamentDetailPage({
+export async function TournamentAdminPage({
   params,
-}: TournamentDetailPageProps) {
+}: TournamentAdminPageProps) {
   const { id } = await params;
   return (
     <RestrictedPage>

@@ -7,8 +7,8 @@ import { Alert } from '@/app/components/Alert';
 import { clientOnlyComponent } from '@/app/components/clientOnlyComponent';
 import { useMyPokemonId } from '@/app/hooks';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
-import { MyCurrentPairing } from '@/app/tournaments/[id]/pairings/MyCurrentPairing';
-import { MyMatches } from '@/app/tournaments/[id]/pairings/MyMatches';
+import { MyCurrentPairing } from '@/app/tournaments/[id]/pairings/my/MyCurrentPairing';
+import { MyMatches } from '@/app/tournaments/[id]/pairings/my/MyMatches';
 import { guessFullName } from '@/app/utils';
 
 export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(

@@ -2,7 +2,7 @@
 
 import { getStore } from '@netlify/blobs';
 import fs from 'fs';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 import { Match, PlayerScore, Tournament } from '@/app/actions/tournament/types';
 import { xmlToObject } from '@/app/actions/tournament/xml';
@@ -37,7 +37,7 @@ export async function uploadTournamentFile(
       );
     }
 
-    revalidatePath('/tournaments/' + tournamentId, 'layout');
+    revalidateTag('tournament:' + tournamentId);
     return { success: true };
   } catch (error) {
     console.error('Error uploading file:', error);

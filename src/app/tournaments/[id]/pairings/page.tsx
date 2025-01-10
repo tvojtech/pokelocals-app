@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation';
 
-import { TournamentPairingsPageProps } from '@/app/tournaments/[id]/pairings/TournamentPairingsPage';
-
-export default async function TournamentPairings(
-  props: TournamentPairingsPageProps
-) {
-  const { id } = await props.params;
+export default async function TournamentPairings({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
   redirect(`/tournaments/${id}/pairings/my`);
 }

@@ -47,16 +47,18 @@ export function xmlToObject(xmlString: string): Tournament {
   return tournament;
 }
 
-const divisionMap: Record<'0' | '1' | '2', Division> = {
+const divisionMap: Record<XmlStandingsCategory, Division> = {
   '0': Division.JUNIORS,
   '1': Division.SENIORS,
   '2': Division.MASTERS,
 };
 
+type XmlStandingsCategory = '0' | '1' | '2';
+
 const parseStandings = (standings: any): Tournament['standings'] => {
   return (Array.isArray(standings) ? standings : [standings])
     .map((standing: any) => ({
-      category: divisionMap[standing['@_category']],
+      category: divisionMap[standing['@_category'] as XmlStandingsCategory],
       type: standing['@_type'],
       players: (Array.isArray(standing.player)
         ? standing.player

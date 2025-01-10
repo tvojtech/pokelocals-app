@@ -20,7 +20,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 
-export const HeaderDrawer: React.FC = clientOnlyComponent(() => {
+export const HeaderDrawer = clientOnlyComponent(() => {
   const [isDrawerOpen, toggleDrawer] = useToggle(false);
   const { data: session } = useSession();
   const router = useRouter();

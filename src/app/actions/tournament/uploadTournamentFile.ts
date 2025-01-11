@@ -1,12 +1,11 @@
 'use server';
 
-import { getStore } from '@netlify/blobs';
-import fs from 'fs';
 import { revalidateTag } from 'next/cache';
 
 import { Match, PlayerScore, Tournament } from '@/app/actions/tournament/types';
 import { xmlToObject } from '@/app/actions/tournament/xml';
 import { exhaustiveMatchingGuard } from '@/app/utils';
+import { getStore } from '@/blobs';
 
 export async function uploadTournamentFile(
   formData: FormData,
@@ -24,18 +23,10 @@ export async function uploadTournamentFile(
     const xmlString = buffer.toString('utf-8');
     const tournament = calculatePlayerScores(xmlToObject(xmlString));
 
-    if (process.env.NODE_ENV !== 'development') {
-      const store = getStore('tournaments');
-      await store.setJSON(tournamentId, tournament, {
-        metadata: { uploadedAt: new Date().toISOString() },
-      });
-    } else {
-      fs.writeFileSync(
-        `/tmp/${tournamentId}.json`,
-        JSON.stringify(tournament),
-        'utf-8'
-      );
-    }
+    const store = await getStore('tournaments');
+    await store.setJSON(tournamentId, tournament, {
+      metadata: { uploadedAt: new Date().toISOString() },
+    });
 
     revalidateTag('tournament:' + tournamentId);
     return { success: true };

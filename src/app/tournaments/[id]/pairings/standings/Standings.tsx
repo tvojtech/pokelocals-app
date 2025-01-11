@@ -38,8 +38,8 @@ const StandingsSection: React.FC<{
   const getPlayerName = getPlayerNameForId(tournament.players);
   return (
     <div>
-      <h2 className="w-full flex justify-center mt-10 border-b-2 mb-2 text-xl font-bold">
-        <p className="capitalize">{division.toLowerCase()}</p> (
+      <h2 className="w-full flex gap-1 justify-center mt-10 border-b-2 mb-2 text-xl font-bold">
+        <p className="capitalize">{division.toLowerCase()}</p>(
         {standings.finished.length} players)
       </h2>
       <div className="flex flex-col gap-1">

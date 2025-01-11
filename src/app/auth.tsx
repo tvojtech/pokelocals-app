@@ -5,7 +5,7 @@ import Discord from 'next-auth/providers/discord';
 import { edgeDbClient } from '@/app/db';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  debug: process.env.APP_ENV === 'development',
+  debug: process.env.DEPLOYMENT === 'development',
   adapter: EdgeDBAdapter(edgeDbClient),
   providers: [Discord],
   session: {

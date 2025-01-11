@@ -1,7 +1,7 @@
 namespace NodeJS {
   interface ProcessEnv {
-    APP_ENV: string;
     DEPLOYMENT: string;
+    PLATFORM: string;
 
     AUTH_SECRET: string;
 

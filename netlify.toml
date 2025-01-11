@@ -1,6 +1,3 @@
 [build.environment]
   NPM_FLAGS = "--force"
   NODE_VERSION = "22"
-
-[context.environment]
-  PLATFORM = "netlify"

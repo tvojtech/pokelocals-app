@@ -18,5 +18,8 @@ namespace NodeJS {
     EMAIL_FROM: string;
 
     NEXT_PUBLIC_FIREBASE_FCM_VAPID_KEY: string;
+
+    NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN: string;
+    ROLLBAR_SERVER_TOKEN: string;
   }
 }

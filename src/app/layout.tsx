@@ -1,5 +1,6 @@
 import './globals.css';
 
+import { Provider as RollbarProvider } from '@rollbar/react';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
@@ -7,6 +8,7 @@ import { Suspense } from 'react';
 
 import Footer from '@/app/components/Footer';
 import { Header } from '@/app/components/Header';
+import { clientConfig } from '@/rollbar';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -41,14 +43,16 @@ export default function RootLayout({
           BUILD_ID: {process.env.BUILD_ID}
         </div>
         <SessionProvider>
-          <Suspense>
-            <Header />
-            <div className="flex-grow h-full">
-              <main className="container mx-auto px-4 py-8">{children}</main>
-            </div>
+          <RollbarProvider config={clientConfig}>
+            <Suspense>
+              <Header />
+              <div className="flex-grow h-full">
+                <main className="container mx-auto px-4 py-8">{children}</main>
+              </div>
 
-            <Footer />
-          </Suspense>
+              <Footer />
+            </Suspense>
+          </RollbarProvider>
         </SessionProvider>
       </body>
     </html>

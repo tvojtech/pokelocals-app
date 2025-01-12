@@ -10,11 +10,14 @@ import { exhaustiveMatchingGuard } from '@/app/utils';
 import { getStore } from '@/blobs';
 
 if (!admin.apps.length) {
-  let serviceAccount = Buffer.from(
-    process.env.FIREBASE_SERVICE_ACCOUNT!,
-    'base64'
-  ).toString('utf-8');
-  serviceAccount = JSON.parse(serviceAccount);
+  const serviceAccount = {
+    ...JSON.parse(
+      Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT!, 'base64').toString(
+        'utf-8'
+      )
+    ),
+    private_key: process.env.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY!,
+  };
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
   });

@@ -12,7 +12,7 @@ export const QRCodeOverlay: React.FC = () => {
   const location = useWindowLocation();
 
   if (!location?.href) {
-    return null;
+    return <QrCode />;
   }
 
   const buttonContent = (

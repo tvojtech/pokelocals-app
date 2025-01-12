@@ -11,7 +11,7 @@
     "lint-fix": "prettier --loglevel warn --write ./src/**/* && next lint --fix",
     "ts-check": "tsc --noEmit",
     "edge:g:interface": "npx @edgedb/generate interfaces",
-    "edge:g:query": "npx @edgedb/generate queries",
+    "edge:g:query": "npx @edgedb/generate queries && npm run lint-fix",
     "prepare": "test -n \"$CI\" || husky"
   },
   "lint-staged": {

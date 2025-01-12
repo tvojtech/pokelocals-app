@@ -8,3 +8,14 @@ export function guessFullName<
 export const exhaustiveMatchingGuard = (_: never): never => {
   throw new Error('Should not have reached here.');
 };
+
+export const catchError = async <T>(
+  promise: Promise<T>
+): Promise<[undefined, T] | [unknown]> => {
+  try {
+    const result = await promise;
+    return [undefined, result];
+  } catch (error) {
+    return [error];
+  }
+};

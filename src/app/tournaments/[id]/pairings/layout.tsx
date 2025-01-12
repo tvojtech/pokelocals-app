@@ -54,6 +54,7 @@ export default async function TournamentPairingsLayout({
         {(!tournament && (
           <>
             <div className="flex justify-end items-center">
+              <Notifications />
               <QRCodeOverlay />
             </div>
             <InlinePokemonIdCheckForm />

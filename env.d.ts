@@ -16,5 +16,8 @@ namespace NodeJS {
 
     EMAIL_SERVER: string;
     EMAIL_FROM: string;
+
+    NEXT_PUBLIC_FIREBASE_FCM_VAPID_KEY: string;
+    FIREBASE_SERVICE_ACCOUNT: string;
   }
 }

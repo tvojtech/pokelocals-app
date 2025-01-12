@@ -1,11 +1,24 @@
 'use server';
 
+import admin from 'firebase-admin';
 import { revalidateTag } from 'next/cache';
 
+import { listNotificationTokens } from '@/app/actions/notifications';
 import { Match, PlayerScore, Tournament } from '@/app/actions/tournament/types';
 import { xmlToObject } from '@/app/actions/tournament/xml';
 import { exhaustiveMatchingGuard } from '@/app/utils';
 import { getStore } from '@/blobs';
+
+if (!admin.apps.length) {
+  let serviceAccount = Buffer.from(
+    process.env.FIREBASE_SERVICE_ACCOUNT!,
+    'base64'
+  ).toString('utf-8');
+  serviceAccount = JSON.parse(serviceAccount);
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
+}
 
 export async function uploadTournamentFile(
   formData: FormData,
@@ -29,6 +42,29 @@ export async function uploadTournamentFile(
     });
 
     revalidateTag('tournament:' + tournamentId);
+
+    // const payload: Message = {
+    //   webpush: link && {
+    //     fcmOptions: {
+    //       link,
+    //     },
+    //   },
+    // };
+
+    const tokens = (await listNotificationTokens(tournamentId)).map(
+      ({ token }) => token
+    );
+
+    console.log('Sending notification to', tokens);
+
+    await admin.messaging().sendEachForMulticast({
+      tokens,
+      notification: {
+        title: 'Pairings are online',
+        body: 'The tournament has been updated',
+      },
+    });
+
     return { success: true };
   } catch (error) {
     console.error('Error uploading file:', error);

@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import { loadTournament } from '@/app/actions/tournament';
 import { Alert } from '@/app/components/Alert';
+import { Notifications } from '@/app/components/Notifications';
 import { QRCodeOverlay } from '@/app/components/QRCodeOverlay';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { buttonVariants } from '@/components/ui/button';
@@ -32,10 +33,10 @@ export default async function TournamentPairingsLayout({
   children: React.ReactNode;
   params: Promise<{ id: string }>;
 }) {
-  'use cache';
+  // 'use cache';
   const { id } = await params;
 
-  cacheTag('tournament:' + id);
+  // cacheTag('tournament:' + id);
 
   const tournament = await loadTournament(id);
 
@@ -75,7 +76,10 @@ export default async function TournamentPairingsLayout({
                   </Link>
                 ))}
             </div>
-            <QRCodeOverlay />
+            <div className="flex items-center gap-2">
+              <Notifications />
+              <QRCodeOverlay />
+            </div>
           </div>
         )}
         {children}

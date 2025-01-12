@@ -8,18 +8,11 @@ import { Match, PlayerScore, Tournament } from '@/app/actions/tournament/types';
 import { xmlToObject } from '@/app/actions/tournament/xml';
 import { exhaustiveMatchingGuard } from '@/app/utils';
 import { getStore } from '@/blobs';
+import serviceAccount from '@/serviceAccount.json';
 
 if (!admin.apps.length) {
-  const serviceAccount = {
-    ...JSON.parse(
-      Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT!, 'base64').toString(
-        'utf-8'
-      )
-    ),
-    private_key: process.env.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY!,
-  };
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
   });
 }
 

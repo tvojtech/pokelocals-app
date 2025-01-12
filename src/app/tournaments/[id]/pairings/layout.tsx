@@ -33,10 +33,10 @@ export default async function TournamentPairingsLayout({
   children: React.ReactNode;
   params: Promise<{ id: string }>;
 }) {
-  // 'use cache';
+  'use cache';
   const { id } = await params;
 
-  // cacheTag('tournament:' + id);
+  cacheTag('tournament:' + id);
 
   const tournament = await loadTournament(id);
 

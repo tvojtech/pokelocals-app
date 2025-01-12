@@ -1,4 +1,5 @@
 import { unstable_cacheTag as cacheTag } from 'next/cache';
+import { Suspense } from 'react';
 
 import { loadTournament } from '@/app/actions/tournament';
 import { Alert } from '@/app/components/Alert';
@@ -50,7 +51,7 @@ export default async function TournamentPairingsLayout({
             </div>
           </div>
         )}
-        {children}
+        <Suspense>{children}</Suspense>
       </div>
     </>
   );

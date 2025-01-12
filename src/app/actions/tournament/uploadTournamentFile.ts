@@ -51,15 +51,15 @@ export async function uploadTournamentFile(
       ({ token }) => token
     );
 
-    console.log('Sending notification to', tokens);
-
-    await admin.messaging().sendEachForMulticast({
-      tokens,
-      notification: {
-        title: 'Pairings are online',
-        body: 'The tournament has been updated',
-      },
-    });
+    if (tokens.length > 0) {
+      await admin.messaging().sendEachForMulticast({
+        tokens,
+        notification: {
+          title: 'Pairings are online',
+          body: 'The tournament has been updated',
+        },
+      });
+    }
 
     return { success: true };
   } catch (error) {

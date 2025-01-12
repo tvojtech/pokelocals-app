@@ -1,30 +1,11 @@
 import { unstable_cacheTag as cacheTag } from 'next/cache';
-import Link from 'next/link';
 
 import { loadTournament } from '@/app/actions/tournament';
 import { Alert } from '@/app/components/Alert';
 import { Notifications } from '@/app/components/Notifications';
 import { QRCodeOverlay } from '@/app/components/QRCodeOverlay';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
-import { buttonVariants } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-
-export enum PageTypes {
-  my = 'my',
-  all = 'all',
-  roster = 'roster',
-  standings = 'standings',
-}
-
-const pageTypeToTextMappping: Record<
-  PageTypes,
-  { title: string; slug: string }
-> = {
-  [PageTypes.my]: { title: 'My Pairings', slug: 'my' },
-  [PageTypes.all]: { title: 'Pairings', slug: 'all' },
-  [PageTypes.roster]: { title: 'Roster', slug: 'roster' },
-  [PageTypes.standings]: { title: 'Standings', slug: 'standings' },
-};
+import { PageTabs } from '@/app/tournaments/[id]/pairings/PageTabs';
 
 export default async function TournamentPairingsLayout({
   children,
@@ -40,7 +21,7 @@ export default async function TournamentPairingsLayout({
 
   const tournament = await loadTournament(id);
 
-  const haveStandings = !!tournament?.standings;
+  const showStandings = !!tournament?.standings;
 
   return (
     <>
@@ -62,21 +43,7 @@ export default async function TournamentPairingsLayout({
           </>
         )) || (
           <div className="flex justify-between items-center">
-            <div className="flex items-center gap-5">
-              {Object.keys(PageTypes)
-                .filter(key => haveStandings || key !== PageTypes.standings)
-                .map(key => (
-                  <Link
-                    href={`/tournaments/${id}/pairings/${key}`}
-                    key={key}
-                    className={cn(
-                      buttonVariants({ variant: 'link' }),
-                      'text-xl p-0'
-                    )}>
-                    {pageTypeToTextMappping[key as PageTypes].title}
-                  </Link>
-                ))}
-            </div>
+            <PageTabs showStandings={showStandings} />
             <div className="flex items-center gap-2">
               <Notifications />
               <QRCodeOverlay />

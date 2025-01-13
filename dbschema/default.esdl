@@ -63,26 +63,6 @@ module default {
  
         constraint exclusive on ((.identifier, .token))
     }
-
-    type Feedback {
-        required property description -> str;
-        property createdAt -> datetime {
-            default := datetime_current();
-        };
-    }
-
-    type NotificationToken {
-        required property token -> str {
-            constraint exclusive;
-        };
-        required property tournamentId -> str;
-        required link user -> User {
-            on target delete delete source;
-        };
-        property createdAt -> datetime {
-            default := datetime_current();
-        };
-    }
 }
  
 # Disable the application of access policies within access policies

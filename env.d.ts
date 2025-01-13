@@ -14,6 +14,9 @@ namespace NodeJS {
     EDGEDB_SECRET_KEY: string;
     EDGEDB_BRANCH: string;
 
+    SUPABASE_DATABASE_URL: string;
+    SUPABASE_DRIZZLE_KIT_DATABASE_URL: string;
+
     EMAIL_SERVER: string;
     EMAIL_FROM: string;
 

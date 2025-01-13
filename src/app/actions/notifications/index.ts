@@ -11,7 +11,6 @@ import { edgeDbClient } from '@/app/db';
 export async function registerNotificationToken(
   data: CreateNotificationTokenArgs
 ) {
-  console.log('registerNotificationToken', data);
   // fixme: require authentication???
   await createNotificationToken(edgeDbClient, data);
 }

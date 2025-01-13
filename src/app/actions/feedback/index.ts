@@ -1,12 +1,10 @@
 'use server';
 
-import {
-  createFeedback,
-  CreateFeedbackArgs,
-} from '@/app/actions/feedback/createFeedback.query';
-import { edgeDbClient } from '@/app/db';
+import { db, schema } from '@/db';
 
-export async function submitFeedback(data: CreateFeedbackArgs) {
+export async function submitFeedback(
+  data: typeof schema.feedback.$inferInsert
+) {
   // fixme: require authentication
-  await createFeedback(edgeDbClient, data);
+  await db.insert(schema.feedback).values(data).execute();
 }

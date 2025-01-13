@@ -1,6 +1,7 @@
 'use client';
 
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 

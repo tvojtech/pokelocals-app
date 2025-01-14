@@ -7,6 +7,7 @@ import React from 'react';
 
 import { useWindowLocation } from '@/app/hooks';
 import { buttonVariants } from '@/components/ui/button';
+import { CopyToClipboardButton } from '@/components/ui/copy-to-clipboard';
 import { cn } from '@/lib/utils';
 
 export const QRCode: React.FC<{ tournamentId: string }> = ({
@@ -23,15 +24,18 @@ export const QRCode: React.FC<{ tournamentId: string }> = ({
   return (
     <div className="flex flex-col items-center gap-4">
       <p className="print:block hidden">{pairingsUrl}</p>
-      <Link
-        href={pairingsUrl}
-        target="_blank"
-        className={cn(
-          buttonVariants({ variant: 'link' }),
-          'print:hidden font-bold text-xl'
-        )}>
-        Show pairings <SquareArrowOutUpRight size={20} />
-      </Link>
+      <div className="flex items-center justify-between w-full">
+        <Link
+          href={pairingsUrl}
+          target="_blank"
+          className={cn(
+            buttonVariants({ variant: 'link' }),
+            'print:hidden font-bold text-xl'
+          )}>
+          Show pairings <SquareArrowOutUpRight size={20} />
+        </Link>
+        <CopyToClipboardButton textToCopy={pairingsUrl} />
+      </div>
       <QRCodeSVG value={pairingsUrl} className="w-60 h-60 m-10" />
     </div>
   );

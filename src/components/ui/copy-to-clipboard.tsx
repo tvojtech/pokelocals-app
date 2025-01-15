@@ -1,6 +1,6 @@
 'use client';
 
-import { Clipboard, ClipboardCheck } from 'lucide-react';
+import { Check, Clipboard } from 'lucide-react';
 import React, { useCallback, useState } from 'react';
 
 import { buttonVariants } from '@/components/ui/button';
@@ -26,7 +26,6 @@ export const CopyToClipboardButton: React.FC<CopyToClipboardButtonProps> = ({
 
   return (
     <div className="flex items-center space-x-2">
-      {isCopied && <p className="text-green-700">Copied</p>}
       <div
         role="button"
         onClick={handleCopy}
@@ -36,7 +35,7 @@ export const CopyToClipboardButton: React.FC<CopyToClipboardButtonProps> = ({
           'flex items-center space-x-2',
           buttonVariants({ variant: 'outline', size: 'icon' })
         )}>
-        {isCopied ? <ClipboardCheck size={size} /> : <Clipboard size={size} />}
+        {isCopied ? <Check size={size} /> : <Clipboard size={size} />}
       </div>
     </div>
   );

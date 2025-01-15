@@ -1,13 +1,11 @@
-import { getStore } from '@netlify/blobs';
+import { getStore, Store } from '@netlify/blobs';
 import type { Config } from '@netlify/functions';
 
 export default async () => {
-  const store = getStore('tournaments');
   const now = new Date();
 
-  const { blobs } = await store.list();
-
-  await Promise.all(
+  const processBlobs = async (store: Store) => {
+    const { blobs } = await store.list();
     blobs.map(async blob => {
       const metadata = await store.getMetadata(blob.key);
       if (typeof metadata?.metadata.uploadedAt === 'string') {
@@ -20,8 +18,13 @@ export default async () => {
       } else {
         store.delete(blob.key);
       }
-    })
-  );
+    });
+  };
+
+  await Promise.all([
+    processBlobs(getStore('tournaments')),
+    processBlobs(getStore(process.env.DEPLOYMENT + ':tournaments')),
+  ]);
 };
 
 export const config: Config = {

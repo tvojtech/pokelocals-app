@@ -15,7 +15,13 @@ export const Standings: React.FC<{ tournament: Tournament }> = ({
   return (
     <div className="space-y-4">
       {[Division.JUNIORS, Division.SENIORS, Division.MASTERS]
-        .filter(division => tournament.standings?.[division])
+        .filter(division => {
+          const standings = tournament.standings?.[division];
+          return (
+            standings &&
+            (standings.finished.length > 0 || standings.dnf.length > 0)
+          );
+        })
         .map(division =>
           tournament.standings?.[division] ? (
             <StandingsSection

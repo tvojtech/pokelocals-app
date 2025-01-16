@@ -1,5 +1,5 @@
 import { onMessage, Unsubscribe } from 'firebase/messaging';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 import { useEffect, useRef, useState } from 'react';
 
 import { fetchToken, messaging } from '@/app/firebase';

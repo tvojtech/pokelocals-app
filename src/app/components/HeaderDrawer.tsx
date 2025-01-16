@@ -91,6 +91,6 @@ export const HeaderDrawer = clientOnlyComponent(
     );
   },
   () => {
-    return <Menu />;
+    return <Menu className="lg:hidden" />;
   }
 );

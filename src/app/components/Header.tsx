@@ -1,12 +1,13 @@
-import { LogIn, Settings2, User2 } from 'lucide-react';
+import { LogIn, MessageCircle, Settings2, User2 } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
 import { auth } from '@/app/auth';
+import { FeedbackDialog } from '@/app/components/FeedbackDialog';
 import { HeaderDrawer } from '@/app/components/HeaderDrawer';
 import { Logo } from '@/app/components/Logo';
 import { SignOutButton } from '@/app/components/SignOutButton';
-import { buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
@@ -34,6 +35,16 @@ export const Header = async () => {
             <Logo />
           </Link>
           <ul className="hidden lg:flex lg:items-center">
+            <li>
+              <FeedbackDialog
+                button={
+                  <Button variant="link">
+                    <MessageCircle />
+                    Feedback
+                  </Button>
+                }
+              />
+            </li>
             {!session?.user && (
               <li>
                 <HeaderLink href="/profile">

@@ -1,3 +1,5 @@
+'use client';
+
 import { useToggle } from '@uidotdev/usehooks';
 import { Loader2, MessageCircle, X } from 'lucide-react';
 import { useActionState, useEffect, useRef } from 'react';

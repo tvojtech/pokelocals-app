@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 import { useActionState, useTransition } from 'react';
 
 import { createTournamentAction } from '@/app/actions/tournament';

@@ -2,8 +2,8 @@
 
 import { useToggle } from '@uidotdev/usehooks';
 import { LogIn, LogOut, Menu, Settings2, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'nextjs-toploader/app';
 import React from 'react';
 
 import { clientOnlyComponent } from '@/app/components/clientOnlyComponent';

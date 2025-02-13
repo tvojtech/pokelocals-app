@@ -1,4 +1,4 @@
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata } from 'next';
 import { unstable_cacheTag as cacheTag } from 'next/cache';
 import { Suspense } from 'react';
 
@@ -13,10 +13,7 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   'use cache';
   const { id } = await params;
 
@@ -29,7 +26,7 @@ export async function generateMetadata(
   }
 
   return {
-    title: (await parent).title + ' - ' + tournament?.data.name,
+    title: tournament?.data.name,
     description: 'Pairings for ' + tournament?.data.name,
   };
 }

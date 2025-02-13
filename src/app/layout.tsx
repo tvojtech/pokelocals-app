@@ -22,7 +22,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'PTCG Pairings',
+  title: {
+    template: '%s | PTCG Pairings',
+    default: 'PTCG Pairings',
+  },
   description: 'Online pairings for your local PTCG tournament.',
   icons: {
     icon: '/images/favicon.svg',

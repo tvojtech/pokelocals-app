@@ -28,6 +28,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: tournament?.data.name,
     description: 'Pairings for ' + tournament?.data.name,
+    openGraph: {
+      type: 'website',
+      locale: 'en_US',
+      url: 'https://ptcg-pairings.netlify.app',
+      siteName: 'PTCG Pairings',
+      title: tournament?.data.name,
+      description: 'Pairings for ' + tournament?.data.name,
+    },
   };
 }
 

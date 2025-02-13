@@ -1,3 +1,4 @@
+import { Metadata, ResolvingMetadata } from 'next';
 import { unstable_cacheTag as cacheTag } from 'next/cache';
 import { Suspense } from 'react';
 
@@ -7,6 +8,27 @@ import { Notifications } from '@/app/components/Notifications';
 import { QRCodeOverlay } from '@/app/components/QRCodeOverlay';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { PageTabs } from '@/app/tournaments/[id]/pairings/PageTabs';
+
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  'use cache';
+  const { id } = await params;
+
+  cacheTag('tournament:' + id);
+
+  const tournament = await loadTournament(id);
+
+  return {
+    title: (await parent).title + ' - ' + tournament?.data.name,
+    description: 'Pairings for ' + tournament?.data.name,
+  };
+}
 
 export default async function TournamentPairingsLayout({
   children,

@@ -23,8 +23,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'PTCG Pairings',
-  description:
-    'Simple tool for distributing pairing information for PTCG tournaments',
+  description: 'Online pairings for your local PTCG tournament.',
   icons: {
     icon: '/images/favicon.svg',
   },

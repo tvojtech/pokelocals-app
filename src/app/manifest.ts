@@ -4,8 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'PTCG Pairings',
     short_name: 'PTCG Pairings',
-    description:
-      'Simple tool for distributing pairing information for PTCG tournaments',
+    description: 'Online pairings for your local PTCG tournament.',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',

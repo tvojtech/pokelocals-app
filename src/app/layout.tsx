@@ -27,6 +27,12 @@ export const metadata: Metadata = {
     default: 'PTCG Pairings',
   },
   description: 'Online pairings for your local PTCG tournament.',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://ptcg-pairings.netlify.app',
+    siteName: 'PTCG Pairings',
+  },
   icons: {
     icon: '/images/favicon.svg',
   },

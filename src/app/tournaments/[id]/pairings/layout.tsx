@@ -24,6 +24,10 @@ export async function generateMetadata(
 
   const tournament = await loadTournament(id);
 
+  if (!tournament) {
+    return {};
+  }
+
   return {
     title: (await parent).title + ' - ' + tournament?.data.name,
     description: 'Pairings for ' + tournament?.data.name,

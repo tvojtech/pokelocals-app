@@ -23,7 +23,10 @@ export default async () => {
 
   await Promise.all([
     processBlobs(getStore('tournaments')),
-    processBlobs(getStore(process.env.DEPLOYMENT + ':tournaments')),
+
+    // netlify scheduled functions does not support env propsG
+    processBlobs(getStore('production:tournaments')),
+    processBlobs(getStore('staging:tournaments')),
   ]);
 };
 

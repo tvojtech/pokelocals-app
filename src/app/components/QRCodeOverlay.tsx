@@ -30,7 +30,7 @@ export const QRCodeOverlay: React.FC = () => {
       <div className="relative">
         {buttonContent}
         <div
-          className="fixed inset-0 bg-slate-50 bg-opacity-90 z-40 flex justify-center items-center"
+          className="fixed inset-0 bg-slate-50/90 z-40 flex justify-center items-center"
           onClick={() => toggle()}>
           <QRCodeSVG value={location.href} className="size-60 h-60 m-10" />
         </div>

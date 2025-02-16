@@ -32,7 +32,7 @@ export const InlinePokemonIdCheckForm = clientOnlyComponent(() => {
         defaultValue={myId}
         placeholder="Enter your Pokemon ID"
       />
-      <Button type="submit" className="w-full">
+      <Button type="submit" className="size-full">
         Save your ID
       </Button>
     </form>

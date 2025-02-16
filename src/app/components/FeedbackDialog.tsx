@@ -52,7 +52,7 @@ export const FeedbackDialog: React.FC<{
         {button ? (
           button
         ) : (
-          <Button variant="ghost" className="justify-start w-full">
+          <Button variant="ghost" className="justify-start size-full">
             <MessageCircle />
             Feedback
           </Button>
@@ -76,7 +76,7 @@ export const FeedbackDialog: React.FC<{
         </DialogHeader>
         <form action={formAction} className="space-y-4">
           <Textarea ref={textareaRef} required rows={4} />
-          <div className="w-full flex justify-end">
+          <div className="size-full flex justify-end">
             <Button type="submit" disabled={isPending}>
               {isPending ? (
                 <div className="flex items-center gap-2">

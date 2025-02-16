@@ -21,7 +21,7 @@ export const PokemonIdForm = clientOnlyComponent(() => {
     <form
       action={onSubmit}
       onReset={() => setIsEditing(false)}
-      className="space-y-2 w-full">
+      className="space-y-2 size-full">
       <label className="block">My pokemon ID:</label>
       <div className="flex gap-3 px-4">
         <input
@@ -51,7 +51,7 @@ export const PokemonIdForm = clientOnlyComponent(() => {
                 inputRef.current?.focus();
               }, 0);
             }}>
-            <Edit size={24} className="text-yellow-400" />
+            <Edit size={24} className="text-yellosize-400" />
           </button>
         )}
       </div>

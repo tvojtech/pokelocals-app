@@ -31,7 +31,7 @@ export const PokemonIdForm = clientOnlyComponent(() => {
           placeholder="Enter your Pokemon ID"
           disabled={!isEditing}
           readOnly={!isEditing}
-          className="outline-2 border border-slate-300 p-1 px-2 text-black disabled:bg-slate-100 flex-grow"
+          className="outline-2 border border-slate-300 p-1 px-2 text-black disabled:bg-slate-100 grow"
         />
         {isEditing ? (
           <>

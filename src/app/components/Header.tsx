@@ -28,7 +28,7 @@ export const Header = async () => {
   const session = await auth();
 
   return (
-    <header className="bg-slate-50 border-b-2 shadow-sm text-gray-800 print:hidden">
+    <header className="bg-slate-50 border-b-2 shadow-xs text-gray-800 print:hidden">
       <nav>
         <div className="lg:container lg:mx-auto px-4 md:px-10 py-4 flex justify-between items-center h-16">
           <Link href="/">

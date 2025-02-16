@@ -14,7 +14,7 @@ export async function ProfilePage() {
           </p>
         }
       />
-      <div className="w-full">
+      <div className="size-full">
         <PokemonIdForm />
       </div>
     </div>

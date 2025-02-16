@@ -24,7 +24,7 @@ export const QRCode: React.FC<{ tournamentId: string }> = ({
   return (
     <div className="flex flex-col items-center gap-4">
       <p className="print:block hidden">{pairingsUrl}</p>
-      <div className="flex items-center justify-between w-full">
+      <div className="flex items-center justify-between size-full">
         <Link
           href={pairingsUrl}
           target="_blank"
@@ -36,7 +36,7 @@ export const QRCode: React.FC<{ tournamentId: string }> = ({
         </Link>
         <CopyToClipboardButton textToCopy={pairingsUrl} />
       </div>
-      <QRCodeSVG value={pairingsUrl} className="w-60 h-60 m-10" />
+      <QRCodeSVG value={pairingsUrl} className="size-60 h-60 m-10" />
     </div>
   );
 };

@@ -4,7 +4,6 @@ import { useToggle } from '@uidotdev/usehooks';
 import { LogIn, LogOut, Menu, Settings2, X } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'nextjs-toploader/app';
-import React from 'react';
 
 import { clientOnlyComponent } from '@/app/components/clientOnlyComponent';
 import { FeedbackDialog } from '@/app/components/FeedbackDialog';
@@ -54,7 +53,7 @@ export const HeaderDrawer = clientOnlyComponent(
                     onClick={() => signOut()}
                     title="Logout"
                     variant="default"
-                    className="w-full uppercase flex justify-center items-center">
+                    className="size-full uppercase flex justify-center items-center">
                     Logout
                     <LogOut />
                   </Button>
@@ -67,7 +66,7 @@ export const HeaderDrawer = clientOnlyComponent(
                 onClick={sidebarButtonClickHandler(
                   `/login?return=${encodeURIComponent(window.location.pathname + '?' + window.location.search)}`
                 )}
-                className="w-full uppercase flex justify-center items-center">
+                className="size-full uppercase flex justify-center items-center">
                 <LogIn />
                 Sign in
               </Button>
@@ -77,7 +76,7 @@ export const HeaderDrawer = clientOnlyComponent(
               <Button
                 onClick={sidebarButtonClickHandler('/profile')}
                 variant="ghost"
-                className="justify-start w-full">
+                className="justify-start size-full">
                 <Settings2 />
                 Settings
               </Button>

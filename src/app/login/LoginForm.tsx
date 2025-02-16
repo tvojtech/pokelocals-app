@@ -20,7 +20,7 @@ const LoginButton: React.FC<React.ComponentProps<typeof Button>> = ({
     <Button
       type="submit"
       className={cn(
-        'shadow-lg active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 w-full flex-wrap',
+        'shadow-lg active:scale-95 focus:outline-hidden focus:ring-2 focus:ring-offset-2 size-full flex-wrap',
         className
       )}
       {...props}>
@@ -48,17 +48,17 @@ export function LoginForm({ returnUrl }: { returnUrl?: string }) {
               type="email"
               placeholder="Enter your email"
               required
-              className="flex-grow"
+              className="grow"
             />
           </div>
-          <LoginButton type="submit" className="w-full" disabled>
-            <Mail className="mr-2 h-4 w-4" />
+          <LoginButton type="submit" className="size-full" disabled>
+            <Mail className="mr-2 h-4 size-4" />
             Sign in with Email
           </LoginButton>
         </form>
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
+            <span className="size-full border-t" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
             <span className="bg-background px-2 text-muted-foreground">Or</span>

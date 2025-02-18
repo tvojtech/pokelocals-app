@@ -5,7 +5,7 @@ export const getStore = async (namespace: string) => {
   } else {
     if (process.env.PLATFORM === 'netlify') {
       const { getStore } = await import('./netlify');
-      return getStore(process.env.DEPLOYMENT + ':' + namespace);
+      return getStore(namespace);
     } else if (process.env.PLATFORM === 'vercel') {
       throw new Error('Vercel deployment not supported yet');
     } else {

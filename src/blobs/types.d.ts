@@ -1,19 +1,16 @@
+export type BlobMetadata = Record<string, string>;
+
 export type BlobStore = {
-  get: (key: string) => Promise<string | undefined>;
-  getJSON: <T>(key: string) => Promise<T | undefined>;
+  get: (
+    key: string
+  ) => Promise<{ content: string; metadata: BlobMetadata } | undefined>;
+  getJSON: <T>(
+    key: string
+  ) => Promise<{ content: T; metadata: BlobMetadata } | undefined>;
   setJSON(
     key: string,
     data: unknown,
-    {
-      metadata,
-    }?: {
-      metadata?: Record<string, unknown>;
-    }
+    options?: { metadata?: BlobMetadata }
   ): Promise<void>;
-  // set: (key: string, value: string) => Promise<void>;
-  // setJSON: (
-  //   key: string,
-  //   value: unknown,
-  //   options?: { metadata?: Record<string, string> }
-  // ) => Promise<void>;
+  list(): Promise<string[]>;
 };

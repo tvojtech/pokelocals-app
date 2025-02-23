@@ -1,5 +1,7 @@
 import { GetObjectCommand, PutObjectCommand, S3 } from '@aws-sdk/client-s3';
 
+import { catchError } from '@/app/utils';
+
 import { BlobStore } from './types';
 
 const s3Client = new S3({
@@ -12,12 +14,24 @@ const s3Client = new S3({
 });
 
 async function get(bucket: string, key: string) {
-  const { Body: content, Metadata: metadata = {} } = await s3Client.send(
-    new GetObjectCommand({
-      Bucket: bucket,
-      Key: key,
-    })
+  const [error, result] = await catchError(
+    s3Client.send(
+      new GetObjectCommand({
+        Bucket: bucket,
+        Key: key,
+      })
+    )
   );
+
+  if (error || !result) {
+    console.info(
+      `Failed to find object for key ${key} in bucket ${bucket}`,
+      error
+    );
+    return undefined;
+  }
+
+  const { Body: content, Metadata: metadata = {} } = result;
 
   if (!content) {
     return undefined;

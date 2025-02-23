@@ -1,15 +1,16 @@
+import { exhaustiveMatchingGuard } from '@/app/utils';
+
 export const getStore = async (namespace: string) => {
-  if (process.env.DEPLOYMENT === 'local') {
-    const { getStore } = await import('./local');
-    return getStore(namespace);
-  } else {
-    if (process.env.PLATFORM === 'netlify') {
-      const { getStore } = await import('./netlify');
+  switch (process.env.BLOB_STORAGE) {
+    case 'local': {
+      const { getStore } = await import('./local');
       return getStore(namespace);
-    } else if (process.env.PLATFORM === 'vercel') {
-      throw new Error('Vercel deployment not supported yet');
-    } else {
-      throw new Error('Unknown deployment environment');
     }
+    case 'r2': {
+      const { getStore } = await import('./r2');
+      return getStore(namespace);
+    }
+    default:
+      return exhaustiveMatchingGuard(process.env.BLOB_STORAGE);
   }
 };

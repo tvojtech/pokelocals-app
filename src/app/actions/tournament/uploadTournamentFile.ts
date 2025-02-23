@@ -6,6 +6,7 @@ import { revalidateTag } from 'next/cache';
 import { listNotificationTokens } from '@/app/actions/notifications';
 import { Match, PlayerScore, Tournament } from '@/app/actions/tournament/types';
 import { xmlToObject } from '@/app/actions/tournament/xml';
+import { auth } from '@/app/auth';
 import { exhaustiveMatchingGuard } from '@/app/utils';
 import { getStore } from '@/blobs';
 import serviceAccount from '@/serviceAccount.json';
@@ -20,6 +21,7 @@ export async function uploadTournamentFile(
   formData: FormData,
   tournamentId: string
 ) {
+  const session = await auth();
   const file = formData.get('file') as File;
 
   if (!file) {
@@ -34,7 +36,10 @@ export async function uploadTournamentFile(
 
     const store = await getStore('tournaments');
     await store.setJSON(tournamentId, tournament, {
-      metadata: { uploadedAt: new Date().toISOString() },
+      metadata: {
+        uploaded_at: new Date().toISOString(),
+        uploaded_by: session?.user?.email ?? 'anonymous',
+      },
     });
 
     revalidateTag('tournament:' + tournamentId);

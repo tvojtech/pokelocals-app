@@ -2,6 +2,7 @@ namespace NodeJS {
   interface ProcessEnv {
     DEPLOYMENT: string;
     PLATFORM: string;
+    BLOB_STORAGE: 'local' | 'r2';
 
     AUTH_SECRET: string;
 
@@ -21,5 +22,10 @@ namespace NodeJS {
 
     NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN: string;
     ROLLBAR_SERVER_TOKEN: string;
+
+    CLOUDFLARE_R2_BUCKET_NAME: string;
+    CLOUDFLARE_R2_ACCOUNT_ID: string;
+    CLOUDFLARE_R2_ACCESS_KEY_ID: string;
+    CLOUDFLARE_R2_SECRET_ACCESS_KEY: string;
   }
 }

@@ -1,33 +1,35 @@
 import fs from 'fs';
 
-import { BlobStore } from '@/blobs/types';
+import { BlobMetadata, BlobStore } from '@/blobs/types';
 
 const get = (namespace: string) => (key: string) => {
   const path = `/tmp/${namespace}/${key}`;
 
-  return new Promise<string | undefined>((resolve, reject) => {
-    if (!fs.existsSync(path)) {
-      resolve(undefined);
-      return;
-    }
-    fs.readFile(path, { encoding: 'utf-8' }, (err, data) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(data);
+  return new Promise<{ content: string; metadata: BlobMetadata } | undefined>(
+    (resolve, reject) => {
+      if (!fs.existsSync(path)) {
+        resolve(undefined);
+        return;
       }
-    });
-  });
+      fs.readFile(path, { encoding: 'utf-8' }, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({ content: data, metadata: {} });
+        }
+      });
+    }
+  );
 };
 
 const getJSON =
   <T>(namespace: string) =>
   async (key: string) => {
-    const fileContent = await get(namespace)(key);
-    if (!fileContent) {
+    const data = await get(namespace)(key);
+    if (!data) {
       return undefined;
     }
-    return JSON.parse(fileContent) as T;
+    return { content: JSON.parse(data.content) as T, metadata: data.metadata };
   };
 
 const setJSON = (namespace: string) => (key: string, data: unknown) => {
@@ -50,5 +52,11 @@ export const getStore = (namespace: string): BlobStore => {
     get: get(namespace),
     getJSON: getJSON(namespace),
     setJSON: setJSON(namespace),
+    list: async () => {
+      // this is only for local development so I don't care about proper solution
+      fs.mkdirSync(`/tmp/${namespace}`, { recursive: true });
+      const files = fs.readdirSync(`/tmp/${namespace}`);
+      return files.map(file => file.replace(`/tmp/${namespace}/`, ''));
+    },
   };
 };

@@ -53,6 +53,8 @@ export const getStore = (namespace: string): BlobStore => {
     getJSON: getJSON(namespace),
     setJSON: setJSON(namespace),
     list: async () => {
+      // this is only for local development so I don't care about proper solution
+      fs.mkdirSync(`/tmp/${namespace}`, { recursive: true });
       const files = fs.readdirSync(`/tmp/${namespace}`);
       return files.map(file => file.replace(`/tmp/${namespace}/`, ''));
     },

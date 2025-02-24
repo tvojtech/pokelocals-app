@@ -11,6 +11,9 @@ export const getStore = async (namespace: string) => {
       return getStore(namespace);
     }
     default:
-      return exhaustiveMatchingGuard(process.env.BLOB_STORAGE);
+      return exhaustiveMatchingGuard(
+        process.env.BLOB_STORAGE,
+        'Invalid blob storage'
+      );
   }
 };

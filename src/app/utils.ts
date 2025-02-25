@@ -4,9 +4,8 @@ export function guessFullName<
   return (params?.firstname ?? '') + ' ' + (params?.lastname ?? '');
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const exhaustiveMatchingGuard = (_: never): never => {
-  throw new Error('Should not have reached here.');
+export const exhaustiveMatchingGuard = (_: never, message: string): never => {
+  throw new Error('Should not have reached here. ' + message);
 };
 
 export const catchError = async <T>(

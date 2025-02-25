@@ -159,7 +159,7 @@ const createScoreCalculator =
       case PlayerResult.not_finished:
         break;
       default:
-        exhaustiveMatchingGuard(outcome);
+        exhaustiveMatchingGuard(outcome, 'Invalid outcome: ' + outcome);
     }
 
     return playerScores;

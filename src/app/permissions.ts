@@ -8,6 +8,6 @@ export type AppPermission =
   | 'tournaments:delete';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const hasPermission = (user: User, permission: AppPermission) => {
+export function hasPermission(user: User, permission: AppPermission) {
   return true;
-};
+}

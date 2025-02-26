@@ -6,7 +6,7 @@ import { RestrictedPage } from '@/app/components/RestrictedPage';
 import { TournamentsForm } from '@/app/tournaments/TournamentsForm';
 import { buttonVariants } from '@/components/ui/button';
 
-export const TournamentsPage: React.FC = async () => {
+export async function TournamentsPage() {
   const tournaments = await listTournaments();
   return (
     <RestrictedPage>
@@ -31,4 +31,4 @@ export const TournamentsPage: React.FC = async () => {
       </div>
     </RestrictedPage>
   );
-};
+}

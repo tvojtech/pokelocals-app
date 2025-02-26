@@ -47,7 +47,7 @@ const setJSON = (namespace: string) => (key: string, data: unknown) => {
   });
 };
 
-export const getStore = (namespace: string): BlobStore => {
+export function getStore(namespace: string): BlobStore {
   return {
     get: get(namespace),
     getJSON: getJSON(namespace),
@@ -59,4 +59,4 @@ export const getStore = (namespace: string): BlobStore => {
       return files.map(file => file.replace(`/tmp/${namespace}/`, ''));
     },
   };
-};
+}

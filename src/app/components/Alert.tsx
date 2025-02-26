@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 type AlertProps = {
   message: ReactNode;
@@ -6,7 +6,7 @@ type AlertProps = {
   title?: string;
 };
 
-export const Alert: React.FC<AlertProps> = ({ message, type, title }) => {
+export function Alert({ message, type, title }: AlertProps) {
   const alertStyles: Record<AlertProps['type'], string> = {
     success: 'bg-green-100 border-green-400 text-green-700',
     error: 'bg-red-100 border-red-400 text-red-700',
@@ -22,4 +22,4 @@ export const Alert: React.FC<AlertProps> = ({ message, type, title }) => {
       <div>{message}</div>
     </div>
   );
-};
+}

@@ -1,7 +1,5 @@
 'use client';
 
-import React from 'react';
-
 import { Tournament } from '@/app/actions/tournament';
 import { Alert } from '@/app/components/Alert';
 import { clientOnlyComponent } from '@/app/components/clientOnlyComponent';

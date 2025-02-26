@@ -1,11 +1,15 @@
 import { Player, Pod, Tournament } from '@/app/actions/tournament';
 import { PairingsRow } from '@/app/tournaments/[id]/pairings/PairingsRow';
 
-export const MyCurrentPairing: React.FC<{
+export function MyCurrentPairing({
+  me,
+  pod: myPod,
+  tournament,
+}: {
   me: Player;
   pod: Pod;
   tournament: Tournament;
-}> = ({ me, pod: myPod, tournament }) => {
+}) {
   const currentRound = myPod.rounds[myPod.rounds.length - 1];
   const myPairing = currentRound.matches.find(
     match => match.player1 === me.userid || match.player2 === me.userid
@@ -27,4 +31,4 @@ export const MyCurrentPairing: React.FC<{
       />
     </div>
   );
-};
+}

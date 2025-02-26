@@ -3,11 +3,10 @@
 import { useToggle } from '@uidotdev/usehooks';
 import { QrCode } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
-import React from 'react';
 
 import { useWindowLocation } from '@/app/hooks';
 
-export const QRCodeOverlay: React.FC = () => {
+export function QRCodeOverlay() {
   const [isOpen, toggle] = useToggle(false);
   const location = useWindowLocation();
 
@@ -37,4 +36,4 @@ export const QRCodeOverlay: React.FC = () => {
       </div>
     </>
   );
-};
+}

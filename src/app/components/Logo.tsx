@@ -5,7 +5,7 @@ type LogoProps = {
   width?: number;
 };
 
-export const Logo: React.FC<LogoProps> = ({ height = 32, width = 137 }) => {
+export function Logo({ height = 32, width = 137 }: LogoProps) {
   return (
     <Image
       priority
@@ -15,4 +15,4 @@ export const Logo: React.FC<LogoProps> = ({ height = 32, width = 137 }) => {
       width={width}
     />
   );
-};
+}

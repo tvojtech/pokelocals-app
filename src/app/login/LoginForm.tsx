@@ -11,11 +11,11 @@ import {
 } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
-const LoginButton: React.FC<React.ComponentProps<typeof Button>> = ({
+export function LoginButton({
   children,
   className,
   ...props
-}) => {
+}: React.ComponentProps<typeof Button>) {
   return (
     <Button
       type="submit"
@@ -27,7 +27,7 @@ const LoginButton: React.FC<React.ComponentProps<typeof Button>> = ({
       {children}
     </Button>
   );
-};
+}
 
 export function LoginForm({ returnUrl }: { returnUrl?: string }) {
   return (

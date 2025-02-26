@@ -2,10 +2,13 @@ import { Match, Tournament } from '@/app/actions/tournament';
 import { getPlayerNameForId } from '@/app/pokemonUtils';
 import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
 
-export const PairingsRow: React.FC<{
+export function PairingsRow({
+  tournament,
+  match,
+}: {
   tournament: Tournament;
   match: Match;
-}> = ({ tournament, match }) => {
+}) {
   const getPlayerName = getPlayerNameForId(tournament.players);
   return (
     <>
@@ -32,4 +35,4 @@ export const PairingsRow: React.FC<{
       </div>
     </>
   );
-};
+}

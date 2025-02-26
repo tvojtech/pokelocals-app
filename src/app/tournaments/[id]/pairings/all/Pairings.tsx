@@ -4,9 +4,7 @@ import { Pod, Round, Tournament } from '@/app/actions/tournament';
 import { Alert } from '@/app/components/Alert';
 import { PairingsRow } from '@/app/tournaments/[id]/pairings/PairingsRow';
 
-export const Pairings: React.FC<{ tournament: Tournament }> = ({
-  tournament,
-}) => {
+export function Pairings({ tournament }: { tournament: Tournament }) {
   const { pods } = tournament;
   if (!pods || pods.length === 0) {
     return <Alert type="warning" message="Pairings not published yet." />;
@@ -23,7 +21,7 @@ export const Pairings: React.FC<{ tournament: Tournament }> = ({
       ))}
     </div>
   );
-};
+}
 
 const categoryToDivision: Record<string, string> = {
   '0': 'Juniors',

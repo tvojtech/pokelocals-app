@@ -9,9 +9,7 @@ import { getPlayerNameForId } from '@/app/pokemonUtils';
 import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
 import { Separator } from '@/components/ui/separator';
 
-export const Standings: React.FC<{ tournament: Tournament }> = ({
-  tournament,
-}) => {
+export function Standings({ tournament }: { tournament: Tournament }) {
   return (
     <div className="space-y-4">
       {[Division.JUNIORS, Division.SENIORS, Division.MASTERS]
@@ -34,7 +32,7 @@ export const Standings: React.FC<{ tournament: Tournament }> = ({
         )}
     </div>
   );
-};
+}
 
 const StandingsSection: React.FC<{
   division: Division;

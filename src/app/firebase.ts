@@ -18,7 +18,7 @@ const messaging = async () => {
   return supported ? getMessaging(app) : null;
 };
 
-export const fetchToken = async () => {
+export async function fetchToken() {
   try {
     const fcmMessaging = await messaging();
     if (fcmMessaging) {
@@ -32,6 +32,6 @@ export const fetchToken = async () => {
     console.error('An error occurred while fetching the token:', err);
     return null;
   }
-};
+}
 
 export { app, messaging };

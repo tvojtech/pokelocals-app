@@ -1,4 +1,3 @@
-import { unstable_cacheTag as cacheTag } from 'next/cache';
 import { redirect, RedirectType } from 'next/navigation';
 
 import { loadTournament } from '@/app/actions/tournament';
@@ -9,9 +8,7 @@ export default async function TournamentPairingsStandingsPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  'use cache';
   const { id } = await params;
-  cacheTag('tournament:' + id);
   const tournament = await loadTournament(id);
   if (!tournament) {
     return null;

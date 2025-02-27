@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     domains: ['cdn.discordapp.com'],
   },
   experimental: {
-    dynamicIO: true,
+    // dynamicIO: true,
   },
 };
 

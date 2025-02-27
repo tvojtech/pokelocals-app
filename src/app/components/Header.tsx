@@ -24,7 +24,7 @@ const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
   );
 };
 
-export const Header = async () => {
+export async function Header() {
   const session = await auth();
 
   return (
@@ -76,4 +76,4 @@ export const Header = async () => {
       </nav>
     </header>
   );
-};
+}

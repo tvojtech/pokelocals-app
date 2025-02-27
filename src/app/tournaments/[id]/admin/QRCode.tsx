@@ -3,16 +3,13 @@
 import { SquareArrowOutUpRight } from 'lucide-react';
 import Link from 'next/link';
 import { QRCodeSVG } from 'qrcode.react';
-import React from 'react';
 
 import { useWindowLocation } from '@/app/hooks';
 import { buttonVariants } from '@/components/ui/button';
 import { CopyToClipboardButton } from '@/components/ui/copy-to-clipboard';
 import { cn } from '@/lib/utils';
 
-export const QRCode: React.FC<{ tournamentId: string }> = ({
-  tournamentId,
-}) => {
+export function QRCode({ tournamentId }: { tournamentId: string }) {
   const location = useWindowLocation();
 
   if (!location?.origin) {
@@ -39,4 +36,4 @@ export const QRCode: React.FC<{ tournamentId: string }> = ({
       <QRCodeSVG value={pairingsUrl} className="w-60 h-60 m-10" />
     </div>
   );
-};
+}

@@ -1,7 +1,7 @@
 'use client';
 
 import { Check, Clipboard } from 'lucide-react';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -11,10 +11,10 @@ interface CopyToClipboardButtonProps {
   size?: number;
 }
 
-export const CopyToClipboardButton: React.FC<CopyToClipboardButtonProps> = ({
+export function CopyToClipboardButton({
   textToCopy,
   size,
-}) => {
+}: CopyToClipboardButtonProps) {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = useCallback(() => {
@@ -39,4 +39,4 @@ export const CopyToClipboardButton: React.FC<CopyToClipboardButtonProps> = ({
       </div>
     </div>
   );
-};
+}

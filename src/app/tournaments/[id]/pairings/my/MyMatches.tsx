@@ -2,11 +2,15 @@ import { Player, Pod, Tournament } from '@/app/actions/tournament';
 import { getPlayerNameForId, MatchOutcome } from '@/app/pokemonUtils';
 import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
 
-export const MyMatches: React.FC<{
+export function MyMatches({
+  me,
+  pod: myPod,
+  tournament,
+}: {
   me: Player;
   pod: Pod;
   tournament: Tournament;
-}> = ({ me, pod: myPod, tournament }) => {
+}) {
   const myMatches = myPod.rounds
     .map(round => ({
       match: round.matches.find(
@@ -63,4 +67,4 @@ export const MyMatches: React.FC<{
       })}
     </div>
   );
-};
+}

@@ -37,9 +37,7 @@ const groupPlayersByDivision = (
   );
 };
 
-export const Roster: React.FC<{ tournament: Tournament }> = ({
-  tournament,
-}) => {
+export function Roster({ tournament }: { tournament: Tournament }) {
   const { players } = tournament;
   if (!players || players.length === 0) {
     return <Alert type="warning" message="Roster not published yet." />;
@@ -61,7 +59,7 @@ export const Roster: React.FC<{ tournament: Tournament }> = ({
         ))}
     </div>
   );
-};
+}
 
 const PlayersSection: React.FC<{
   players: Player[];

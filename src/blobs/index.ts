@@ -1,6 +1,6 @@
 import { exhaustiveMatchingGuard } from '@/app/utils';
 
-export const getStore = async (namespace: string) => {
+export async function getStore(namespace: string) {
   switch (process.env.BLOB_STORAGE) {
     case 'local': {
       const { getStore } = await import('./local');
@@ -16,4 +16,4 @@ export const getStore = async (namespace: string) => {
         'Invalid blob storage'
       );
   }
-};
+}

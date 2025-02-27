@@ -17,10 +17,13 @@ import {
 } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 
-export const FeedbackDialog: React.FC<{
+export function FeedbackDialog({
+  button,
+  afterSuccessfulSubmit,
+}: {
   button?: React.ReactNode;
   afterSuccessfulSubmit?: () => void;
-}> = ({ button, afterSuccessfulSubmit }) => {
+}) {
   const [isOpen, toggle] = useToggle(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [, formAction, isPending] = useActionState(async () => {
@@ -92,4 +95,4 @@ export const FeedbackDialog: React.FC<{
       </DialogContent>
     </Dialog>
   );
-};
+}

@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import { unstable_cacheTag as cacheTag } from 'next/cache';
 import { Suspense } from 'react';
 
 import { loadTournament } from '@/app/actions/tournament';
@@ -14,10 +13,7 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  'use cache';
   const { id } = await params;
-
-  cacheTag('tournament:' + id);
 
   const tournament = await loadTournament(id);
 
@@ -46,10 +42,7 @@ export default async function TournamentPairingsLayout({
   children: React.ReactNode;
   params: Promise<{ id: string }>;
 }) {
-  'use cache';
   const { id } = await params;
-
-  cacheTag('tournament:' + id);
 
   const tournament = await loadTournament(id);
 

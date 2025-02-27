@@ -1,7 +1,6 @@
 'use server';
 
 import admin from 'firebase-admin';
-import { revalidateTag } from 'next/cache';
 
 import { listNotificationTokens } from '@/app/actions/notifications';
 import { Match, PlayerScore, Tournament } from '@/app/actions/tournament/types';
@@ -41,8 +40,6 @@ export async function uploadTournamentFile(
         uploaded_by: session?.user?.email ?? 'anonymous',
       },
     });
-
-    revalidateTag('tournament:' + tournamentId);
 
     // const payload: Message = {
     //   webpush: link && {

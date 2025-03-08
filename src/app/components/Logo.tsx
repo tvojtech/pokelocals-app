@@ -9,7 +9,7 @@ export function Logo({ height = 32, width = 137 }: LogoProps) {
   return (
     <Image
       priority
-      src="/images/logo-beta.svg"
+      src="/images/logo-locals-red-beta.svg"
       alt="logo"
       height={height}
       width={width}

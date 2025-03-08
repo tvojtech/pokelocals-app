@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: 'PTCG Pairings',
       title: tournament?.data.name,
       description: 'Pairings for ' + tournament?.data.name,
-      images: 'https://ptcg-pairings.netlify.app/images/favicon.svg',
+      images: 'https://ptcg-pairings.netlify.app/favicon.svg',
     },
   };
 }

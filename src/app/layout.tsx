@@ -36,9 +36,6 @@ export const metadata: Metadata = {
     locale: 'en_US',
     siteName: 'PTCG Pairings',
   },
-  icons: {
-    icon: '/images/favicon.svg',
-  },
 };
 
 export default function RootLayout({
@@ -49,7 +46,25 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/images/favicon.svg" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link
+          rel="icon"
+          href="/favicon-32x32.png"
+          sizes="32x32"
+          type="image/png"
+        />
+        <link
+          rel="icon"
+          href="/favicon-48x48.png"
+          sizes="48x48"
+          type="image/png"
+        />
+        <link
+          rel="icon"
+          href="/favicon-64x64.png"
+          sizes="64x64"
+          type="image/png"
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-dvh bg-background`}>

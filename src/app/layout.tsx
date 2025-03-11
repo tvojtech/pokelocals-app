@@ -23,18 +23,18 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | PTCG Pairings',
-    default: 'PTCG Pairings',
+    template: '%s | POKÉ LOCALS',
+    default: 'POKÉ LOCALS',
   },
-  description: 'Online pairings for your local PTCG tournament.',
+  description: 'Online pairings for your local Pokémon tournament.',
   openGraph: {
     title: {
-      default: 'PTCG Pairings',
-      template: '%s | PTCG Pairings',
+      default: 'POKÉ LOCALS',
+      template: '%s | POKÉ LOCALS',
     },
     type: 'website',
     locale: 'en_US',
-    siteName: 'PTCG Pairings',
+    siteName: 'POKÉ LOCALS',
   },
 };
 
@@ -47,18 +47,6 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link
-          rel="icon"
-          href="/favicon-32x32.png"
-          sizes="32x32"
-          type="image/png"
-        />
-        <link
-          rel="icon"
-          href="/favicon-48x48.png"
-          sizes="48x48"
-          type="image/png"
-        />
         <link
           rel="icon"
           href="/favicon-64x64.png"

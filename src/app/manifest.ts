@@ -2,9 +2,9 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'PTCG Pairings',
-    short_name: 'PTCG Pairings',
-    description: 'Online pairings for your local PTCG tournament.',
+    name: 'POKÉ LOCALS',
+    short_name: 'POKÉ LOCALS',
+    description: 'Online pairings for your local Pokémon tournament.',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',

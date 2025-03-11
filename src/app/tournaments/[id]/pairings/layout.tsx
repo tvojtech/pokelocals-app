@@ -27,10 +27,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       type: 'website',
       locale: 'en_US',
-      siteName: 'PTCG Pairings',
+      siteName: 'POKÉ LOCALS',
       title: tournament?.data.name,
       description: 'Pairings for ' + tournament?.data.name,
-      images: 'https://ptcg-pairings.netlify.app/favicon.svg',
+      images: 'https://app.pokelocals.online/favicon.svg',
     },
   };
 }

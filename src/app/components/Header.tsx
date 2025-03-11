@@ -5,7 +5,6 @@ import React from 'react';
 import { auth } from '@/app/auth';
 import { FeedbackDialog } from '@/app/components/FeedbackDialog';
 import { HeaderDrawer } from '@/app/components/HeaderDrawer';
-import { ImportLocalStorage } from '@/app/components/ImportLocalStorage';
 import { Logo } from '@/app/components/Logo';
 import { SignOutButton } from '@/app/components/SignOutButton';
 import { Button, buttonVariants } from '@/components/ui/button';
@@ -30,7 +29,6 @@ export async function Header() {
 
   return (
     <header className="bg-slate-50 border-b-2 shadow-sm text-gray-800 print:hidden">
-      <ImportLocalStorage />
       <nav>
         <div className="lg:container lg:mx-auto px-4 md:px-10 py-4 flex justify-between items-center h-16">
           <Link href="/">

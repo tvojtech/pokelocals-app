@@ -65,7 +65,6 @@ export default function RootLayout({
           sizes="64x64"
           type="image/png"
         />
-        <script async rel="preload" src="/import.js" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-dvh bg-background`}>

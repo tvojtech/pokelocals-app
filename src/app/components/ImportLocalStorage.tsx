@@ -14,7 +14,7 @@ export function ImportLocalStorage() {
         {
           type: 'GET_POKEMON_ID',
         },
-        'https://ptcg-pairings.netlify.app'
+        'https://pokelocals-app.vercel.app'
       );
     }
   };

@@ -34,8 +34,8 @@ export const InlinePokemonIdCheckForm = clientOnlyComponent(() => {
               <>
                 <p>&nbsp;</p>
                 <p>
-                  You may have filled in the ID before, but due to the domain
-                  change, it must be re-entered.
+                  You may have filled this before, but due to the domain change,
+                  it must be re-entered.
                 </p>
                 <p>&nbsp;</p>
                 <p>We apologize for the inconvenience.</p>

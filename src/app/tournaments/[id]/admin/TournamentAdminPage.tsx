@@ -1,5 +1,4 @@
 import { FileUpload } from '@/app/components/FileUpload';
-import { RestrictedPage } from '@/app/components/RestrictedPage';
 import { QRCode } from '@/app/tournaments/[id]/admin/QRCode';
 
 export type TournamentAdminPageProps = {
@@ -11,7 +10,7 @@ export async function TournamentAdminPage({
 }: TournamentAdminPageProps) {
   const { id } = await params;
   return (
-    <RestrictedPage>
+    <>
       <h1 className="text-3xl font-bold text-center print:hidden">
         Tournament
       </h1>
@@ -25,6 +24,6 @@ export async function TournamentAdminPage({
           <FileUpload tournamentId={id} />
         </div>
       </div>
-    </RestrictedPage>
+    </>
   );
 }

@@ -10,10 +10,14 @@ export default async function Login(props: {
   searchParams: Promise<SearchParams>;
 }) {
   const session = await auth();
-  if (session) {
-    redirect('/');
-  }
   const searchParams = await props.searchParams;
+
+  if (session) {
+    const returnUrl = Array.isArray(searchParams.return)
+      ? searchParams.return[0]
+      : searchParams.return;
+    redirect(returnUrl ?? '/');
+  }
   return (
     <div className="max-w-lg mx-auto">
       <LoginForm

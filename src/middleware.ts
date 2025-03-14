@@ -20,7 +20,7 @@ export async function middleware(req: NextRequest) {
   const { auth } = await response.json();
 
   // we patch the callback to send the user back to where auth was required
-  url.search = new URLSearchParams(`return=${url}`).toString();
+  url.search = new URLSearchParams({ return: req.url }).toString();
   url.pathname = `/login`;
 
   return !auth ? NextResponse.redirect(url) : NextResponse.next();

@@ -1,7 +1,7 @@
 import { SearchParams } from 'next/dist/server/request/search-params';
 import { redirect } from 'next/navigation';
 
-import { auth } from '../auth';
+import { auth } from '../../auth';
 import { LoginForm } from './LoginForm';
 
 export const revalidate = 86_400;

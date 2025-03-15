@@ -1,4 +1,4 @@
-import { LogIn, MessageCircle, Settings2, User2 } from 'lucide-react';
+import { MessageCircle, Settings2 } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
@@ -6,9 +6,10 @@ import { auth } from '@/app/auth';
 import { FeedbackDialog } from '@/app/components/FeedbackDialog';
 import { HeaderDrawer } from '@/app/components/HeaderDrawer';
 import { Logo } from '@/app/components/Logo';
-import { SignOutButton } from '@/app/components/SignOutButton';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+
+import { AccountInfo } from './AccountInfo';
 
 const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
   children,
@@ -54,7 +55,7 @@ export async function Header() {
               </li>
             )}
             <li>
-              {!session?.user ? (
+              {/* {!session?.user ? (
                 <HeaderLink href="/login">
                   <LogIn size={18} />
                   Login
@@ -67,7 +68,8 @@ export async function Header() {
                   </HeaderLink>
                   <SignOutButton />
                 </div>
-              )}
+              )} */}
+              <AccountInfo />
             </li>
           </ul>
 

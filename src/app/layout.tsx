@@ -1,5 +1,6 @@
 import './globals.css';
 
+import { ClerkProvider } from '@clerk/nextjs';
 import { Provider as RollbarProvider } from '@rollbar/react';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
@@ -62,21 +63,25 @@ export default function RootLayout({
           BUILD_ID: {process.env.BUILD_ID}
         </div>
         <PostHogProvider>
+          <ClerkProvider>
           <SessionProvider>
-            <RollbarProvider config={clientConfig}>
-              <Suspense>
-                <Header />
-                <NextTopLoader showSpinner={false} color="hsl(var(--brand))" />
-                <div className="flex-grow h-full">
-                  <main className="container mx-auto px-4 py-8">
+              <RollbarProvider config={clientConfig}>
+                <Suspense>
+                  <Header />
+                  <NextTopLoader showSpinner={false} color="hsl(var(--brand))" />
+                  <div className="flex-grow h-full">
+                    <main className="container mx-auto px-4 py-8">
+                    
                     {children}
+                  
                   </main>
-                </div>
-                <Footer />
-              </Suspense>
-            </RollbarProvider>
-          </SessionProvider>
+                  </div>
+                  <Footer />
+                </Suspense>
+              </RollbarProvider>
+            </SessionProvider>
         </PostHogProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

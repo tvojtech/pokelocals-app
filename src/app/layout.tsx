@@ -9,6 +9,7 @@ import { Suspense } from 'react';
 
 import Footer from '@/app/components/Footer';
 import { Header } from '@/app/components/Header';
+import { PostHogProvider } from '@/posthog';
 import { clientConfig } from '@/rollbar';
 
 const geistSans = Geist({
@@ -60,18 +61,22 @@ export default function RootLayout({
           COMMIT_REF: {process.env.COMMIT_REF}
           BUILD_ID: {process.env.BUILD_ID}
         </div>
-        <SessionProvider>
-          <RollbarProvider config={clientConfig}>
-            <Suspense>
-              <Header />
-              <NextTopLoader showSpinner={false} color="hsl(var(--brand))" />
-              <div className="flex-grow h-full">
-                <main className="container mx-auto px-4 py-8">{children}</main>
-              </div>
-              <Footer />
-            </Suspense>
-          </RollbarProvider>
-        </SessionProvider>
+        <PostHogProvider>
+          <SessionProvider>
+            <RollbarProvider config={clientConfig}>
+              <Suspense>
+                <Header />
+                <NextTopLoader showSpinner={false} color="hsl(var(--brand))" />
+                <div className="flex-grow h-full">
+                  <main className="container mx-auto px-4 py-8">
+                    {children}
+                  </main>
+                </div>
+                <Footer />
+              </Suspense>
+            </RollbarProvider>
+          </SessionProvider>
+        </PostHogProvider>
       </body>
     </html>
   );

@@ -44,16 +44,22 @@ const PairingsSection: React.FC<{
   const divisionString = getDivisionString(pod);
   return (
     <div>
-      <h2 className="w-full flex justify-center mt-10 border-b-2 mb-2 text-xl font-bold">
-        {divisionString && divisionString}
-      </h2>
       <Tabs defaultValue={pod.rounds.length.toString()}>
-        <TabsList className="w-full">
-          {pod.rounds.map((round, idx) => (
-            <TabsTrigger key={idx} value={round.number.toString()}>
-              {round.number}
-            </TabsTrigger>
-          ))}
+        <div className="flex justify-center font-bold text-lg border-b-2">
+          {divisionString && divisionString}
+        </div>
+        <TabsList className="w-full flex justify-between bg-transparent border-b-2 shadow-none rounded-none">
+          <span className="px-2">Round</span>
+          <div>
+            {pod.rounds.map((round, idx) => (
+              <TabsTrigger
+                key={idx}
+                value={round.number.toString()}
+                className="data-[state=active]:bg-muted shadow-none">
+                {round.number}
+              </TabsTrigger>
+            ))}
+          </div>
         </TabsList>
         {pod.rounds.map((round, idx) => (
           <TabsContent key={idx} value={round.number.toString()}>

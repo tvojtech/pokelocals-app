@@ -1,37 +1,16 @@
-import { cookies } from 'next/headers';
 import React from 'react';
 
 import { Pod, Round, Tournament } from '@/app/actions/tournament';
 import { Alert } from '@/app/components/Alert';
 import { PairingsRow } from '@/app/tournaments/[id]/pairings/PairingsRow';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
 
-export async function Pairings({ tournament }: { tournament: Tournament }) {
+export function Pairings({ tournament }: { tournament: Tournament }) {
   const { pods } = tournament;
-  const cookieStore = await cookies();
-
   if (!pods || pods.length === 0) {
     return <Alert type="warning" message="Pairings not published yet." />;
   }
-
   return (
-    <Accordion
-      type="single"
-      collapsible
-      value={
-        cookieStore.get('pairing:selectedCategory')?.value ??
-        pods?.[0]?.category
-      }
-      onValueChange={async value => {
-        'use server';
-        (await cookies()).set('pairing:selectedCategory', value);
-        console.log(value);
-      }}>
+    <div className="space-y-4">
       {pods.map((pod, idx) => (
         <PairingsSection
           key={idx}
@@ -40,7 +19,7 @@ export async function Pairings({ tournament }: { tournament: Tournament }) {
           tournament={tournament}
         />
       ))}
-    </Accordion>
+    </div>
   );
 }
 
@@ -56,38 +35,31 @@ const categoryToDivision: Record<string, string> = {
 const getDivisionString = (pod: Pod) =>
   categoryToDivision[pod.category] ?? null;
 
-function PairingsSection({
-  pod,
-  round,
-  tournament,
-}: {
+const PairingsSection: React.FC<{
   pod: Pod;
   round: Round;
   tournament: Tournament;
-}) {
+}> = ({ pod, round, tournament }) => {
   const divisionString = getDivisionString(pod);
   return (
-    <AccordionItem value={pod.category}>
-      <AccordionTrigger>
-        <div className="w-full flex justify-center text-lg font-bold">
-          {divisionString && divisionString + ' - '} Round {round.number}
-        </div>
-      </AccordionTrigger>
-      <AccordionContent className="pb-10">
-        <div className="grid grid-cols-3 align-center gap-0 gap-y-1 text-lg">
-          {round.matches
-            .toSorted((a, b) => a.tablenumber - b.tablenumber)
-            .map((match, idx) => (
-              <React.Fragment key={idx}>
-                <div
-                  className="border-t border-t-gray-200"
-                  style={{ gridColumn: '1 / 5' }}
-                />
-                <PairingsRow match={match} tournament={tournament} />
-              </React.Fragment>
-            ))}
-        </div>
-      </AccordionContent>
-    </AccordionItem>
+    <div>
+      <h2 className="w-full flex justify-center mt-10 border-b-2 mb-2 text-xl font-bold">
+        {divisionString && divisionString + ' - '}
+        Round {round.number}
+      </h2>
+      <div className="grid grid-cols-3 align-center gap-0 gap-y-1">
+        {round.matches
+          .toSorted((a, b) => a.tablenumber - b.tablenumber)
+          .map((match, idx) => (
+            <React.Fragment key={idx}>
+              <PairingsRow match={match} tournament={tournament} />
+              <div
+                className="border-t border-t-gray-200"
+                style={{ gridColumn: '1 / 5' }}
+              />
+            </React.Fragment>
+          ))}
+      </div>
+    </div>
   );
-}
+};

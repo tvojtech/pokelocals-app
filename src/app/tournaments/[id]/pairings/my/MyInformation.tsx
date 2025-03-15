@@ -19,7 +19,7 @@ export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(
 
     const { players, pods } = tournament;
 
-    const me = players.find(player => player.userid === myId);
+    const me = players[myId];
 
     if (!me) {
       console.log('me not found');

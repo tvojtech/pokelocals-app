@@ -4,7 +4,12 @@ import admin from 'firebase-admin';
 import { revalidateTag } from 'next/cache';
 
 import { listNotificationTokens } from '@/app/actions/notifications';
-import { Match, PlayerScore, Tournament } from '@/app/actions/tournament/types';
+import {
+  Match,
+  PlayerScore,
+  Tournament,
+  XmlTournament,
+} from '@/app/actions/tournament/types';
 import { xmlToObject } from '@/app/actions/tournament/xml';
 import { auth } from '@/app/auth';
 import { exhaustiveMatchingGuard } from '@/app/utils';
@@ -72,7 +77,7 @@ export async function uploadTournamentFile(
   }
 }
 
-function calculatePlayerScores(tournament: Tournament) {
+function calculatePlayerScores(tournament: XmlTournament): Tournament {
   const { players, pods } = tournament;
 
   let scores: Record<string, PlayerScore> = players.reduce(
@@ -102,7 +107,14 @@ function calculatePlayerScores(tournament: Tournament) {
     });
   });
 
-  return { ...tournament, scores };
+  return {
+    ...tournament,
+    scores,
+    players: players.reduce(
+      (acc, player) => ({ ...acc, [player.userid]: player }),
+      {}
+    ),
+  };
 }
 
 enum PlayerResult {

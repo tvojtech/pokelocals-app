@@ -3,6 +3,7 @@ import React from 'react';
 import { Pod, Round, Tournament } from '@/app/actions/tournament';
 import { Alert } from '@/app/components/Alert';
 import { PairingsRow } from '@/app/tournaments/[id]/pairings/PairingsRow';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export function Pairings({ tournament }: { tournament: Tournament }) {
   const { pods } = tournament;
@@ -44,22 +45,34 @@ const PairingsSection: React.FC<{
   return (
     <div>
       <h2 className="w-full flex justify-center mt-10 border-b-2 mb-2 text-xl font-bold">
-        {divisionString && divisionString + ' - '}
-        Round {round.number}
+        {divisionString && divisionString}
       </h2>
-      <div className="grid grid-cols-3 align-center gap-0 gap-y-1">
-        {round.matches
-          .toSorted((a, b) => a.tablenumber - b.tablenumber)
-          .map((match, idx) => (
-            <React.Fragment key={idx}>
-              <PairingsRow match={match} tournament={tournament} />
-              <div
-                className="border-t border-t-gray-200"
-                style={{ gridColumn: '1 / 5' }}
-              />
-            </React.Fragment>
+      <Tabs defaultValue={pod.rounds.length.toString()}>
+        <TabsList className="w-full">
+          {pod.rounds.map((round, idx) => (
+            <TabsTrigger key={idx} value={round.number.toString()}>
+              {round.number}
+            </TabsTrigger>
           ))}
-      </div>
+        </TabsList>
+        {pod.rounds.map((round, idx) => (
+          <TabsContent key={idx} value={round.number.toString()}>
+            <div className="grid grid-cols-3 align-center gap-0 gap-y-1">
+              {round.matches
+                .toSorted((a, b) => a.tablenumber - b.tablenumber)
+                .map((match, idx) => (
+                  <React.Fragment key={idx}>
+                    <PairingsRow match={match} tournament={tournament} />
+                    <div
+                      className="border-t border-t-gray-200"
+                      style={{ gridColumn: '1 / 5' }}
+                    />
+                  </React.Fragment>
+                ))}
+            </div>
+          </TabsContent>
+        ))}
+      </Tabs>
     </div>
   );
 };

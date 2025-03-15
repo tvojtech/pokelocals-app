@@ -1,5 +1,5 @@
 import { Player, Pod, Tournament } from '@/app/actions/tournament';
-import { getPlayerNameForId, MatchOutcome } from '@/app/pokemonUtils';
+import { getPlayerName, MatchOutcome } from '@/app/pokemonUtils';
 import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
 
 export function MyMatches({
@@ -21,8 +21,6 @@ export function MyMatches({
     .filter(({ match }) => match !== undefined)
     .filter(({ match }) => !!match?.outcome)
     .reverse();
-
-  const getPlayerName = getPlayerNameForId(tournament.players);
 
   return (
     <div className="grid grid-cols-1 gap-2">
@@ -60,8 +58,9 @@ export function MyMatches({
           <div key={idx}>
             R{round} at table {match?.tablenumber}:{' '}
             <span className="font-bold">{outcome}</span> vs.{' '}
-            {getPlayerName(opponent)}{' '}
+            {getPlayerName(tournament, opponent)}{' '}
             <PlayerScore score={tournament.scores[opponent]} />
+            {tournament.players[opponent].dropped && <span> Dropped</span>}
           </div>
         );
       })}

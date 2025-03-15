@@ -44,6 +44,7 @@
     "next": "^15.3.0-canary.0",
     "next-auth": "^5.0.0-beta.25",
     "nextjs-toploader": "^3.7.15",
+    "posthog-js": "^1.231.0",
     "qrcode.react": "^4.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

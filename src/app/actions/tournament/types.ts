@@ -48,7 +48,7 @@ export interface DivisionStandings {
 
 export type TournamentStandings = Record<Division, DivisionStandings>;
 
-export interface Tournament {
+export interface XmlTournament {
   type: number;
   stage: number;
   version: string;
@@ -58,8 +58,11 @@ export interface Tournament {
   timeelapsed: number;
   players: Player[];
   pods: Pod[];
-  scores: Record<string, PlayerScore>;
   standings?: TournamentStandings;
+}
+export interface Tournament extends Omit<XmlTournament, 'players'> {
+  players: Record<string, Player>;
+  scores: Record<string, PlayerScore>;
 }
 
 export interface Pod {

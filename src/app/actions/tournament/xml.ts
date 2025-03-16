@@ -8,18 +8,18 @@ import {
   Pod,
   Round,
   Subgroup,
-  Tournament,
   TournamentStandings,
+  XmlTournament,
 } from './types';
 
-export function xmlToObject(xmlString: string): Tournament {
+export function xmlToObject(xmlString: string): XmlTournament {
   const parser = new XMLParser({
     ignoreAttributes: false,
     attributeNamePrefix: '@_',
   });
   const jsonData = parser.parse(xmlString);
 
-  const tournament: Tournament = {
+  const tournament: XmlTournament = {
     type: Number(jsonData.tournament['@_type']),
     stage: Number(jsonData.tournament['@_stage']),
     version: jsonData.tournament['@_version'],
@@ -41,7 +41,6 @@ export function xmlToObject(xmlString: string): Tournament {
     timeelapsed: Number(jsonData.tournament.timeelapsed),
     players: parsePlayers(jsonData.tournament.players.player),
     pods: parsePods(jsonData.tournament.pods.pod),
-    scores: {},
     standings: jsonData.tournament?.standings?.pod
       ? parseStandings(jsonData.tournament.standings.pod)
       : undefined,
@@ -58,7 +57,7 @@ const divisionMap: Record<XmlStandingsCategory, Division> = {
 
 type XmlStandingsCategory = '0' | '1' | '2';
 
-const parseStandings = (standings: any): Tournament['standings'] => {
+const parseStandings = (standings: any): XmlTournament['standings'] => {
   return (Array.isArray(standings) ? standings : [standings])
     .map((standing: any) => ({
       category: divisionMap[standing['@_category'] as XmlStandingsCategory],

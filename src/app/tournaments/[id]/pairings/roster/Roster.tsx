@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Division, Player, Tournament } from '@/app/actions/tournament';
 import { Alert } from '@/app/components/Alert';
-import { getPlayerNameForId } from '@/app/pokemonUtils';
+import { getPlayerName } from '@/app/pokemonUtils';
 import { Separator } from '@/components/ui/separator';
 
 const getPlayerDivision = (player: Player) => {
@@ -39,11 +39,11 @@ const groupPlayersByDivision = (
 
 export function Roster({ tournament }: { tournament: Tournament }) {
   const { players } = tournament;
-  if (!players || players.length === 0) {
+  if (!players || Object.keys(players).length === 0) {
     return <Alert type="warning" message="Roster not published yet." />;
   }
 
-  const playersByDivision = groupPlayersByDivision(players);
+  const playersByDivision = groupPlayersByDivision(Object.values(players));
 
   return (
     <div className="space-y-4">
@@ -66,10 +66,9 @@ const PlayersSection: React.FC<{
   tournament: Tournament;
   division: string;
 }> = ({ players, tournament, division }) => {
-  const getPlayerName = getPlayerNameForId(tournament.players);
   const sortedPlayers = players.toSorted((p1, p2) => {
-    const p1Name = getPlayerName(p1.userid);
-    const p2Name = getPlayerName(p2.userid);
+    const p1Name = getPlayerName(tournament, p1.userid);
+    const p2Name = getPlayerName(tournament, p2.userid);
     return p1Name.localeCompare(p2Name);
   });
   return (
@@ -82,7 +81,7 @@ const PlayersSection: React.FC<{
         {sortedPlayers.map((player, idx) => (
           <React.Fragment key={idx}>
             <div key={idx} className="grid grid-cols-2 gap-2 px-4">
-              <div>{getPlayerName(player.userid)}</div>
+              <div>{getPlayerName(tournament, player.userid)}</div>
               <div className="flex items-center gap-2">
                 {player.late && (
                   <span className="text-red-600 flex items-center gap-2">

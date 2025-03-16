@@ -44,6 +44,35 @@ const PairingsSection: React.FC<{
   const divisionString = getDivisionString(pod);
   return (
     <div>
+      <h2 className="w-full flex justify-center mt-10 border-b-2 mb-2 text-xl font-bold">
+        {divisionString && divisionString + ' - '}
+        Round {round.number}
+      </h2>
+      <div className="grid grid-cols-3 align-center gap-0 gap-y-1">
+        {round.matches
+          .toSorted((a, b) => a.tablenumber - b.tablenumber)
+          .map((match, idx) => (
+            <React.Fragment key={idx}>
+              <PairingsRow match={match} tournament={tournament} />
+              <div
+                className="border-t border-t-gray-200"
+                style={{ gridColumn: '1 / 5' }}
+              />
+            </React.Fragment>
+          ))}
+      </div>
+    </div>
+  );
+};
+
+const PairingsSectionNew: React.FC<{
+  pod: Pod;
+  round: Round;
+  tournament: Tournament;
+}> = ({ pod, round, tournament }) => {
+  const divisionString = getDivisionString(pod);
+  return (
+    <div>
       <Tabs defaultValue={pod.rounds.length.toString()}>
         <div className="flex justify-center font-bold text-lg border-b-2">
           {divisionString && divisionString}

@@ -5,7 +5,7 @@ import {
   DivisionStandings,
   Tournament,
 } from '@/app/actions/tournament';
-import { getPlayerNameForId } from '@/app/pokemonUtils';
+import { getPlayerName } from '@/app/pokemonUtils';
 import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
 import { Separator } from '@/components/ui/separator';
 
@@ -39,7 +39,6 @@ const StandingsSection: React.FC<{
   standings: DivisionStandings;
   tournament: Tournament;
 }> = ({ division, standings, tournament }) => {
-  const getPlayerName = getPlayerNameForId(tournament.players);
   return (
     <div>
       <h2 className="w-full flex gap-1 justify-center mt-10 border-b-2 mb-2 text-xl font-bold">
@@ -54,7 +53,7 @@ const StandingsSection: React.FC<{
               <div className="grid grid-cols-[3rem_1fr] px-4">
                 <div>{place}.</div>
                 <div className="flex items-center gap-2">
-                  {getPlayerName(id)}{' '}
+                  {getPlayerName(tournament, id)}{' '}
                   <PlayerScore score={tournament.scores[id]} />
                 </div>
               </div>

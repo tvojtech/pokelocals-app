@@ -64,24 +64,25 @@ export default function RootLayout({
         </div>
         <PostHogProvider>
           <ClerkProvider>
-          <SessionProvider>
+            <SessionProvider>
               <RollbarProvider config={clientConfig}>
                 <Suspense>
                   <Header />
-                  <NextTopLoader showSpinner={false} color="hsl(var(--brand))" />
+                  <NextTopLoader
+                    showSpinner={false}
+                    color="hsl(var(--brand))"
+                  />
                   <div className="flex-grow h-full">
                     <main className="container mx-auto px-4 py-8">
-                    
-                    {children}
-                  
-                  </main>
+                      {children}
+                    </main>
                   </div>
                   <Footer />
                 </Suspense>
               </RollbarProvider>
             </SessionProvider>
+          </ClerkProvider>
         </PostHogProvider>
-        </ClerkProvider>
       </body>
     </html>
   );

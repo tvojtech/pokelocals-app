@@ -1,15 +1,14 @@
-import { MessageCircle, Settings2 } from 'lucide-react';
+import { LogIn, MessageCircle, Settings2, User2 } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
-import { auth } from '@/app/auth';
 import { FeedbackDialog } from '@/app/components/FeedbackDialog';
 import { HeaderDrawer } from '@/app/components/HeaderDrawer';
 import { Logo } from '@/app/components/Logo';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-
-import { AccountInfo } from './AccountInfo';
+import { currentUser } from '@clerk/nextjs/server';
+import { SignOutButton } from './SignOutButton';
 
 const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
   children,
@@ -26,7 +25,7 @@ const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
 };
 
 export async function Header() {
-  const session = await auth();
+  const user = await currentUser();
 
   return (
     <header className="bg-slate-50 border-b-2 shadow-sm text-gray-800 print:hidden">
@@ -46,7 +45,7 @@ export async function Header() {
                 }
               />
             </li>
-            {!session?.user && (
+            {!user && (
               <li>
                 <HeaderLink href="/profile">
                   <Settings2 size={18} />
@@ -55,7 +54,7 @@ export async function Header() {
               </li>
             )}
             <li>
-              {/* {!session?.user ? (
+              {!user ? (
                 <HeaderLink href="/login">
                   <LogIn size={18} />
                   Login
@@ -64,12 +63,11 @@ export async function Header() {
                 <div className="flex items-center">
                   <HeaderLink href="/profile">
                     <User2 size={18} />
-                    {session.user?.email}
+                    {user.emailAddresses[0].emailAddress}
                   </HeaderLink>
                   <SignOutButton />
                 </div>
-              )} */}
-              <AccountInfo />
+              )}
             </li>
           </ul>
 

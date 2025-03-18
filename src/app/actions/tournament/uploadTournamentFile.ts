@@ -11,10 +11,10 @@ import {
   XmlTournament,
 } from '@/app/actions/tournament/types';
 import { xmlToObject } from '@/app/actions/tournament/xml';
-import { auth } from '@/app/auth';
 import { exhaustiveMatchingGuard } from '@/app/utils';
 import { getStore } from '@/blobs';
 import serviceAccount from '@/serviceAccount.json';
+import { currentUser } from '@clerk/nextjs/server';
 
 if (!admin.apps.length) {
   admin.initializeApp({
@@ -26,7 +26,7 @@ export async function uploadTournamentFile(
   formData: FormData,
   tournamentId: string
 ) {
-  const session = await auth();
+  const user = await currentUser();
   const file = formData.get('file') as File;
 
   if (!file) {
@@ -43,7 +43,7 @@ export async function uploadTournamentFile(
     await store.setJSON(tournamentId, tournament, {
       metadata: {
         uploaded_at: new Date().toISOString(),
-        uploaded_by: session?.user?.email ?? 'anonymous',
+        uploaded_by: user?.emailAddresses[0].emailAddress ?? 'anonymous',
       },
     });
     revalidateTag(tournamentId);

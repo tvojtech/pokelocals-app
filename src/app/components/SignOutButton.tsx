@@ -1,11 +1,13 @@
 'use client';
 
+import { useClerk } from '@clerk/nextjs';
 import { LogOut } from 'lucide-react';
-import { signOut } from 'next-auth/react';
 
 import { Button } from '@/components/ui/button';
 
 export function SignOutButton() {
+  const { signOut } = useClerk();
+
   return (
     <Button variant="ghost" title="Logout" onClick={() => signOut()}>
       <LogOut size={18} />

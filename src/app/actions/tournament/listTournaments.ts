@@ -1,13 +1,13 @@
 'use server';
 
-import { auth } from '@/app/auth';
 import { getStore } from '@/blobs';
 
+import { currentUser } from '@clerk/nextjs/server';
 import { Tournament } from './types';
 
 export async function listTournaments() {
-  const session = await auth();
-  if (!session?.user) {
+  const user = await currentUser();
+  if (!user) {
     return undefined;
   }
   const store = await getStore('tournaments');
@@ -18,7 +18,10 @@ export async function listTournaments() {
       if (!tournamentData) {
         return undefined;
       }
-      if (tournamentData.metadata?.uploaded_by !== session.user?.email) {
+      if (
+        tournamentData.metadata?.uploaded_by !==
+        user.emailAddresses[0].emailAddress
+      ) {
         return undefined;
       }
       return { id: tournamentId, ...tournamentData.content };

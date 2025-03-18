@@ -1,16 +1,16 @@
 import { SearchParams } from 'next/dist/server/request/search-params';
 import { redirect } from 'next/navigation';
 
-import { auth } from '../../auth';
 import { LoginForm } from './LoginForm';
+import { auth } from '@clerk/nextjs/server';
 
 export const revalidate = 86_400;
 
 export default async function Login(props: {
   searchParams: Promise<SearchParams>;
 }) {
-  const session = await auth();
-  if (session) {
+  const { sessionId } = await auth();
+  if (sessionId) {
     redirect('/');
   }
   const searchParams = await props.searchParams;

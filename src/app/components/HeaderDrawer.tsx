@@ -2,9 +2,7 @@
 
 import { useToggle } from '@uidotdev/usehooks';
 import { LogIn, LogOut, Menu, Settings2, X } from 'lucide-react';
-import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'nextjs-toploader/app';
-import React from 'react';
 
 import { clientOnlyComponent } from '@/app/components/clientOnlyComponent';
 import { FeedbackDialog } from '@/app/components/FeedbackDialog';
@@ -19,11 +17,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import { useClerk } from '@clerk/nextjs';
 
 export const HeaderDrawer = clientOnlyComponent(
   () => {
     const [isDrawerOpen, toggleDrawer] = useToggle(false);
-    const { data: session } = useSession();
+    const { signOut, session } = useClerk();
     const router = useRouter();
 
     const sidebarButtonClickHandler = (link: string) => () => {
@@ -48,7 +47,9 @@ export const HeaderDrawer = clientOnlyComponent(
           <div className="space-y-4 p-4 px-2">
             {session ? (
               <div className="space-y-2">
-                <p className="text-md">{session.user?.email}</p>
+                <p className="text-md">
+                  {session.user?.emailAddresses?.[0].emailAddress}
+                </p>
                 <div className="flex justify-end">
                   <Button
                     onClick={() => signOut()}

@@ -21,7 +21,7 @@ const eslintConfig = [
       "@typescript-eslint/no-unused-vars": "warn",
       "no-duplicate-imports": "error",
       "react/jsx-key": "error",
-      "simple-import-sort/imports": "warn",
+      "simple-import-sort/imports": "off",
       "simple-import-sort/exports": "warn",
       semi: "error",
       "prefer-const": "error",

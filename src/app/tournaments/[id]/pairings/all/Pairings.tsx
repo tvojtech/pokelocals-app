@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Pod, Round, Tournament } from '@/app/actions/tournament';
-import { Alert } from '@/app/components/Alert';
+import { Alert } from '@/components/Alert';
 import { PairingsRow } from '@/app/tournaments/[id]/pairings/PairingsRow';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 

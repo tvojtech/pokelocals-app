@@ -3,7 +3,7 @@
 import { Ban, Check, Edit } from 'lucide-react';
 import { useRef, useState } from 'react';
 
-import { clientOnlyComponent } from '@/app/components/clientOnlyComponent';
+import { clientOnlyComponent } from '@/components/clientOnlyComponent';
 import { useMyPokemonId } from '@/app/hooks';
 
 export const PokemonIdForm = clientOnlyComponent(() => {

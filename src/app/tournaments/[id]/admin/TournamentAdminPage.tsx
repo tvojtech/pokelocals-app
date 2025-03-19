@@ -1,5 +1,5 @@
-import { FileUpload } from '@/app/components/FileUpload';
-import { RestrictedPage } from '@/app/components/RestrictedPage';
+import { FileUpload } from '@/components/FileUpload';
+import { RestrictedPage } from '@/components/RestrictedPage';
 import { QRCode } from '@/app/tournaments/[id]/admin/QRCode';
 
 export type TournamentAdminPageProps = {

@@ -2,8 +2,8 @@
 
 import { useRef } from 'react';
 
-import { Alert } from '@/app/components/Alert';
-import { clientOnlyComponent } from '@/app/components/clientOnlyComponent';
+import { Alert } from '@/components/Alert';
+import { clientOnlyComponent } from '@/components/clientOnlyComponent';
 import { useMyPokemonId } from '@/app/hooks';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

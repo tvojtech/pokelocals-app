@@ -6,8 +6,8 @@ import { useSession } from 'next-auth/react';
 import { useCallback } from 'react';
 
 import { registerNotificationToken } from '@/app/actions/notifications';
-import { clientOnlyComponent } from '@/app/components/clientOnlyComponent';
-import { voidComponent } from '@/app/components/voidComponent';
+import { clientOnlyComponent } from '@/components/clientOnlyComponent';
+import { voidComponent } from '@/components/voidComponent';
 import { catchError } from '@/app/utils';
 import useFcmToken from '@/hooks/useFcmToken';
 

@@ -2,9 +2,9 @@ import { LogIn, MessageCircle, Settings2, User2 } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
-import { FeedbackDialog } from '@/app/components/FeedbackDialog';
-import { HeaderDrawer } from '@/app/components/HeaderDrawer';
-import { Logo } from '@/app/components/Logo';
+import { FeedbackDialog } from '@/components/FeedbackDialog';
+import { HeaderDrawer } from '@/components/HeaderDrawer';
+import { Logo } from '@/components/Logo';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { currentUser } from '@clerk/nextjs/server';

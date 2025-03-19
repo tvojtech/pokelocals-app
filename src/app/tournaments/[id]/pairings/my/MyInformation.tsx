@@ -1,8 +1,8 @@
 'use client';
 
 import { Tournament } from '@/app/actions/tournament';
-import { Alert } from '@/app/components/Alert';
-import { clientOnlyComponent } from '@/app/components/clientOnlyComponent';
+import { Alert } from '@/components/Alert';
+import { clientOnlyComponent } from '@/components/clientOnlyComponent';
 import { useMyPokemonId } from '@/app/hooks';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { MyCurrentPairing } from '@/app/tournaments/[id]/pairings/my/MyCurrentPairing';

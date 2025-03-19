@@ -2,7 +2,7 @@ import { SquareArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 import { listTournaments } from '@/app/actions/tournament';
-import { RestrictedPage } from '@/app/components/RestrictedPage';
+import { RestrictedPage } from '@/components/RestrictedPage';
 import { TournamentsForm } from '@/app/tournaments/TournamentsForm';
 import { buttonVariants } from '@/components/ui/button';
 

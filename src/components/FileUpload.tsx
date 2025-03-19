@@ -3,7 +3,7 @@
 import { useActionState } from 'react';
 
 import { uploadTournamentFile } from '@/app/actions/tournament';
-import { Alert } from '@/app/components/Alert';
+import { Alert } from '@/components/Alert';
 
 export function FileUpload({ tournamentId }: { tournamentId: string }) {
   const uploadFileAction = async (prevState: unknown, formData: FormData) => {

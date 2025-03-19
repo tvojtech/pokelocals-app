@@ -4,9 +4,9 @@ import { useToggle } from '@uidotdev/usehooks';
 import { LogIn, LogOut, Menu, Settings2, X } from 'lucide-react';
 import { useRouter } from 'nextjs-toploader/app';
 
-import { clientOnlyComponent } from '@/app/components/clientOnlyComponent';
-import { FeedbackDialog } from '@/app/components/FeedbackDialog';
-import { Logo } from '@/app/components/Logo';
+import { clientOnlyComponent } from '@/components/clientOnlyComponent';
+import { FeedbackDialog } from '@/components/FeedbackDialog';
+import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import {

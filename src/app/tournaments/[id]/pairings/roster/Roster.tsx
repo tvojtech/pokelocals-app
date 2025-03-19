@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Division, Player, Tournament } from '@/app/actions/tournament';
-import { Alert } from '@/app/components/Alert';
+import { Alert } from '@/components/Alert';
 import { getPlayerName } from '@/app/pokemonUtils';
 import { Separator } from '@/components/ui/separator';
 

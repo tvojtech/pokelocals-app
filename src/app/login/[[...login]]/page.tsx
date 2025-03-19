@@ -4,8 +4,6 @@ import { redirect } from 'next/navigation';
 import { LoginForm } from './LoginForm';
 import { auth } from '@clerk/nextjs/server';
 
-export const revalidate = 86_400;
-
 export default async function Login(props: {
   searchParams: Promise<SearchParams>;
 }) {

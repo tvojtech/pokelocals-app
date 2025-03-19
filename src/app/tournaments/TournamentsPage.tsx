@@ -2,8 +2,8 @@ import { SquareArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 import { listTournaments } from '@/app/actions/tournament';
-import { RestrictedPage } from '@/app/components/RestrictedPage';
 import { TournamentsForm } from '@/app/tournaments/TournamentsForm';
+import { RestrictedPage } from '@/components/RestrictedPage';
 import { buttonVariants } from '@/components/ui/button';
 
 export async function TournamentsPage() {

@@ -1,7 +1,7 @@
 import { SearchParams } from 'next/dist/server/request/search-params';
 import { redirect } from 'next/navigation';
 
-import { SignupForm } from './SignupForm';
+import { SignUp } from '@clerk/nextjs';
 import { auth } from '@clerk/nextjs/server';
 
 export default async function Signup(props: {
@@ -12,15 +12,13 @@ export default async function Signup(props: {
     redirect('/');
   }
   const searchParams = await props.searchParams;
+  const returnUrl = Array.isArray(searchParams.return)
+    ? searchParams.return[0]
+    : searchParams.return;
+
   return (
-    <div className="max-w-lg mx-auto">
-      <SignupForm
-        returnUrl={
-          Array.isArray(searchParams.return)
-            ? searchParams.return[0]
-            : searchParams.return
-        }
-      />
+    <div className="flex justify-center">
+      <SignUp signInUrl="/sign-in" forceRedirectUrl={returnUrl ?? '/'} />
     </div>
   );
 }

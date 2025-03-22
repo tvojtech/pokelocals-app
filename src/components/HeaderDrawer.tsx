@@ -17,12 +17,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { useClerk } from '@clerk/nextjs';
+import { SignOutButton, useSession } from '@clerk/nextjs';
 
 export const HeaderDrawer = clientOnlyComponent(
   () => {
     const [isDrawerOpen, toggleDrawer] = useToggle(false);
-    const { signOut, session } = useClerk();
+    const { session } = useSession();
     const router = useRouter();
 
     const sidebarButtonClickHandler = (link: string) => () => {
@@ -51,14 +51,18 @@ export const HeaderDrawer = clientOnlyComponent(
                   {session.user?.emailAddresses?.[0].emailAddress}
                 </p>
                 <div className="flex justify-end">
-                  <Button
-                    onClick={() => signOut()}
-                    title="Logout"
-                    variant="default"
-                    className="w-full uppercase flex justify-center items-center">
-                    Logout
-                    <LogOut />
-                  </Button>
+                  <SignOutButton
+                    redirectUrl={
+                      typeof window !== 'undefined' ? window.location.href : '/'
+                    }>
+                    <Button
+                      title="Logout"
+                      variant="default"
+                      className="w-full uppercase flex justify-center items-center">
+                      Logout
+                      <LogOut />
+                    </Button>
+                  </SignOutButton>
                 </div>
               </div>
             ) : (

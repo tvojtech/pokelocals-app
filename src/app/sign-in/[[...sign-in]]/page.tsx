@@ -15,5 +15,13 @@ export default async function Login(props: {
   const returnUrl = Array.isArray(searchParams.return)
     ? searchParams.return[0]
     : searchParams.return;
-  return <SignIn fallbackRedirectUrl={returnUrl ?? '/'} />;
+  return (
+    <div className="flex justify-center">
+      <SignIn
+        signUpUrl="/sign-up"
+        signInUrl="/sign-in"
+        forceRedirectUrl={returnUrl ?? '/'}
+      />
+    </div>
+  );
 }

@@ -9,6 +9,7 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { currentUser } from '@clerk/nextjs/server';
 import { SignOutButton } from './SignOutButton';
+import { headers } from 'next/headers';
 
 const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
   children,
@@ -26,6 +27,8 @@ const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
 
 export async function Header() {
   const user = await currentUser();
+  const headerList = await headers();
+  const pathname = headerList.get('x-current-path') ?? '/';
 
   return (
     <header className="bg-slate-50 border-b-2 shadow-sm text-gray-800 print:hidden">
@@ -55,7 +58,8 @@ export async function Header() {
             )}
             <li>
               {!user ? (
-                <HeaderLink href="/sign-in">
+                <HeaderLink
+                  href={`/sign-in?return=${encodeURIComponent(pathname)}`}>
                   <LogIn size={18} />
                   Login
                 </HeaderLink>

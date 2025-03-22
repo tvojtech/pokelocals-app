@@ -99,7 +99,7 @@ export function LoginForm({ returnUrl }: { returnUrl?: string }) {
                   if (!isLoaded) return;
                   signIn?.authenticateWithRedirect({
                     strategy: 'oauth_discord',
-                    redirectUrl: '/login/sso-callback',
+                    redirectUrl: '/sign-in/sso-callback',
                     redirectUrlComplete: returnUrl ?? '/',
                   });
                 }}>

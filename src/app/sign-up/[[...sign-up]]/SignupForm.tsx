@@ -90,7 +90,7 @@ export function SignupForm({ returnUrl }: { returnUrl?: string }) {
 
     signUp.authenticateWithRedirect({
       strategy: 'oauth_discord',
-      redirectUrl: '/login/sso-callback',
+      redirectUrl: '/sign-in/sso-callback',
       redirectUrlComplete: returnUrl ?? '/',
     });
   };
@@ -178,7 +178,7 @@ export function SignupForm({ returnUrl }: { returnUrl?: string }) {
               <div className="text-center text-sm mt-4">
                 Already have an account?{' '}
                 <Link
-                  href={`/login${returnUrl ? `?returnUrl=${returnUrl}` : ''}`}
+                  href={`/sign-in${returnUrl ? `?returnUrl=${returnUrl}` : ''}`}
                   className="text-primary hover:underline">
                   Sign in
                 </Link>

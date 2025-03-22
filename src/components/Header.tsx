@@ -55,7 +55,7 @@ export async function Header() {
             )}
             <li>
               {!user ? (
-                <HeaderLink href="/login">
+                <HeaderLink href="/sign-in">
                   <LogIn size={18} />
                   Login
                 </HeaderLink>

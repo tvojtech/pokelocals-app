@@ -66,7 +66,7 @@ export const HeaderDrawer = clientOnlyComponent(
                 title="Sign in"
                 variant="default"
                 onClick={sidebarButtonClickHandler(
-                  `/login?return=${encodeURIComponent(window.location.pathname + '?' + window.location.search)}`
+                  `/sign-in?return=${encodeURIComponent(window.location.pathname + '?' + window.location.search)}`
                 )}
                 className="w-full uppercase flex justify-center items-center">
                 <LogIn />

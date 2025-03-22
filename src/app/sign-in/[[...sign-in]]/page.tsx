@@ -1,7 +1,7 @@
 import { SearchParams } from 'next/dist/server/request/search-params';
 import { redirect } from 'next/navigation';
 
-import { LoginForm } from './LoginForm';
+import { SignIn } from '@clerk/nextjs';
 import { auth } from '@clerk/nextjs/server';
 
 export default async function Login(props: {
@@ -12,15 +12,8 @@ export default async function Login(props: {
     redirect('/');
   }
   const searchParams = await props.searchParams;
-  return (
-    <div className="max-w-lg mx-auto">
-      <LoginForm
-        returnUrl={
-          Array.isArray(searchParams.return)
-            ? searchParams.return[0]
-            : searchParams.return
-        }
-      />
-    </div>
-  );
+  const returnUrl = Array.isArray(searchParams.return)
+    ? searchParams.return[0]
+    : searchParams.return;
+  return <SignIn fallbackRedirectUrl={returnUrl ?? '/'} />;
 }

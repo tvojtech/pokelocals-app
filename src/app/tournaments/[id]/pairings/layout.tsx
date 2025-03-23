@@ -2,11 +2,11 @@ import { Metadata } from 'next';
 import { Suspense } from 'react';
 
 import { loadTournament } from '@/app/actions/tournament';
-import { Alert } from '@/app/components/Alert';
-import { Notifications } from '@/app/components/Notifications';
-import { QRCodeOverlay } from '@/app/components/QRCodeOverlay';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { PageTabs } from '@/app/tournaments/[id]/pairings/PageTabs';
+import { Alert } from '@/components/Alert';
+import { Notifications } from '@/components/Notifications';
+import { QRCodeOverlay } from '@/components/QRCodeOverlay';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -56,7 +56,7 @@ export default async function TournamentPairingsLayout({
         </h1>
       )}
 
-      <div className="max-w-lg mx-auto mt-8 space-y-10">
+      <div className="mt-8 space-y-10">
         {(!tournament && (
           <>
             <div className="flex justify-end items-center">

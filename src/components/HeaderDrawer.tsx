@@ -6,9 +6,9 @@ import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'nextjs-toploader/app';
 import React from 'react';
 
-import { clientOnlyComponent } from '@/app/components/clientOnlyComponent';
-import { FeedbackDialog } from '@/app/components/FeedbackDialog';
-import { Logo } from '@/app/components/Logo';
+import { clientOnlyComponent } from '@/components/clientOnlyComponent';
+import { FeedbackDialog } from '@/components/FeedbackDialog';
+import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import {

@@ -3,10 +3,10 @@ import Link from 'next/link';
 import React from 'react';
 
 import { auth } from '@/app/auth';
-import { FeedbackDialog } from '@/app/components/FeedbackDialog';
-import { HeaderDrawer } from '@/app/components/HeaderDrawer';
-import { Logo } from '@/app/components/Logo';
-import { SignOutButton } from '@/app/components/SignOutButton';
+import { FeedbackDialog } from '@/components/FeedbackDialog';
+import { HeaderDrawer } from '@/components/HeaderDrawer';
+import { Logo } from '@/components/Logo';
+import { SignOutButton } from '@/components/SignOutButton';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 

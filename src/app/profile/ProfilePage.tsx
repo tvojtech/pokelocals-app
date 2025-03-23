@@ -1,5 +1,5 @@
-import { Alert } from '@/app/components/Alert';
-import { PokemonIdForm } from '@/app/components/PokemonIdForm';
+import { Alert } from '@/components/Alert';
+import { PokemonIdForm } from '@/components/PokemonIdForm';
 
 export async function ProfilePage() {
   return (

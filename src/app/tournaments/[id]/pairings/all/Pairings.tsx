@@ -44,7 +44,7 @@ const PairingsSection: React.FC<{
   const divisionString = getDivisionString(pod);
   return (
     <div>
-      <h2 className="w-full flex justify-center border-b-2 mb-2 text-xl font-bold">
+      <h2 className="w-full mt-12 lg:mt-0 flex justify-center border-b-2 mb-2 text-xl font-bold">
         {divisionString && divisionString + ' - '}
         Round {round.number}
       </h2>

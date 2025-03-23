@@ -73,7 +73,7 @@ const PlayersSection: React.FC<{
   });
   return (
     <div>
-      <h2 className="w-full flex gap-1 justify-center border-b-2 mb-2 text-xl font-bold">
+      <h2 className="w-full mt-12 lg:mt-0 border-b-2 mb-2 text-xl font-bold">
         <p className="capitalize">{division.toLowerCase()}</p>(
         {sortedPlayers.length} players)
       </h2>

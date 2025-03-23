@@ -56,7 +56,7 @@ export default async function TournamentPairingsLayout({
         </h1>
       )}
 
-      <div className="max-w-lg mx-auto mt-8 space-y-10">
+      <div className="mt-8 space-y-10">
         {(!tournament && (
           <>
             <div className="flex justify-end items-center">

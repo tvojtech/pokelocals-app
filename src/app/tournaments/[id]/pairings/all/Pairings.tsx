@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { Pod, Round, Tournament } from '@/app/actions/tournament';
-import { Alert } from '@/components/Alert';
 import { PairingsRow } from '@/app/tournaments/[id]/pairings/PairingsRow';
+import { Alert } from '@/components/Alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export function Pairings({ tournament }: { tournament: Tournament }) {
@@ -11,7 +11,7 @@ export function Pairings({ tournament }: { tournament: Tournament }) {
     return <Alert type="warning" message="Pairings not published yet." />;
   }
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 columns-sm">
       {pods.map((pod, idx) => (
         <PairingsSection
           key={idx}
@@ -44,7 +44,7 @@ const PairingsSection: React.FC<{
   const divisionString = getDivisionString(pod);
   return (
     <div>
-      <h2 className="w-full flex justify-center mt-10 border-b-2 mb-2 text-xl font-bold">
+      <h2 className="w-full mt-12 lg:mt-0 flex justify-center border-b-2 mb-2 text-xl font-bold">
         {divisionString && divisionString + ' - '}
         Round {round.number}
       </h2>

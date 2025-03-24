@@ -2,9 +2,9 @@
 
 import { useRef } from 'react';
 
+import { useMyPokemonId } from '@/app/hooks';
 import { Alert } from '@/components/Alert';
 import { clientOnlyComponent } from '@/components/clientOnlyComponent';
-import { useMyPokemonId } from '@/app/hooks';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 

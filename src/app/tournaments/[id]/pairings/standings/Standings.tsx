@@ -11,7 +11,7 @@ import { Separator } from '@/components/ui/separator';
 
 export function Standings({ tournament }: { tournament: Tournament }) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-8 columns-sm">
       {[Division.JUNIORS, Division.SENIORS, Division.MASTERS]
         .filter(division => {
           const standings = tournament.standings?.[division];
@@ -41,7 +41,7 @@ const StandingsSection: React.FC<{
 }> = ({ division, standings, tournament }) => {
   return (
     <div>
-      <h2 className="w-full flex gap-1 justify-center mt-10 border-b-2 mb-2 text-xl font-bold">
+      <h2 className="w-full flex gap-1 justify-center border-b-2 mb-2 text-xl font-bold">
         <p className="capitalize">{division.toLowerCase()}</p>(
         {standings.finished.length} players)
       </h2>

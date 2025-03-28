@@ -1,14 +1,14 @@
-import { LogIn, MessageCircle, Settings2, User2 } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
-import { auth } from '@/app/auth';
-import { FeedbackDialog } from '@/components/FeedbackDialog';
 import { HeaderDrawer } from '@/components/HeaderDrawer';
 import { Logo } from '@/components/Logo';
-import { SignOutButton } from '@/components/SignOutButton';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+
+import { FeedbackDialog } from './FeedbackDialog';
+import { UserButton } from './UserButton';
 
 const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
   children,
@@ -25,8 +25,6 @@ const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
 };
 
 export async function Header() {
-  const session = await auth();
-
   return (
     <header className="bg-slate-50 border-b-2 shadow-sm text-gray-800 print:hidden">
       <nav>
@@ -45,29 +43,8 @@ export async function Header() {
                 }
               />
             </li>
-            {!session?.user && (
-              <li>
-                <HeaderLink href="/profile">
-                  <Settings2 size={18} />
-                  Settings
-                </HeaderLink>
-              </li>
-            )}
             <li>
-              {!session?.user ? (
-                <HeaderLink href="/login">
-                  <LogIn size={18} />
-                  Login
-                </HeaderLink>
-              ) : (
-                <div className="flex items-center">
-                  <HeaderLink href="/profile">
-                    <User2 size={18} />
-                    {session.user?.email}
-                  </HeaderLink>
-                  <SignOutButton />
-                </div>
-              )}
+              <UserButton />
             </li>
           </ul>
 

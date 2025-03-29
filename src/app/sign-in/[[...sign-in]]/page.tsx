@@ -3,8 +3,6 @@ import { currentUser } from '@clerk/nextjs/server';
 import { SearchParams } from 'next/dist/server/request/search-params';
 import { redirect } from 'next/navigation';
 
-export const revalidate = 86_400;
-
 export default async function SignInPage(props: {
   searchParams: Promise<SearchParams>;
 }) {

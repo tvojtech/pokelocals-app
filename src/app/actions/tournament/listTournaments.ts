@@ -1,14 +1,14 @@
 'use server';
 
-import { currentUser } from '@clerk/nextjs/server';
+import { auth } from '@clerk/nextjs/server';
 
 import { getStore } from '@/blobs';
 
 import { Tournament } from './types';
 
 export async function listTournaments() {
-  const user = await currentUser();
-  if (!user) {
+  const { userId } = await auth();
+  if (!userId) {
     return undefined;
   }
   const store = await getStore('tournaments');
@@ -19,10 +19,7 @@ export async function listTournaments() {
       if (!tournamentData) {
         return undefined;
       }
-      if (
-        tournamentData.metadata?.uploaded_by !==
-        user?.primaryEmailAddress?.emailAddress
-      ) {
+      if (tournamentData.metadata?.uploaded_by !== userId) {
         return undefined;
       }
       return { id: tournamentId, ...tournamentData.content };

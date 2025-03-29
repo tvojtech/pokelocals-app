@@ -1,28 +1,12 @@
 import { MessageCircle } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
 
 import { HeaderDrawer } from '@/components/HeaderDrawer';
 import { Logo } from '@/components/Logo';
-import { Button, buttonVariants } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 import { FeedbackDialog } from './FeedbackDialog';
 import { UserButton } from './UserButton';
-
-const HeaderLink: React.FC<React.ComponentProps<typeof Link>> = ({
-  children,
-  className,
-  ...props
-}) => {
-  return (
-    <Link
-      className={cn(buttonVariants({ variant: 'link' }), className)}
-      {...props}>
-      {children}
-    </Link>
-  );
-};
 
 export async function Header() {
   return (
@@ -32,7 +16,7 @@ export async function Header() {
           <Link href="/">
             <Logo />
           </Link>
-          <ul className="hidden lg:flex lg:items-center">
+          <ul className="hidden lg:flex lg:items-center space-x-4">
             <li>
               <FeedbackDialog
                 button={
@@ -42,6 +26,9 @@ export async function Header() {
                   </Button>
                 }
               />
+            </li>
+            <li>
+              <Button>Become an organizer</Button>
             </li>
             <li>
               <UserButton />

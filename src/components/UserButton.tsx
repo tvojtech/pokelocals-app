@@ -33,7 +33,7 @@ export function UserButton() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/profile" prefetch={false}>
+          <Link href="/profile/player" prefetch={false}>
             <LucideSettings2 /> Profile
           </Link>
         </DropdownMenuItem>

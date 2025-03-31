@@ -81,7 +81,7 @@ export const HeaderDrawer = clientOnlyComponent(
                 variant="ghost"
                 className="justify-start w-full">
                 <Settings2 />
-                Settings
+                Profile
               </Button>
               <FeedbackDialog
                 afterSuccessfulSubmit={() => toggleDrawer(false)}

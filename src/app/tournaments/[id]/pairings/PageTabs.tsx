@@ -1,7 +1,7 @@
 'use client';
 
+import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
-import { useRouter } from 'nextjs-toploader/app';
 
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
@@ -28,21 +28,18 @@ export function PageTabs({ showStandings }: { showStandings: boolean }) {
 
   const pageType = path.split('/').pop();
 
-  const router = useRouter();
-
   return (
     <ToggleGroup
       type="single"
       value={pageType}
-      onValueChange={value =>
-        router.push(`/tournaments/${id}/pairings/${value}`)
-      }
       className="flex-wrap justify-start">
       {Object.keys(PageTypes)
         .filter(key => showStandings || key !== PageTypes.standings)
         .map(key => (
           <ToggleGroupItem key={key} value={key} className="text-base">
-            {pageTypeToTextMappping[key as PageTypes].title}
+            <Link href={`/tournaments/${id}/pairings/${key}`}>
+              {pageTypeToTextMappping[key as PageTypes].title}
+            </Link>
           </ToggleGroupItem>
         ))}
     </ToggleGroup>

@@ -20,6 +20,7 @@ export default async function DashboardPage() {
                 {tournament.data.name}
                 <Link
                   href={`/tournaments/${tournament.id}/admin`}
+                  prefetch={false}
                   className={buttonVariants({ variant: 'link' })}>
                   <SquareArrowRight />
                   Go to tournament admin page

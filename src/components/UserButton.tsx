@@ -1,6 +1,7 @@
 'use client';
 
 import { useClerk, useUser } from '@clerk/nextjs';
+import { LucideLogOut, LucideSettings2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -15,7 +16,7 @@ import {
 } from './ui/dropdown-menu';
 
 export function UserButton() {
-  const { isSignedIn } = useUser();
+  const { isSignedIn, user } = useUser();
   const { signOut } = useClerk();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -27,20 +28,20 @@ export function UserButton() {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>
+          {user?.fullName ?? user?.primaryEmailAddress?.emailAddress}
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/profile">Settings</Link>
+          <Link href="/profile" prefetch={false}>
+            <LucideSettings2 /> Profile
+          </Link>
         </DropdownMenuItem>
         {/* <DropdownMenuSeparator /> */}
         {isSignedIn && (
           <DropdownMenuItem onClick={() => signOut()}>
+            <LucideLogOut />
             Sign out
-          </DropdownMenuItem>
-        )}
-        {!isSignedIn && (
-          <DropdownMenuItem asChild>
-            <Link href="/sign-in">Sign in</Link>
           </DropdownMenuItem>
         )}
       </DropdownMenuContent>

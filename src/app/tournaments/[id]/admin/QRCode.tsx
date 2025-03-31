@@ -24,6 +24,7 @@ export function QRCode({ tournamentId }: { tournamentId: string }) {
       <div className="flex items-center justify-between w-full">
         <Link
           href={pairingsUrl}
+          prefetch={false}
           target="_blank"
           className={cn(
             buttonVariants({ variant: 'link' }),

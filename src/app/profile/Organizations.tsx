@@ -1,5 +1,6 @@
-import { useOrganization, useOrganizationList, useUser } from '@clerk/nextjs';
+import { useOrganizationList } from '@clerk/nextjs';
 
+import { Alert } from '@/components/Alert';
 import {
   Select,
   SelectContent,
@@ -11,8 +12,8 @@ import {
 } from '@/components/ui/select';
 
 export function Organizations() {
-  const { memberships, organization } = useOrganization();
-  const { user } = useUser();
+  //   const { memberships, organization } = useOrganization();
+  //   const { user } = useUser();
   const { userMemberships } = useOrganizationList({ userMemberships: true });
 
   console.log(userMemberships);
@@ -33,6 +34,10 @@ export function Organizations() {
           </SelectGroup>
         </SelectContent>
       </Select>
+      <Alert
+        message="Organization management will be available soon."
+        type="info"
+      />
     </>
   );
 }

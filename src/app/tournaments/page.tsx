@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
 
-export default async function TournamentsPage() {
+export default function TournamentsPage() {
   return redirect('/');
 }

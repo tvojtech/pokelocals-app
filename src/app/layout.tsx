@@ -1,9 +1,9 @@
 import './globals.css';
 
+import { ClerkProvider } from '@clerk/nextjs';
 import { Provider as RollbarProvider } from '@rollbar/react';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import { SessionProvider } from 'next-auth/react';
 import NextTopLoader from 'nextjs-toploader';
 import { Suspense } from 'react';
 
@@ -61,8 +61,8 @@ export default function RootLayout({
           COMMIT_REF: {process.env.COMMIT_REF}
           BUILD_ID: {process.env.BUILD_ID}
         </div>
-        <PostHogProvider>
-          <SessionProvider>
+        <ClerkProvider>
+          <PostHogProvider>
             <RollbarProvider config={clientConfig}>
               <Suspense>
                 <Header />
@@ -75,8 +75,8 @@ export default function RootLayout({
                 <Footer />
               </Suspense>
             </RollbarProvider>
-          </SessionProvider>
-        </PostHogProvider>
+          </PostHogProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

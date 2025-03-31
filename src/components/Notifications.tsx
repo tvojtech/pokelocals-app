@@ -1,8 +1,8 @@
 'use client';
 
+import { useSession } from '@clerk/nextjs';
 import { BellPlus } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import { useCallback } from 'react';
 
 import { registerNotificationToken } from '@/app/actions/notifications';
@@ -14,16 +14,16 @@ import useFcmToken from '@/hooks/useFcmToken';
 export const Notifications = voidComponent(
   clientOnlyComponent(() => {
     const params = useParams<{ id: string }>();
-    const { data: session } = useSession();
+    const { session } = useSession();
     const { token, notificationPermissionStatus } = useFcmToken();
 
     const handleClick = useCallback(async () => {
-      if (session?.user?.email && token) {
+      if (session?.user?.primaryEmailAddress?.emailAddress && token) {
         const [error, result] = await catchError(
           registerNotificationToken({
             token,
             tournamentId: params.id,
-            email: session.user?.email,
+            email: session.user?.primaryEmailAddress?.emailAddress,
           })
         );
 
@@ -33,9 +33,13 @@ export const Notifications = voidComponent(
           console.log('Notification token registered', result);
         }
       }
-    }, [params.id, session?.user?.email, token]);
+    }, [params.id, session?.user?.primaryEmailAddress?.emailAddress, token]);
 
-    if (!session || !session.user || !session.user.email) {
+    if (
+      !session ||
+      !session.user ||
+      !session.user.primaryEmailAddress?.emailAddress
+    ) {
       return null;
     }
 
@@ -46,7 +50,7 @@ export const Notifications = voidComponent(
     return (
       session &&
       session.user &&
-      session.user.email && (
+      session.user.primaryEmailAddress?.emailAddress && (
         <div role="button" onClick={handleClick}>
           <BellPlus />
         </div>

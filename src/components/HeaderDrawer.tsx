@@ -1,10 +1,9 @@
 'use client';
 
+import { useClerk, useSession } from '@clerk/nextjs';
 import { useToggle } from '@uidotdev/usehooks';
 import { LogIn, LogOut, Menu, Settings2, X } from 'lucide-react';
-import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'nextjs-toploader/app';
-import React from 'react';
 
 import { clientOnlyComponent } from '@/components/clientOnlyComponent';
 import { FeedbackDialog } from '@/components/FeedbackDialog';
@@ -23,7 +22,8 @@ import {
 export const HeaderDrawer = clientOnlyComponent(
   () => {
     const [isDrawerOpen, toggleDrawer] = useToggle(false);
-    const { data: session } = useSession();
+    const { session } = useSession();
+    const { signOut } = useClerk();
     const router = useRouter();
 
     const sidebarButtonClickHandler = (link: string) => () => {
@@ -48,7 +48,9 @@ export const HeaderDrawer = clientOnlyComponent(
           <div className="space-y-4 p-4 px-2">
             {session ? (
               <div className="space-y-2">
-                <p className="text-md">{session.user?.email}</p>
+                <p className="text-md">
+                  {session.user?.primaryEmailAddress?.emailAddress}
+                </p>
                 <div className="flex justify-end">
                   <Button
                     onClick={() => signOut()}
@@ -65,7 +67,7 @@ export const HeaderDrawer = clientOnlyComponent(
                 title="Sign in"
                 variant="default"
                 onClick={sidebarButtonClickHandler(
-                  `/login?return=${encodeURIComponent(window.location.pathname + '?' + window.location.search)}`
+                  `/sign-in?return=${encodeURIComponent(window.location.pathname + '?' + window.location.search)}`
                 )}
                 className="w-full uppercase flex justify-center items-center">
                 <LogIn />
@@ -79,7 +81,7 @@ export const HeaderDrawer = clientOnlyComponent(
                 variant="ghost"
                 className="justify-start w-full">
                 <Settings2 />
-                Settings
+                Profile
               </Button>
               <FeedbackDialog
                 afterSuccessfulSubmit={() => toggleDrawer(false)}

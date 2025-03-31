@@ -1,7 +1,35 @@
-import { redirect } from 'next/navigation';
+import { SquareArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
-export const revalidate = 86_400;
+import { listTournaments } from '@/app/actions/tournament';
+import { TournamentsForm } from '@/app/tournaments/TournamentsForm';
+import { RestrictedPage } from '@/components/RestrictedPage';
+import { buttonVariants } from '@/components/ui/button';
 
-export default function Home() {
-  redirect('/tournaments');
+export default async function DashboardPage() {
+  const tournaments = await listTournaments();
+  return (
+    <RestrictedPage>
+      <div className="space-y-4">
+        <TournamentsForm />
+        {tournaments?.length ? (
+          <div>
+            <h2 className="text-2xl font-bold">My tournaments</h2>
+            {tournaments.map(tournament => (
+              <div key={tournament.id} className="flex items-center gap-2">
+                {tournament.data.name}
+                <Link
+                  href={`/tournaments/${tournament.id}/admin`}
+                  prefetch={false}
+                  className={buttonVariants({ variant: 'link' })}>
+                  <SquareArrowRight />
+                  Go to tournament admin page
+                </Link>
+              </div>
+            ))}
+          </div>
+        ) : null}
+      </div>
+    </RestrictedPage>
+  );
 }

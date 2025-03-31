@@ -1,5 +1,6 @@
 'use server';
 
+import { auth } from '@clerk/nextjs/server';
 import admin from 'firebase-admin';
 import { revalidateTag } from 'next/cache';
 
@@ -11,7 +12,6 @@ import {
   XmlTournament,
 } from '@/app/actions/tournament/types';
 import { xmlToObject } from '@/app/actions/tournament/xml';
-import { auth } from '@/app/auth';
 import { exhaustiveMatchingGuard } from '@/app/utils';
 import { getStore } from '@/blobs';
 import serviceAccount from '@/serviceAccount.json';
@@ -26,7 +26,7 @@ export async function uploadTournamentFile(
   formData: FormData,
   tournamentId: string
 ) {
-  const session = await auth();
+  const { userId } = await auth();
   const file = formData.get('file') as File;
 
   if (!file) {
@@ -43,7 +43,7 @@ export async function uploadTournamentFile(
     await store.setJSON(tournamentId, tournament, {
       metadata: {
         uploaded_at: new Date().toISOString(),
-        uploaded_by: session?.user?.email ?? 'anonymous',
+        uploaded_by: userId ?? 'anonymous',
       },
     });
     revalidateTag(tournamentId);

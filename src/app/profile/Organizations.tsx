@@ -1,5 +1,15 @@
 import { useOrganization, useOrganizationList, useUser } from '@clerk/nextjs';
 
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
 export function Organizations() {
   const { memberships, organization } = useOrganization();
   const { user } = useUser();
@@ -7,8 +17,22 @@ export function Organizations() {
 
   console.log(userMemberships);
   return (
-    <div>
-      {userMemberships?.data?.map(membership => membership.organization.name)}
-    </div>
+    <>
+      <Select>
+        <SelectTrigger className="max-w-lg">
+          <SelectValue placeholder="Select an organization" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Organizations</SelectLabel>
+            {userMemberships?.data?.map(membership => (
+              <SelectItem key={membership.id} value={membership.id}>
+                {membership.organization.name}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </>
   );
 }

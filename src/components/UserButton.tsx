@@ -29,7 +29,7 @@ export function UserButton() {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>
-          {user?.fullName ?? user?.primaryEmailAddress?.emailAddress}
+          {user?.primaryEmailAddress?.emailAddress}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>

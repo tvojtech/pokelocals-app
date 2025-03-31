@@ -31,7 +31,7 @@ function ProfileSection({
   children: React.ReactNode;
 }) {
   return (
-    <div className="max-w-lg space-y-4">
+    <div className="space-y-4">
       <h2 className="text-2xl font-bold">{title}</h2>
       {children}
     </div>

@@ -1,5 +1,5 @@
-import { TournamentsPage } from '@/app/tournaments/TournamentsPage';
+import { redirect } from 'next/navigation';
 
-export default async function Tournaments() {
-  return <TournamentsPage />;
+export default async function TournamentsPage() {
+  return redirect('/');
 }

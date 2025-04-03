@@ -29,11 +29,11 @@ export function UserButton() {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>
-          {user?.fullName ?? user?.primaryEmailAddress?.emailAddress}
+          {user?.primaryEmailAddress?.emailAddress}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/profile" prefetch={false}>
+          <Link href="/profile/player" prefetch={false}>
             <LucideSettings2 /> Profile
           </Link>
         </DropdownMenuItem>

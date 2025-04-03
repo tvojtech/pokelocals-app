@@ -1,3 +1,5 @@
+'use client';
+
 import { useOrganizationList } from '@clerk/nextjs';
 
 import { Alert } from '@/components/Alert';
@@ -16,7 +18,6 @@ export function Organizations() {
   //   const { user } = useUser();
   const { userMemberships } = useOrganizationList({ userMemberships: true });
 
-  console.log(userMemberships);
   return (
     <>
       <Select>

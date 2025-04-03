@@ -1,0 +1,71 @@
+'use client';
+
+import { useCallback, useState } from 'react';
+
+import { createNewOrganizerRequest } from '@/app/actions/waitlist';
+import { Alert } from '@/components/Alert';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
+export function NewOrganizationForm() {
+  const [success, setSuccess] = useState(false);
+  const onSubmit = useCallback(async (formData: FormData) => {
+    const result = await createNewOrganizerRequest(formData);
+    if (result.success) {
+      setSuccess(true);
+    }
+  }, []);
+
+  if (success) {
+    return (
+      <Alert
+        type="info"
+        message="Thank you for joining! You will be notified when your application is
+            approved."
+      />
+    );
+  }
+
+  return (
+    <>
+      <h2 className="text-xl font-bold">Become an organizer</h2>
+      <form action={onSubmit} className="space-y-2">
+        <Input
+          type="text"
+          name="name"
+          placeholder="Organization name"
+          required
+        />
+        <Input type="url" name="website" placeholder="Website" />
+        <Input type="text" name="city" placeholder="City" />
+        <Input type="text" name="country" placeholder="Country" />
+        <Select name="avg_tournament_size">
+          <SelectTrigger>
+            <SelectValue placeholder="Select average tournament size" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Average tournament size</SelectLabel>
+              <SelectItem value="0_20">0 - 20</SelectItem>
+              <SelectItem value="21_40">21 - 40</SelectItem>
+              <SelectItem value="41_60">41 - 60</SelectItem>
+              <SelectItem value="61_100">61 - 100</SelectItem>
+              <SelectItem value="101_200">101 - 200</SelectItem>
+              <SelectItem value="200_">200+</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <Button type="submit">Submit</Button>
+      </form>
+    </>
+  );
+}

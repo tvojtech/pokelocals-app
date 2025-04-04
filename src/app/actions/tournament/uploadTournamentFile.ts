@@ -26,7 +26,13 @@ export async function uploadTournamentFile(
   formData: FormData,
   tournamentId: string
 ) {
-  const { userId } = await auth();
+  const { userId, orgId } = await auth();
+
+  // fixme: uncomment once organizations are required to organize tournaments
+  // if (!orgId) {
+  //   throw new Error('No organization selected');
+  // }
+
   const file = formData.get('file') as File;
 
   if (!file) {
@@ -43,7 +49,7 @@ export async function uploadTournamentFile(
     await store.setJSON(tournamentId, tournament, {
       metadata: {
         uploaded_at: new Date().toISOString(),
-        uploaded_by: userId ?? 'anonymous',
+        uploaded_by: orgId ?? userId ?? 'anonymous',
       },
     });
     revalidateTag(tournamentId);

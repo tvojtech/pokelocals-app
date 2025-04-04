@@ -7,7 +7,7 @@ import { getStore } from '@/blobs';
 import { Tournament } from './types';
 
 export async function listTournaments() {
-  const { userId } = await auth();
+  const { userId, orgId } = await auth();
   if (!userId) {
     return undefined;
   }
@@ -19,7 +19,10 @@ export async function listTournaments() {
       if (!tournamentData) {
         return undefined;
       }
-      if (tournamentData.metadata?.uploaded_by !== userId) {
+      if (
+        tournamentData.metadata?.uploaded_by !== userId &&
+        tournamentData.metadata?.uploaded_by !== orgId
+      ) {
         return undefined;
       }
       return { id: tournamentId, ...tournamentData.content };

@@ -2,6 +2,7 @@ import { auth } from '@clerk/nextjs/server';
 import { MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 
+import { OrganizationSwitcher } from '@/app/profile/organizer/OrganizationSwitcher';
 import { HeaderDrawer } from '@/components/HeaderDrawer';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/button';
@@ -28,6 +29,9 @@ export async function Header() {
                   </Button>
                 }
               />
+            </li>
+            <li>
+              <OrganizationSwitcher />
             </li>
             <li>
               {sessionId ? (

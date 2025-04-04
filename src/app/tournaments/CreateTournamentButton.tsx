@@ -6,7 +6,7 @@ import { useActionState, useTransition } from 'react';
 import { createTournamentAction } from '@/app/actions/tournament';
 import { Button } from '@/components/ui/button';
 
-export function TournamentsForm() {
+export function CreateTournamentButton() {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 

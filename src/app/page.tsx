@@ -2,7 +2,7 @@ import { SquareArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 import { listTournaments } from '@/app/actions/tournament';
-import { TournamentsForm } from '@/app/tournaments/TournamentsForm';
+import { CreateTournamentButton } from '@/app/tournaments/CreateTournamentButton';
 import { RestrictedPage } from '@/components/RestrictedPage';
 import { buttonVariants } from '@/components/ui/button';
 
@@ -11,7 +11,7 @@ export default async function DashboardPage() {
   return (
     <RestrictedPage>
       <div className="space-y-4">
-        <TournamentsForm />
+        <CreateTournamentButton />
         {tournaments?.length ? (
           <div>
             <h2 className="text-2xl font-bold">My tournaments</h2>

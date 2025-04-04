@@ -23,8 +23,13 @@ export function UserButton() {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Avatar className="grayscale size-9 cursor-pointer">
-          <AvatarImage src="https://img.clerk.com/eyJ0eXBlIjoiZGVmYXVsdCIsImlpZCI6Imluc18ydUtPVlk4UzdjMGJWRENUenhmZnpsM2lUMDUiLCJyaWQiOiJ1c2VyXzJ1eHRoT2NVYWVCbnpFTG1WemdmMTU5QnQ5MCJ9" />
+        <Avatar className="size-9 cursor-pointer">
+          <AvatarImage
+            src={
+              user?.imageUrl ??
+              'https://img.clerk.com/eyJ0eXBlIjoiZGVmYXVsdCIsImlpZCI6Imluc18ydUtPVlk4UzdjMGJWRENUenhmZnpsM2lUMDUiLCJyaWQiOiJ1c2VyXzJ1eHRoT2NVYWVCbnpFTG1WemdmMTU5QnQ5MCJ9'
+            }
+          />
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

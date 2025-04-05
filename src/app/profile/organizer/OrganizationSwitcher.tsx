@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { useOrganization, useOrganizationList } from '@clerk/nextjs';
@@ -57,7 +58,16 @@ export function OrganizationSwitcher() {
               <SelectItem
                 key={membership.organization.id}
                 value={membership.organization.id}>
-                {membership.organization.name}
+                <div className="flex items-center gap-2 ">
+                  <img
+                    src={membership.organization.imageUrl}
+                    alt={membership.organization.name}
+                    width={16}
+                    height={16}
+                    className="rounded-full"
+                  />
+                  {membership.organization.name}
+                </div>
               </SelectItem>
             ))}
           </SelectGroup>

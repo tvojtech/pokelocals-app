@@ -23,13 +23,14 @@ export type PlayerScore = {
 
 export interface TournamentData {
   name: string;
-  id: string;
+  id?: string | undefined;
   city: string;
   state: string | null;
   country: string;
   roundtime: number;
   finalsroundtime: number;
   startdate: string;
+  organizer?: { popid?: string; name?: string };
   lessswiss: boolean;
   autotablenumber: boolean;
   overflowtablestart: number;

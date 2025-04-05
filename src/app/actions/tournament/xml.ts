@@ -34,6 +34,10 @@ export function xmlToObject(xmlString: string): XmlTournament {
       roundtime: Number(jsonData.tournament.data.roundtime),
       finalsroundtime: Number(jsonData.tournament.data.finalsroundtime),
       startdate: jsonData.tournament.data.startdate,
+      organizer: {
+        popid: jsonData.tournament.data.organizer?.['@_popid'],
+        name: jsonData.tournament.data.organizer?.['@_name'],
+      },
       lessswiss: jsonData.tournament.data.lessswiss === 'true',
       autotablenumber: jsonData.tournament.data.autotablenumber === 'true',
       overflowtablestart: Number(jsonData.tournament.data.overflowtablestart),

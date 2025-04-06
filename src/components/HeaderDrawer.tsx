@@ -26,7 +26,7 @@ export const HeaderDrawer = clientOnlyComponent(
 
     return (
       <Sheet open={isDrawerOpen} onOpenChange={open => toggleDrawer(open)}>
-        <SheetTrigger className="lg:hidden">
+        <SheetTrigger className="md:hidden">
           <Menu />
         </SheetTrigger>
         <SheetContent side="left" className="p-4" aria-describedby={undefined}>
@@ -82,6 +82,6 @@ export const HeaderDrawer = clientOnlyComponent(
     );
   },
   () => {
-    return <Menu className="lg:hidden" />;
+    return <Menu className="md:hidden" />;
   }
 );

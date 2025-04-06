@@ -19,7 +19,7 @@ export async function Header() {
           <Link href="/" prefetch={false}>
             <Logo />
           </Link>
-          <ul className="hidden space-x-4 lg:flex lg:items-center">
+          <ul className="hidden space-x-4 md:flex md:items-center">
             <li>
               <FeedbackDialog
                 button={

@@ -14,9 +14,23 @@ const nextConfig: NextConfig = {
             // The Cache-Control header
             key: 'Cache-Control',
             // public: Can be cached by intermediaries (like CDNs)
-            // max-age=31536000: Cache for 1 year (in seconds)
+            // max-age=592200: Cache for 7 days (in seconds)
             // immutable: Indicates the file content will never change for this URL
-            value: 'public, max-age=31536000, immutable',
+            value: 'public, max-age=592200, immutable',
+          },
+        ],
+      },
+      {
+        // Source path pattern for the files
+        source: '/images/(logo-.*.svg)',
+        headers: [
+          {
+            // The Cache-Control header
+            key: 'Cache-Control',
+            // public: Can be cached by intermediaries (like CDNs)
+            // max-age=592200: Cache for 7 days (in seconds)
+            // immutable: Indicates the file content will never change for this URL
+            value: 'public, max-age=592200, immutable',
           },
         ],
       },

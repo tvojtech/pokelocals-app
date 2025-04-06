@@ -1,10 +1,10 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useActionState, useCallback, useState } from 'react';
 
 import { createNewOrganizerRequest } from '@/app/actions/waitlist';
 import { Alert } from '@/components/Alert';
-import { Button } from '@/components/ui/button';
+import { LoadingButton } from '@/components/ui/buttons/loading-button';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -18,36 +18,35 @@ import {
 
 export function NewOrganizationForm() {
   const [success, setSuccess] = useState(false);
-  const onSubmit = useCallback(async (formData: FormData) => {
+  const createNewOrganizerRequestAction = useCallback(async (prevState: unknown, formData: FormData) => {
     const result = await createNewOrganizerRequest(formData);
     if (result.success) {
       setSuccess(true);
     }
   }, []);
 
+  const [, formAction, isPending] = useActionState(createNewOrganizerRequestAction, undefined);
+
   if (success) {
     return (
-      <Alert
-        type="info"
-        message="Thank you for joining! You will be notified when your application is
-            approved."
-      />
+      <Alert type="info" message="Thank you for joining! You will be notified when your application is approved." />
     );
   }
 
   return (
     <>
       <h2 className="text-xl font-bold">Become an organizer</h2>
-      <form action={onSubmit} className="space-y-2">
+      <form action={formAction} className="space-y-2">
+        <Input type="text" name="name" placeholder="Organization name" required autoComplete="off" />
         <Input
           type="text"
-          name="name"
-          placeholder="Organization name"
+          name="website"
+          placeholder="Website (ex.: https://www.example.com)"
           required
+          autoComplete="off"
         />
-        <Input type="url" name="website" placeholder="Website" />
-        <Input type="text" name="city" placeholder="City" />
-        <Input type="text" name="country" placeholder="Country" />
+        <Input type="text" name="city" placeholder="City" autoComplete="off" />
+        <Input type="text" name="country" placeholder="Country" autoComplete="off" />
         <Select name="avg_tournament_size">
           <SelectTrigger>
             <SelectValue placeholder="Select average tournament size" />
@@ -64,7 +63,9 @@ export function NewOrganizationForm() {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Button type="submit">Submit</Button>
+        <LoadingButton isLoading={isPending} type="submit">
+          Submit
+        </LoadingButton>
       </form>
     </>
   );

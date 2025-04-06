@@ -26,6 +26,7 @@ const eslintConfig = [
       semi: "error",
       "prefer-const": "error",
       "import/no-anonymous-default-export": "off",
+      "@next/next/no-img-element": "off",
     },
   },
 ];

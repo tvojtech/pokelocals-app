@@ -1,6 +1,7 @@
 'use client';
 
 import { useUser } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
 import { Alert } from '@/components/Alert';
 import { Loading } from '@/components/Loading';
@@ -14,6 +15,10 @@ export default function OrganizationsPage() {
 
   if (!isLoaded) {
     return <Loading />;
+  }
+
+  if (!user) {
+    return redirect('/sign-in');
   }
 
   if (user?.publicMetadata.waitlist) {

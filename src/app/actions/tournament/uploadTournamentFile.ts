@@ -5,12 +5,7 @@ import admin from 'firebase-admin';
 import { revalidateTag } from 'next/cache';
 
 import { listNotificationTokens } from '@/app/actions/notifications';
-import {
-  Match,
-  PlayerScore,
-  Tournament,
-  XmlTournament,
-} from '@/app/actions/tournament/types';
+import { Match, PlayerScore, Tournament, XmlTournament } from '@/app/actions/tournament/types';
 import { xmlToObject } from '@/app/actions/tournament/xml';
 import { exhaustiveMatchingGuard } from '@/app/utils';
 import { getStore } from '@/blobs';
@@ -22,11 +17,14 @@ if (!admin.apps.length) {
   });
 }
 
-export async function uploadTournamentFile(
-  formData: FormData,
-  tournamentId: string
-) {
-  const { userId } = await auth();
+export async function uploadTournamentFile(formData: FormData, tournamentId: string) {
+  const { userId, orgId } = await auth();
+
+  // fixme: uncomment once organizations are required to organize tournaments
+  // if (!orgId) {
+  //   throw new Error('No organization selected');
+  // }
+
   const file = formData.get('file') as File;
 
   if (!file) {
@@ -43,7 +41,7 @@ export async function uploadTournamentFile(
     await store.setJSON(tournamentId, tournament, {
       metadata: {
         uploaded_at: new Date().toISOString(),
-        uploaded_by: userId ?? 'anonymous',
+        uploaded_by: orgId ?? userId ?? 'anonymous',
       },
     });
     revalidateTag(tournamentId);
@@ -56,9 +54,7 @@ export async function uploadTournamentFile(
     //   },
     // };
 
-    const tokens = (await listNotificationTokens(tournamentId)).map(
-      ({ token }) => token
-    );
+    const tokens = (await listNotificationTokens(tournamentId)).map(({ token }) => token);
 
     if (tokens.length > 0) {
       await admin.messaging().sendEachForMulticast({
@@ -110,10 +106,7 @@ function calculatePlayerScores(tournament: XmlTournament): Tournament {
   return {
     ...tournament,
     scores,
-    players: players.reduce(
-      (acc, player) => ({ ...acc, [player.userid]: player }),
-      {}
-    ),
+    players: players.reduce((acc, player) => ({ ...acc, [player.userid]: player }), {}),
   };
 }
 
@@ -124,10 +117,7 @@ enum PlayerResult {
   not_finished = 'not_finished',
 }
 
-const mapOutcomeToPlayerResult = (
-  match: Match,
-  player: string
-): PlayerResult | undefined => {
+const mapOutcomeToPlayerResult = (match: Match, player: string): PlayerResult | undefined => {
   const matchOutcome = match.outcome;
   if (!matchOutcome || matchOutcome === '0') {
     // not finished match
@@ -146,8 +136,7 @@ const mapOutcomeToPlayerResult = (
 };
 
 const createScoreCalculator =
-  (playerScores: Record<string, PlayerScore>) =>
-  (player: string, outcome: PlayerResult) => {
+  (playerScores: Record<string, PlayerScore>) => (player: string, outcome: PlayerResult) => {
     switch (outcome) {
       case PlayerResult.win:
         playerScores[player] = {

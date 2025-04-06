@@ -6,6 +6,8 @@ import { QRCodeSVG } from 'qrcode.react';
 
 import { useWindowLocation } from '@/app/hooks';
 
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+
 export function QRCodeOverlay() {
   const [isOpen, toggle] = useToggle(false);
   const location = useWindowLocation();
@@ -15,9 +17,12 @@ export function QRCodeOverlay() {
   }
 
   const buttonContent = (
-    <div role="button" onClick={() => toggle()}>
-      <QrCode />
-    </div>
+    <Tooltip>
+      <TooltipTrigger onClick={() => toggle()} aria-label="Show QR Code">
+        <QrCode />
+      </TooltipTrigger>
+      <TooltipContent>Show QR Code</TooltipContent>
+    </Tooltip>
   );
 
   if (!isOpen) {
@@ -29,9 +34,9 @@ export function QRCodeOverlay() {
       <div className="relative">
         {buttonContent}
         <div
-          className="fixed inset-0 bg-slate-50 bg-opacity-90 z-40 flex justify-center items-center"
+          className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 bg-opacity-90"
           onClick={() => toggle()}>
-          <QRCodeSVG value={location.href} className="w-60 h-60 m-10" />
+          <QRCodeSVG value={location.href} className="m-10 h-60 w-60" />
         </div>
       </div>
     </>

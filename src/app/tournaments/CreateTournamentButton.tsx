@@ -4,9 +4,9 @@ import { useRouter } from 'nextjs-toploader/app';
 import { useActionState, useTransition } from 'react';
 
 import { createTournamentAction } from '@/app/actions/tournament';
-import { Button } from '@/components/ui/button';
+import { LoadingButton } from '@/components/ui/buttons/loading-button';
 
-export function TournamentsForm() {
+export function CreateTournamentButton() {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -19,9 +19,9 @@ export function TournamentsForm() {
 
   return (
     <form action={formAction}>
-      <Button type="submit" disabled={isPending}>
-        {isPending ? 'Creating...' : 'New Tournament'}
-      </Button>
+      <LoadingButton isLoading={isPending} type="submit">
+        New Tournament
+      </LoadingButton>
     </form>
   );
 }

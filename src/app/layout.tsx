@@ -9,6 +9,7 @@ import { Suspense } from 'react';
 
 import Footer from '@/components/Footer';
 import { Header } from '@/components/Header';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { PostHogProvider } from '@/posthog';
 import { clientConfig } from '@/rollbar';
 
@@ -48,15 +49,9 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link
-          rel="icon"
-          href="/favicon-64x64.png"
-          sizes="64x64"
-          type="image/png"
-        />
+        <link rel="icon" href="/favicon-64x64.png" sizes="64x64" type="image/png" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-dvh bg-background`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} flex min-h-dvh flex-col bg-background antialiased`}>
         <div id="build-info" aria-hidden="true" className="hidden">
           COMMIT_REF: {process.env.COMMIT_REF}
           BUILD_ID: {process.env.BUILD_ID}
@@ -64,16 +59,16 @@ export default function RootLayout({
         <ClerkProvider>
           <PostHogProvider>
             <RollbarProvider config={clientConfig}>
-              <Suspense>
-                <Header />
-                <NextTopLoader showSpinner={false} color="hsl(var(--brand))" />
-                <div className="flex-grow h-full">
-                  <main className="container mx-auto px-4 py-8">
-                    {children}
-                  </main>
-                </div>
-                <Footer />
-              </Suspense>
+              <TooltipProvider delayDuration={0}>
+                <Suspense>
+                  <Header />
+                  <NextTopLoader showSpinner={false} color="hsl(var(--brand))" />
+                  <div className="h-full flex-grow">
+                    <main className="container mx-auto px-4 py-8">{children}</main>
+                  </div>
+                  <Footer />
+                </Suspense>
+              </TooltipProvider>
             </RollbarProvider>
           </PostHogProvider>
         </ClerkProvider>

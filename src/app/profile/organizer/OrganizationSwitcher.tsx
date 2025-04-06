@@ -1,17 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { useOrganization, useOrganizationList } from '@clerk/nextjs';
 import { useEffect } from 'react';
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export function OrganizationSwitcher() {
   const { organization, isLoaded: isOrgLoaded } = useOrganization();
@@ -20,12 +12,7 @@ export function OrganizationSwitcher() {
   });
 
   useEffect(() => {
-    if (
-      !organization &&
-      setActive &&
-      isOrgLoaded &&
-      userMemberships.data.length > 0
-    ) {
+    if (!organization && setActive && isOrgLoaded && userMemberships.data.length > 0) {
       setActive({ organization: userMemberships.data[0]?.organization.id });
     }
   }, [organization, setActive, userMemberships, isOrgLoaded]);
@@ -36,9 +23,7 @@ export function OrganizationSwitcher() {
   }
 
   const handleOrganizationChange = (organizationId: string) => {
-    const membership = userMemberships.data.find(
-      m => m.organization.id === organizationId
-    );
+    const membership = userMemberships.data.find(m => m.organization.id === organizationId);
     if (membership) {
       setActive({ organization: membership.organization.id });
     }
@@ -46,19 +31,15 @@ export function OrganizationSwitcher() {
 
   return (
     <>
-      <Select
-        onValueChange={handleOrganizationChange}
-        defaultValue={organization?.id}>
+      <Select onValueChange={handleOrganizationChange} defaultValue={organization?.id}>
         <SelectTrigger className="w-44">
           <SelectValue placeholder="Select an organization" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             {userMemberships.data.map(membership => (
-              <SelectItem
-                key={membership.organization.id}
-                value={membership.organization.id}>
-                <div className="flex items-center gap-2 ">
+              <SelectItem key={membership.organization.id} value={membership.organization.id}>
+                <div className="flex items-center gap-2">
                   <img
                     src={membership.organization.imageUrl}
                     alt={membership.organization.name}

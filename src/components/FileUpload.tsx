@@ -1,15 +1,10 @@
 'use client';
 
-import {
-  useActionState,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useActionState, useCallback, useEffect, useRef, useState } from 'react';
 
 import { uploadTournamentFile } from '@/app/actions/tournament';
 import { Alert } from '@/components/Alert';
+import { cn } from '@/lib/utils';
 
 export function FileUpload({ tournamentId }: { tournamentId: string }) {
   const [isDragging, setIsDragging] = useState(false);
@@ -44,24 +39,12 @@ export function FileUpload({ tournamentId }: { tournamentId: string }) {
 
     if (result.success) {
       setSelectedFile(null);
-      try {
-        await fetch('/tournaments/' + tournamentId + '/pairings');
-        console.log('Fetched new tournament pairings after tdf upload');
-      } catch (error) {
-        console.error(
-          'Failed to fetch new tournament pairings after tdf upload',
-          error
-        );
-      }
     }
 
     return result;
   };
 
-  const [state, formAction, isPending] = useActionState(
-    uploadFileAction,
-    undefined
-  );
+  const [state, formAction, isPending] = useActionState(uploadFileAction, undefined);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -112,15 +95,20 @@ export function FileUpload({ tournamentId }: { tournamentId: string }) {
 
   return (
     <>
-      <form action={formAction} className="space-y-4">
+      <form action={formAction} className="w-full space-y-4">
+        {(error || state?.error) && <Alert message={error || (state?.error ?? '')} type="error" />}
         <div
           ref={dropZoneRef}
           onClick={handleClick}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
-          className={`relative border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
-            ${isDragging ? 'border-gray-400 bg-gray-50' : 'border-gray-300 hover:border-gray-400'}`}>
+          className={cn(
+            'relative min-h-60 cursor-pointer',
+            'flex flex-col items-center justify-center',
+            'rounded-lg border-2 border-dashed p-8 text-center transition-colors',
+            isDragging ? 'border-gray-400 bg-gray-50' : 'border-gray-300 hover:border-gray-400'
+          )}>
           <input
             type="file"
             id="file"
@@ -135,31 +123,22 @@ export function FileUpload({ tournamentId }: { tournamentId: string }) {
             }}
           />
           <div className="space-y-2">
-            <div className="text-gray-600">
-              <span className="font-medium">Click to upload</span> or drag and
-              drop
+            <div className="text-primary">
+              <span className="font-medium">Click to upload</span> or drag and drop
             </div>
             <p className="text-sm text-gray-500">
-              Only .tdf files are allowed. You can also paste files from
-              clipboard
+              Only .tdf files are allowed. You can also paste files from clipboard
             </p>
-            {selectedFile && (
-              <p className="mt-2 text-sm text-gray-600">
-                Selected: {selectedFile.name}
-              </p>
-            )}
+            {selectedFile && <p className="mt-2 text-sm text-gray-600">Selected: {selectedFile.name}</p>}
           </div>
         </div>
         <button
           type="submit"
           disabled={isPending || !selectedFile}
-          className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 disabled:bg-gray-300">
+          className="rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600 disabled:bg-gray-300">
           {isPending ? 'Uploading...' : 'Upload'}
         </button>
       </form>
-      {(error || state?.error) && (
-        <Alert message={error || (state?.error ?? '')} type="error" />
-      )}
     </>
   );
 }

@@ -1,11 +1,10 @@
 'use client';
 
-import { Loader2 } from 'lucide-react';
 import { useActionState, useCallback, useState } from 'react';
 
 import { createNewOrganizerRequest } from '@/app/actions/waitlist';
 import { Alert } from '@/components/Alert';
-import { Button } from '@/components/ui/button';
+import { LoadingButton } from '@/components/ui/buttons/loading-button';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -19,27 +18,18 @@ import {
 
 export function NewOrganizationForm() {
   const [success, setSuccess] = useState(false);
-  const createNewOrganizerRequestAction = useCallback(
-    async (prevState: unknown, formData: FormData) => {
-      const result = await createNewOrganizerRequest(formData);
-      if (result.success) {
-        setSuccess(true);
-      }
-    },
-    []
-  );
+  const createNewOrganizerRequestAction = useCallback(async (prevState: unknown, formData: FormData) => {
+    const result = await createNewOrganizerRequest(formData);
+    if (result.success) {
+      setSuccess(true);
+    }
+  }, []);
 
-  const [, formAction, isPending] = useActionState(
-    createNewOrganizerRequestAction,
-    undefined
-  );
+  const [, formAction, isPending] = useActionState(createNewOrganizerRequestAction, undefined);
 
   if (success) {
     return (
-      <Alert
-        type="info"
-        message="Thank you for joining! You will be notified when your application is approved."
-      />
+      <Alert type="info" message="Thank you for joining! You will be notified when your application is approved." />
     );
   }
 
@@ -47,13 +37,7 @@ export function NewOrganizationForm() {
     <>
       <h2 className="text-xl font-bold">Become an organizer</h2>
       <form action={formAction} className="space-y-2">
-        <Input
-          type="text"
-          name="name"
-          placeholder="Organization name"
-          required
-          autoComplete="off"
-        />
+        <Input type="text" name="name" placeholder="Organization name" required autoComplete="off" />
         <Input
           type="text"
           name="website"
@@ -62,12 +46,7 @@ export function NewOrganizationForm() {
           autoComplete="off"
         />
         <Input type="text" name="city" placeholder="City" autoComplete="off" />
-        <Input
-          type="text"
-          name="country"
-          placeholder="Country"
-          autoComplete="off"
-        />
+        <Input type="text" name="country" placeholder="Country" autoComplete="off" />
         <Select name="avg_tournament_size">
           <SelectTrigger>
             <SelectValue placeholder="Select average tournament size" />
@@ -84,10 +63,9 @@ export function NewOrganizationForm() {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Button type="submit" disabled={isPending}>
-          {isPending && <Loader2 className="animate-spin" />}
+        <LoadingButton isLoading={isPending} type="submit">
           Submit
-        </Button>
+        </LoadingButton>
       </form>
     </>
   );

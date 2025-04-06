@@ -7,7 +7,7 @@ import { listTournaments } from '@/app/actions/tournament';
 import { CreateTournamentButton } from '@/app/tournaments/CreateTournamentButton';
 import { Alert } from '@/components/Alert';
 import { RestrictedPage } from '@/components/RestrictedPage';
-import { buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/buttons/button';
 
 export default async function DashboardPage() {
   const tournaments = await listTournaments();

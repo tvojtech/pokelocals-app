@@ -5,7 +5,7 @@ import { Loader2, MessageCircle, X } from 'lucide-react';
 import { useActionState, useEffect, useRef } from 'react';
 
 import { submitFeedback } from '@/app/actions/feedback';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/buttons/button';
 import {
   Dialog,
   DialogClose,
@@ -55,7 +55,7 @@ export function FeedbackDialog({
         {button ? (
           button
         ) : (
-          <Button variant="ghost" className="justify-start w-full">
+          <Button variant="ghost" className="w-full justify-start">
             <MessageCircle />
             Feedback
           </Button>
@@ -73,13 +73,13 @@ export function FeedbackDialog({
             </DialogClose>
           </DialogTitle>
           <DialogDescription>
-            Please let us know what you think about our service. Your feedback
-            is highly appreciated and will help us improve.
+            Please let us know what you think about our service. Your feedback is highly appreciated and will help us
+            improve.
           </DialogDescription>
         </DialogHeader>
         <form action={formAction} className="space-y-4">
           <Textarea ref={textareaRef} required rows={4} />
-          <div className="w-full flex justify-end">
+          <div className="flex w-full justify-end">
             <Button type="submit" disabled={isPending}>
               {isPending ? (
                 <div className="flex items-center gap-2">

@@ -6,6 +6,8 @@ import { uploadTournamentFile } from '@/app/actions/tournament';
 import { Alert } from '@/components/Alert';
 import { cn } from '@/lib/utils';
 
+import { LoadingButton } from './ui/buttons/loading-button';
+
 export function FileUpload({ tournamentId }: { tournamentId: string }) {
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -132,12 +134,9 @@ export function FileUpload({ tournamentId }: { tournamentId: string }) {
             {selectedFile && <p className="mt-2 text-sm text-gray-600">Selected: {selectedFile.name}</p>}
           </div>
         </div>
-        <button
-          type="submit"
-          disabled={isPending || !selectedFile}
-          className="rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600 disabled:bg-gray-300">
-          {isPending ? 'Uploading...' : 'Upload'}
-        </button>
+        <LoadingButton isLoading={isPending} type="submit" disabled={!selectedFile}>
+          Upload
+        </LoadingButton>
       </form>
     </>
   );

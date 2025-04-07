@@ -12,10 +12,7 @@ export enum PageTypes {
   standings = 'standings',
 }
 
-const pageTypeToTextMappping: Record<
-  PageTypes,
-  { title: string; slug: string }
-> = {
+const pageTypeToTextMappping: Record<PageTypes, { title: string; slug: string }> = {
   [PageTypes.my]: { title: 'My Pairings', slug: 'my' },
   [PageTypes.all]: { title: 'Pairings', slug: 'all' },
   [PageTypes.roster]: { title: 'Roster', slug: 'roster' },
@@ -29,15 +26,12 @@ export function PageTabs({ showStandings }: { showStandings: boolean }) {
   const pageType = path.split('/').pop();
 
   return (
-    <ToggleGroup
-      type="single"
-      value={pageType}
-      className="flex-wrap justify-start">
+    <ToggleGroup type="single" value={pageType} className="flex-wrap justify-start">
       {Object.keys(PageTypes)
         .filter(key => showStandings || key !== PageTypes.standings)
         .map(key => (
           <ToggleGroupItem key={key} value={key} className="text-base">
-            <Link href={`/tournaments/${id}/pairings/${key}`}>
+            <Link href={`/tournaments/${id}/pairings/${key}`} prefetch={false}>
               {pageTypeToTextMappping[key as PageTypes].title}
             </Link>
           </ToggleGroupItem>

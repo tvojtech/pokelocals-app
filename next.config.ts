@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
             // public: Can be cached by intermediaries (like CDNs)
             // max-age=592200: Cache for 7 days (in seconds)
             // immutable: Indicates the file content will never change for this URL
-            value: 'public, max-age=592200, immutable',
+            value: 'public, max-age=592200, must-revalidate, immutable',
           },
         ],
       },
@@ -30,21 +30,10 @@ const nextConfig: NextConfig = {
             // public: Can be cached by intermediaries (like CDNs)
             // max-age=592200: Cache for 7 days (in seconds)
             // immutable: Indicates the file content will never change for this URL
-            value: 'public, max-age=592200, immutable',
+            value: 'public, max-age=592200, must-revalidate, immutable',
           },
         ],
       },
-      // You might want similar aggressive caching for other static assets
-      // like fonts or versioned JS/CSS chunks (though Next.js handles chunks well)
-      // {
-      //   source: '/fonts/(.*)',
-      //   headers: [
-      //     {
-      //       key: 'Cache-Control',
-      //       value: 'public, max-age=31536000, immutable',
-      //     },
-      //   ],
-      // },
     ];
   },
   experimental: {

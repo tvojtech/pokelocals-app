@@ -50,16 +50,12 @@ export default async function TournamentPairingsLayout({
 
   return (
     <>
-      {tournament && (
-        <h1 className="text-3xl font-bold md:text-center text-left">
-          {tournament.data.name}
-        </h1>
-      )}
+      {tournament && <h1 className="text-left text-3xl font-bold md:text-center">{tournament.data.name}</h1>}
 
-      <div className="mt-8 space-y-10">
+      <div className="mt-8">
         {(!tournament && (
           <>
-            <div className="flex justify-end items-center">
+            <div className="flex items-center justify-end">
               <Notifications />
               <QRCodeOverlay />
             </div>
@@ -67,7 +63,7 @@ export default async function TournamentPairingsLayout({
             <Alert type="warning" message="Tournament not ready yet." />
           </>
         )) || (
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <PageTabs showStandings={showStandings} />
             <div className="flex items-center gap-2">
               <Notifications />
@@ -75,7 +71,9 @@ export default async function TournamentPairingsLayout({
             </div>
           </div>
         )}
-        <Suspense>{children}</Suspense>
+        <div className="mt-8">
+          <Suspense>{children}</Suspense>
+        </div>
       </div>
     </>
   );

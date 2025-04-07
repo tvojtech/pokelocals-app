@@ -125,9 +125,7 @@ function FormControl({
               <PopoverTrigger>
                 <Info className="h-4 w-4" />
               </PopoverTrigger>
-              <PopoverContent side="top">
-                <p>{hint}</p>
-              </PopoverContent>
+              <PopoverContent side="top">{hint}</PopoverContent>
             </Popover>
           )}
         </label>

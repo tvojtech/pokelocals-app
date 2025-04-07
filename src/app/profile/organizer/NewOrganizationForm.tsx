@@ -1,13 +1,12 @@
 'use client';
 
-import { Info } from 'lucide-react';
-import { useActionState, useCallback, useId, useState } from 'react';
+import { useActionState, useCallback, useState } from 'react';
 
 import { createNewOrganizerRequest } from '@/app/actions/waitlist';
 import { Alert } from '@/components/Alert';
 import { LoadingButton } from '@/components/ui/buttons/loading-button';
+import { FormControl } from '@/components/ui/forms/FormControl';
 import { Input } from '@/components/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
@@ -17,7 +16,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
 export function NewOrganizationForm() {
   const [success, setSuccess] = useState(false);
   const createNewOrganizerRequestAction = useCallback(async (prevState: unknown, formData: FormData) => {
@@ -100,38 +98,5 @@ export function NewOrganizationForm() {
         </div>
       </form>
     </>
-  );
-}
-
-function FormControl({
-  label,
-  hint,
-  required,
-  children,
-}: {
-  label: string;
-  hint: React.ReactNode;
-  required?: boolean;
-  children: ({ id }: { id: string }) => React.ReactNode;
-}) {
-  const id = useId();
-  return (
-    <div className="space-y-1">
-      <div className="flex items-center justify-between px-2">
-        <label htmlFor={id} className="flex items-center gap-2 leading-4">
-          {label}
-          {hint && (
-            <Popover>
-              <PopoverTrigger>
-                <Info className="h-4 w-4" />
-              </PopoverTrigger>
-              <PopoverContent side="top">{hint}</PopoverContent>
-            </Popover>
-          )}
-        </label>
-        <span className="text-sm text-muted-foreground">{required ? 'Required' : 'Optional'}</span>
-      </div>
-      {children({ id })}
-    </div>
   );
 }

@@ -8,10 +8,16 @@ import { CreateTournamentButton } from '@/app/tournaments/CreateTournamentButton
 import { Alert } from '@/components/Alert';
 import { RestrictedPage } from '@/components/RestrictedPage';
 import { buttonVariants } from '@/components/ui/buttons/button';
+import { requireOrganizerFlag } from '@/flags';
 
 export default async function DashboardPage() {
-  const tournaments = await listTournaments();
   const { userId, orgId } = await auth();
+
+  const isOrganizationRequired = await requireOrganizerFlag.run({
+    identify: { userId: userId ?? Math.random().toString() },
+  });
+
+  const tournaments = await listTournaments();
 
   const alertTitle = "To create tournaments in the future, you'll need to be an organizer.";
   let alertMessage;
@@ -26,7 +32,7 @@ export default async function DashboardPage() {
   return (
     <RestrictedPage>
       <div className="space-y-4">
-        {!orgId && (
+        {!orgId && !isOrganizationRequired && (
           <Alert
             type="warning"
             message={
@@ -37,8 +43,19 @@ export default async function DashboardPage() {
             }
           />
         )}
+        {!orgId && isOrganizationRequired && (
+          <Alert
+            type="warning"
+            message={
+              <>
+                <h2 className="text-lg font-bold">To create tournaments, you need to be an organizer.</h2>
+                <p>To become one, go to user profile page, and request the organizer role.</p>
+              </>
+            }
+          />
+        )}
 
-        <CreateTournamentButton />
+        {((isOrganizationRequired && orgId) || !isOrganizationRequired) && <CreateTournamentButton />}
         {tournaments?.length ? (
           <div className="space-y-4">
             <h2 className="text-2xl font-bold">My tournaments</h2>

@@ -1,7 +1,11 @@
+import { auth } from '@clerk/nextjs/server';
+import { notFound } from 'next/navigation';
+
 import { loadTournament } from '@/actions/tournament';
 import { FileUpload } from '@/components/FileUpload';
 import { OrganizationAvatar } from '@/components/OrganizationAvatar';
 import { RestrictedPage } from '@/components/RestrictedPage';
+import { requireOrganizerFlag } from '@/flags';
 
 import { PageActions } from './PageActions';
 
@@ -11,7 +15,22 @@ export type TournamentAdminPageProps = {
 
 export default async function TournamentAdminPage({ params }: TournamentAdminPageProps) {
   const { id } = await params;
+  const { userId, orgId } = await auth();
   const tournamentResult = await loadTournament(id);
+
+  const uploadedBy = tournamentResult?.metadata.uploaded_by;
+
+  if (uploadedBy !== userId && uploadedBy !== orgId) {
+    return notFound();
+  }
+
+  const isOrganizationRequired = await requireOrganizerFlag.run({
+    identify: { userId: userId ?? Math.random().toString() },
+  });
+
+  if (!orgId && isOrganizationRequired) {
+    return notFound();
+  }
 
   return (
     <RestrictedPage>

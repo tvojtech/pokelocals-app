@@ -18,7 +18,7 @@ export function OrganizationSwitcher() {
   }, [organization, setActive, userMemberships, isOrgLoaded]);
 
   // If not loaded yet, or user has 0-1 organizations, don't render anything
-  if (!isLoaded || !userMemberships?.data || userMemberships.data.length <= 1) {
+  if (!isLoaded || !userMemberships?.data) {
     return null;
   }
 

@@ -14,7 +14,7 @@ export default async function DashboardPage() {
   const { userId, orgId } = await auth();
 
   const isOrganizationRequired = await requireOrganizerFlag.run({
-    identify: { userId: userId ?? Math.random().toString() },
+    identify: { userId: userId ?? 'anonymous' },
   });
 
   const tournaments = await listTournaments();

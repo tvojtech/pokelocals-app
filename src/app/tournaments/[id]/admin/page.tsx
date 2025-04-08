@@ -25,7 +25,7 @@ export default async function TournamentAdminPage({ params }: TournamentAdminPag
   }
 
   const isOrganizationRequired = await requireOrganizerFlag.run({
-    identify: { userId: userId ?? Math.random().toString() },
+    identify: { userId: userId ?? 'anonymous' },
   });
 
   if (!orgId && isOrganizationRequired) {

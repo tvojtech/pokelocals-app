@@ -7,7 +7,7 @@ export const requireOrganizerFlag = flag<boolean, { userId: string }>({
   async decide({ entities }) {
     const requireOrganizer = await getPostHogClient().isFeatureEnabled(
       'require-organizer',
-      entities?.userId ?? Math.random().toString()
+      entities?.userId ?? 'anonymous'
     );
 
     return requireOrganizer ?? true;

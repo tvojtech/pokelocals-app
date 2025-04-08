@@ -4,16 +4,24 @@ import 'server-only';
 
 import { unstable_cache } from 'next/cache';
 
-import { Tournament } from '@/app/actions/tournament/types';
+import { StoredTournament, Tournament } from '@/app/actions/tournament/types';
 import { getStore } from '@/blobs';
 
-export async function loadTournament(tournamentId: string) {
+export async function loadTournament(tournamentId: string): Promise<StoredTournament | undefined> {
   return unstable_cache(
     async (tournamentId: string) => {
-      console.log('Loading tournament', tournamentId);
       const store = await getStore('tournaments');
       const result = await store.getJSON<Tournament>(tournamentId);
-      return result?.content;
+      if (!result) {
+        return undefined;
+      }
+      return {
+        tournament: result.content,
+        metadata: {
+          uploaded_at: result.metadata.uploaded_at,
+          uploaded_by: result.metadata.uploaded_by,
+        },
+      };
     },
     ['tournaments', tournamentId],
     { tags: ['tournaments', tournamentId] }

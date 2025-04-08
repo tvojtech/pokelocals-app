@@ -4,9 +4,10 @@ type AlertProps = {
   message: ReactNode;
   type: 'success' | 'error' | 'warning' | 'info';
   title?: string;
+  className?: string;
 };
 
-export function Alert({ message, type, title }: AlertProps) {
+export function Alert({ message, type, title, className }: AlertProps) {
   const alertStyles: Record<AlertProps['type'], string> = {
     success: 'bg-green-100 border-green-400 text-green-700',
     error: 'bg-red-100 border-red-400 text-red-700',
@@ -17,7 +18,7 @@ export function Alert({ message, type, title }: AlertProps) {
   const getAlertStyles = () => alertStyles[type];
 
   return (
-    <div className={`border-l-4 p-4 ${getAlertStyles()}`} role="alert">
+    <div className={`border-l-4 p-4 ${getAlertStyles()} ${className}`} role="alert">
       {title && <p className="font-bold">{title}</p>}
       <div>{message}</div>
     </div>

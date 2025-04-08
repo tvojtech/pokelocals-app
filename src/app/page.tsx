@@ -45,7 +45,7 @@ export default async function DashboardPage() {
             <div className="grid grid-cols-[max-content_max-content] gap-2">
               {tournaments.map(tournament => (
                 <React.Fragment key={tournament.id}>
-                  <div className="flex items-center pl-4">{tournament.data.name}</div>
+                  <div className="flex items-center pl-4">{tournament.data.name || 'New tournament'}</div>
                   <Link
                     href={`/tournaments/${tournament.id}/admin`}
                     prefetch={false}

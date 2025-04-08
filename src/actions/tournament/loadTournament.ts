@@ -4,10 +4,10 @@ import 'server-only';
 
 import { unstable_cache } from 'next/cache';
 
-import { StoredTournament, Tournament } from '@/actions/tournament/types';
+import { Tournament, TournamentWithMetadata } from '@/actions/tournament/types';
 import { getStore } from '@/blobs';
 
-export async function loadTournament(tournamentId: string): Promise<StoredTournament | undefined> {
+export async function loadTournament(tournamentId: string): Promise<TournamentWithMetadata | undefined> {
   return unstable_cache(
     async (tournamentId: string) => {
       const store = await getStore('tournaments');

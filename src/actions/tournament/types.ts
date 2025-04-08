@@ -110,7 +110,7 @@ export interface Match {
   player2?: string;
 }
 
-export interface StoredTournament {
+export interface TournamentWithMetadata {
   tournament: Tournament;
   metadata: {
     uploaded_at: string;

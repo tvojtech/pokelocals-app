@@ -5,7 +5,7 @@ import admin from 'firebase-admin';
 import { revalidateTag } from 'next/cache';
 
 import { listNotificationTokens } from '@/actions/notifications';
-import { Match, PlayerScore, StoredTournament, Tournament, XmlTournament } from '@/actions/tournament/types';
+import { Match, PlayerScore, Tournament, TournamentWithMetadata, XmlTournament } from '@/actions/tournament/types';
 import { xmlToObject } from '@/actions/tournament/xml';
 import { exhaustiveMatchingGuard } from '@/app/utils';
 import { getStore } from '@/blobs';
@@ -46,7 +46,7 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
     const buffer = Buffer.from(bytes);
     const xmlString = buffer.toString('utf-8');
     const tournament = calculatePlayerScores(xmlToObject(xmlString));
-    const metadata: StoredTournament['metadata'] = {
+    const metadata: TournamentWithMetadata['metadata'] = {
       uploaded_at: new Date().toISOString(),
       uploaded_by: orgId ?? userId ?? 'anonymous',
     };

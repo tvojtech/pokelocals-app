@@ -1,4 +1,4 @@
-import { loadTournament } from '@/app/actions/tournament';
+import { loadTournament } from '@/actions/tournament';
 import { FileUpload } from '@/components/FileUpload';
 import { OrganizationAvatar } from '@/components/OrganizationAvatar';
 import { RestrictedPage } from '@/components/RestrictedPage';

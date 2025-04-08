@@ -1,4 +1,4 @@
-import { loadTournament } from '@/app/actions/tournament';
+import { loadTournament } from '@/actions/tournament';
 import { Pairings } from '@/app/tournaments/[id]/pairings/all/Pairings';
 
 export default async function TournamentPairingsAllPage({ params }: { params: Promise<{ id: string }> }) {

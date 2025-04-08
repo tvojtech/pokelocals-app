@@ -2,7 +2,7 @@
 
 import { useActionState, useCallback, useState } from 'react';
 
-import { createNewOrganizerRequest } from '@/app/actions/waitlist';
+import { createNewOrganizerRequest } from '@/actions/waitlist';
 import { Alert } from '@/components/Alert';
 import { LoadingButton } from '@/components/ui/buttons/loading-button';
 import { FormControl } from '@/components/ui/forms/FormControl';

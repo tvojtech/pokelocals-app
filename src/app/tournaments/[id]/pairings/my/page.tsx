@@ -1,4 +1,4 @@
-import { loadTournament } from '@/app/actions/tournament';
+import { loadTournament } from '@/actions/tournament';
 import { MyInformation } from '@/app/tournaments/[id]/pairings/my/MyInformation';
 
 export default async function TournamentPairingsMyPage({ params }: { params: Promise<{ id: string }> }) {

@@ -3,7 +3,7 @@
 import { useRouter } from 'nextjs-toploader/app';
 import { useActionState, useTransition } from 'react';
 
-import { createTournamentAction } from '@/app/actions/tournament';
+import { createTournamentAction } from '@/actions/tournament';
 import { LoadingButton } from '@/components/ui/buttons/loading-button';
 
 export function CreateTournamentButton() {

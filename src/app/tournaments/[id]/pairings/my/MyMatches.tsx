@@ -1,21 +1,11 @@
-import { Player, Pod, Tournament } from '@/app/actions/tournament';
+import { Player, Pod, Tournament } from '@/actions/tournament';
 import { getPlayerName, MatchOutcome } from '@/app/pokemonUtils';
 import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
 
-export function MyMatches({
-  me,
-  pod: myPod,
-  tournament,
-}: {
-  me: Player;
-  pod: Pod;
-  tournament: Tournament;
-}) {
+export function MyMatches({ me, pod: myPod, tournament }: { me: Player; pod: Pod; tournament: Tournament }) {
   const myMatches = myPod.rounds
     .map(round => ({
-      match: round.matches.find(
-        match => match.player1 === me.userid || match.player2 === me.userid
-      ),
+      match: round.matches.find(match => match.player1 === me.userid || match.player2 === me.userid),
       round: round.number,
     }))
     .filter(({ match }) => match !== undefined)
@@ -33,11 +23,9 @@ export function MyMatches({
         } else if (match?.outcome === '0') {
           return null;
         } else if (match?.player1 === me.userid) {
-          outcome =
-            match?.outcome === '1' ? MatchOutcome.WIN : MatchOutcome.LOSS;
+          outcome = match?.outcome === '1' ? MatchOutcome.WIN : MatchOutcome.LOSS;
         } else {
-          outcome =
-            match?.outcome === '1' ? MatchOutcome.LOSS : MatchOutcome.WIN;
+          outcome = match?.outcome === '1' ? MatchOutcome.LOSS : MatchOutcome.WIN;
         }
 
         if (match?.player1 === me.userid) {
@@ -56,10 +44,8 @@ export function MyMatches({
 
         return (
           <div key={idx}>
-            R{round} at table {match?.tablenumber}:{' '}
-            <span className="font-bold">{outcome}</span> vs.{' '}
-            {getPlayerName(tournament, opponent)}{' '}
-            <PlayerScore score={tournament.scores[opponent]} />
+            R{round} at table {match?.tablenumber}: <span className="font-bold">{outcome}</span> vs.{' '}
+            {getPlayerName(tournament, opponent)} <PlayerScore score={tournament.scores[opponent]} />
             {tournament.players[opponent].dropped && <span> Dropped</span>}
           </div>
         );

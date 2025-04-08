@@ -2,7 +2,7 @@
 
 import { useActionState, useCallback, useEffect, useRef, useState } from 'react';
 
-import { uploadTournamentFile } from '@/app/actions/tournament';
+import { uploadTournamentFile } from '@/actions/tournament';
 import { Alert } from '@/components/Alert';
 import { cn } from '@/lib/utils';
 

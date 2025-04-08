@@ -4,7 +4,7 @@ import 'server-only';
 
 import { unstable_cache } from 'next/cache';
 
-import { StoredTournament, Tournament } from '@/app/actions/tournament/types';
+import { StoredTournament, Tournament } from '@/actions/tournament/types';
 import { getStore } from '@/blobs';
 
 export async function loadTournament(tournamentId: string): Promise<StoredTournament | undefined> {

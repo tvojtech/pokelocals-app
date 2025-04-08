@@ -1,16 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { XMLParser } from 'fast-xml-parser';
 
-import {
-  Division,
-  Match,
-  Player,
-  Pod,
-  Round,
-  Subgroup,
-  TournamentStandings,
-  XmlTournament,
-} from './types';
+import { Division, Match, Player, Pod, Round, Subgroup, TournamentStandings, XmlTournament } from './types';
 
 export function xmlToObject(xmlString: string): XmlTournament {
   const parser = new XMLParser({
@@ -45,9 +36,7 @@ export function xmlToObject(xmlString: string): XmlTournament {
     timeelapsed: Number(jsonData.tournament.timeelapsed),
     players: parsePlayers(jsonData.tournament.players.player),
     pods: parsePods(jsonData.tournament.pods.pod),
-    standings: jsonData.tournament?.standings?.pod
-      ? parseStandings(jsonData.tournament.standings.pod)
-      : undefined,
+    standings: jsonData.tournament?.standings?.pod ? parseStandings(jsonData.tournament.standings.pod) : undefined,
   };
 
   return tournament;
@@ -66,12 +55,9 @@ const parseStandings = (standings: any): XmlTournament['standings'] => {
     .map((standing: any) => ({
       category: divisionMap[standing['@_category'] as XmlStandingsCategory],
       type: standing['@_type'],
-      players: (Array.isArray(standing.player)
-        ? standing.player
-        : standing.player
-          ? [standing.player]
-          : []
-      ).map((p: any) => ({ id: p['@_id'], place: Number(p['@_place']) })),
+      players: (Array.isArray(standing.player) ? standing.player : standing.player ? [standing.player] : []).map(
+        (p: any) => ({ id: p['@_id'], place: Number(p['@_place']) })
+      ),
     }))
     .reduce(
       (acc: TournamentStandings, standing) => ({
@@ -151,10 +137,7 @@ const parseRounds = (rounds: any) => {
   );
 };
 
-function parseXmlArray<T, ReturnType>(
-  mapper: (data: T) => ReturnType,
-  data?: T
-) {
+function parseXmlArray<T, ReturnType>(mapper: (data: T) => ReturnType, data?: T) {
   if (!data) {
     return [];
   }

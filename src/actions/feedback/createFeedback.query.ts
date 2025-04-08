@@ -10,10 +10,7 @@ export type CreateFeedbackReturns = {
   id: string;
 };
 
-export function createFeedback(
-  client: Executor,
-  args: CreateFeedbackArgs
-): Promise<CreateFeedbackReturns> {
+export function createFeedback(client: Executor, args: CreateFeedbackArgs): Promise<CreateFeedbackReturns> {
   return client.queryRequiredSingle(
     `\
 insert Feedback {

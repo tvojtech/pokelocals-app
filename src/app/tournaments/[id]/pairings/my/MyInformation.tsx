@@ -1,6 +1,6 @@
 'use client';
 
-import { Tournament } from '@/app/actions/tournament';
+import { Tournament } from '@/actions/tournament';
 import { useMyPokemonId } from '@/app/hooks';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { MyCurrentPairing } from '@/app/tournaments/[id]/pairings/my/MyCurrentPairing';

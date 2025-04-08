@@ -19,10 +19,7 @@ export async function listTournaments() {
       if (!tournamentData) {
         return undefined;
       }
-      if (
-        tournamentData.metadata?.uploaded_by !== userId &&
-        tournamentData.metadata?.uploaded_by !== orgId
-      ) {
+      if (tournamentData.metadata?.uploaded_by !== userId && tournamentData.metadata?.uploaded_by !== orgId) {
         return undefined;
       }
       return { id: tournamentId, ...tournamentData.content };

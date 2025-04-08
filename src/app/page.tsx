@@ -3,7 +3,7 @@ import { SquareArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
-import { listTournaments } from '@/app/actions/tournament';
+import { listTournaments } from '@/actions/tournament';
 import { CreateTournamentButton } from '@/app/tournaments/CreateTournamentButton';
 import { Alert } from '@/components/Alert';
 import { RestrictedPage } from '@/components/RestrictedPage';

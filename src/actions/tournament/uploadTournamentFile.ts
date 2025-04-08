@@ -4,9 +4,9 @@ import { auth } from '@clerk/nextjs/server';
 import admin from 'firebase-admin';
 import { revalidateTag } from 'next/cache';
 
-import { listNotificationTokens } from '@/app/actions/notifications';
-import { Match, PlayerScore, StoredTournament, Tournament, XmlTournament } from '@/app/actions/tournament/types';
-import { xmlToObject } from '@/app/actions/tournament/xml';
+import { listNotificationTokens } from '@/actions/notifications';
+import { Match, PlayerScore, StoredTournament, Tournament, XmlTournament } from '@/actions/tournament/types';
+import { xmlToObject } from '@/actions/tournament/xml';
 import { exhaustiveMatchingGuard } from '@/app/utils';
 import { getStore } from '@/blobs';
 import serviceAccount from '@/serviceAccount.json';

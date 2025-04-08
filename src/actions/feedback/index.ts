@@ -1,9 +1,6 @@
 'use server';
 
-import {
-  createFeedback,
-  CreateFeedbackArgs,
-} from '@/app/actions/feedback/createFeedback.query';
+import { createFeedback, CreateFeedbackArgs } from '@/actions/feedback/createFeedback.query';
 import { edgeDbClient } from '@/app/db';
 
 export async function submitFeedback(data: CreateFeedbackArgs) {

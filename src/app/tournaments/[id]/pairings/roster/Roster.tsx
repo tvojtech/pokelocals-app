@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Division, Player, Tournament } from '@/app/actions/tournament';
+import { Division, Player, Tournament } from '@/actions/tournament';
 import { getPlayerName } from '@/app/pokemonUtils';
 import { Alert } from '@/components/Alert';
 import { Separator } from '@/components/ui/separator';
@@ -18,9 +18,7 @@ const getPlayerDivision = (player: Player) => {
   }
 };
 
-const groupPlayersByDivision = (
-  players: Player[]
-): Record<Division, Player[]> => {
+const groupPlayersByDivision = (players: Player[]): Record<Division, Player[]> => {
   return players.reduce(
     (acc, player) => {
       const division = getPlayerDivision(player);
@@ -46,16 +44,11 @@ export function Roster({ tournament }: { tournament: Tournament }) {
   const playersByDivision = groupPlayersByDivision(Object.values(players));
 
   return (
-    <div className="space-y-8 columns-sm">
+    <div className="columns-sm space-y-8">
       {[Division.JUNIORS, Division.SENIORS, Division.MASTERS]
         .filter(division => playersByDivision[division].length > 0)
         .map((division, idx) => (
-          <PlayersSection
-            key={idx}
-            players={playersByDivision[division]}
-            tournament={tournament}
-            division={division}
-          />
+          <PlayersSection key={idx} players={playersByDivision[division]} tournament={tournament} division={division} />
         ))}
     </div>
   );
@@ -73,9 +66,8 @@ const PlayersSection: React.FC<{
   });
   return (
     <div>
-      <h2 className="w-full flex gap-1 justify-center border-b-2 mb-2 text-xl font-bold">
-        <p className="capitalize">{division.toLowerCase()}</p>(
-        {sortedPlayers.length} players)
+      <h2 className="mb-2 flex w-full justify-center gap-1 border-b-2 text-xl font-bold">
+        <p className="capitalize">{division.toLowerCase()}</p>({sortedPlayers.length} players)
       </h2>
       <div className="flex flex-col gap-2">
         {sortedPlayers.map((player, idx) => (
@@ -83,19 +75,13 @@ const PlayersSection: React.FC<{
             <div key={idx} className="grid grid-cols-2 gap-2 px-4">
               <div>{getPlayerName(tournament, player.userid)}</div>
               <div className="flex items-center gap-2">
-                {player.late && (
-                  <span className="text-red-600 flex items-center gap-2">
-                    Late
-                  </span>
-                )}
+                {player.late && <span className="flex items-center gap-2 text-red-600">Late</span>}
                 {player.byes ? (
                   <span>
                     {player.byes} {player.byes === 1 ? 'round' : 'rounds'} bye
                   </span>
                 ) : null}
-                {player.dropped ? (
-                  <span>drop round {player.dropped.round}</span>
-                ) : null}
+                {player.dropped ? <span>drop round {player.dropped.round}</span> : null}
               </div>
             </div>
             <Separator />

@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import { loadTournament } from '@/app/actions/tournament';
+import { loadTournament } from '@/actions/tournament';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { PageTabs } from '@/app/tournaments/[id]/pairings/PageTabs';
 import { Alert } from '@/components/Alert';

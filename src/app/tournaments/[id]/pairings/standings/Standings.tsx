@@ -1,24 +1,17 @@
 import React from 'react';
 
-import {
-  Division,
-  DivisionStandings,
-  Tournament,
-} from '@/app/actions/tournament';
+import { Division, DivisionStandings, Tournament } from '@/actions/tournament';
 import { getPlayerName } from '@/app/pokemonUtils';
 import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
 import { Separator } from '@/components/ui/separator';
 
 export function Standings({ tournament }: { tournament: Tournament }) {
   return (
-    <div className="space-y-8 columns-sm">
+    <div className="columns-sm space-y-8">
       {[Division.JUNIORS, Division.SENIORS, Division.MASTERS]
         .filter(division => {
           const standings = tournament.standings?.[division];
-          return (
-            standings &&
-            (standings.finished.length > 0 || standings.dnf.length > 0)
-          );
+          return standings && (standings.finished.length > 0 || standings.dnf.length > 0);
         })
         .map(division =>
           tournament.standings?.[division] ? (
@@ -41,9 +34,8 @@ const StandingsSection: React.FC<{
 }> = ({ division, standings, tournament }) => {
   return (
     <div>
-      <h2 className="w-full flex gap-1 justify-center border-b-2 mb-2 text-xl font-bold">
-        <p className="capitalize">{division.toLowerCase()}</p>(
-        {standings.finished.length} players)
+      <h2 className="mb-2 flex w-full justify-center gap-1 border-b-2 text-xl font-bold">
+        <p className="capitalize">{division.toLowerCase()}</p>({standings.finished.length} players)
       </h2>
       <div className="flex flex-col gap-1">
         {standings.finished
@@ -53,8 +45,7 @@ const StandingsSection: React.FC<{
               <div className="grid grid-cols-[3rem_1fr] px-4">
                 <div>{place}.</div>
                 <div className="flex items-center gap-2">
-                  {getPlayerName(tournament, id)}{' '}
-                  <PlayerScore score={tournament.scores[id]} />
+                  {getPlayerName(tournament, id)} <PlayerScore score={tournament.scores[id]} />
                 </div>
               </div>
               <Separator />

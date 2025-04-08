@@ -98,7 +98,6 @@ export function FileUpload({ tournamentId }: { tournamentId: string }) {
   return (
     <>
       <form action={formAction} className="w-full space-y-4">
-        {(error || state?.error) && <Alert message={error || (state?.error ?? '')} type="error" />}
         <div
           ref={dropZoneRef}
           onClick={handleClick}
@@ -134,6 +133,7 @@ export function FileUpload({ tournamentId }: { tournamentId: string }) {
             {selectedFile && <p className="mt-2 text-sm text-gray-600">Selected: {selectedFile.name}</p>}
           </div>
         </div>
+        {(error || state?.error) && <Alert message={error || (state?.error ?? '')} type="error" />}
         <LoadingButton isLoading={isPending} type="submit" disabled={!selectedFile}>
           Upload
         </LoadingButton>

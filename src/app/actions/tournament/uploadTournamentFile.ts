@@ -5,11 +5,13 @@ import admin from 'firebase-admin';
 import { revalidateTag } from 'next/cache';
 
 import { listNotificationTokens } from '@/app/actions/notifications';
-import { Match, PlayerScore, Tournament, XmlTournament } from '@/app/actions/tournament/types';
+import { Match, PlayerScore, StoredTournament, Tournament, XmlTournament } from '@/app/actions/tournament/types';
 import { xmlToObject } from '@/app/actions/tournament/xml';
 import { exhaustiveMatchingGuard } from '@/app/utils';
 import { getStore } from '@/blobs';
 import serviceAccount from '@/serviceAccount.json';
+
+import { loadTournament } from './loadTournament';
 
 if (!admin.apps.length) {
   admin.initializeApp({
@@ -32,18 +34,25 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
   }
 
   try {
+    const storedTournament = await loadTournament(tournamentId);
+    if (storedTournament) {
+      const { metadata } = storedTournament;
+      if (metadata.uploaded_by !== orgId && metadata.uploaded_by !== userId) {
+        return { error: 'You are not allowed to manage this tournament.' };
+      }
+    }
+
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const xmlString = buffer.toString('utf-8');
     const tournament = calculatePlayerScores(xmlToObject(xmlString));
+    const metadata: StoredTournament['metadata'] = {
+      uploaded_at: new Date().toISOString(),
+      uploaded_by: orgId ?? userId ?? 'anonymous',
+    };
 
     const store = await getStore('tournaments');
-    await store.setJSON(tournamentId, tournament, {
-      metadata: {
-        uploaded_at: new Date().toISOString(),
-        uploaded_by: orgId ?? userId ?? 'anonymous',
-      },
-    });
+    await store.setJSON(tournamentId, tournament, { metadata });
     revalidateTag(tournamentId);
 
     // const payload: Message = {

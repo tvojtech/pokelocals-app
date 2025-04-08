@@ -37,6 +37,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'POKÉ LOCALS',
+    images: 'https://app.pokelocals.online/favicon.svg',
   },
 };
 

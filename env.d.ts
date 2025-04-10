@@ -1,7 +1,6 @@
 namespace NodeJS {
   interface ProcessEnv {
     NEXT_PUBLIC_DEPLOYMENT: string;
-    PLATFORM: string;
     BLOB_STORAGE: 'local' | 'r2';
 
     AUTH_DISCORD_ID: string;
@@ -10,9 +9,6 @@ namespace NodeJS {
     EDGEDB_INSTANCE_NAME: string;
     EDGEDB_SECRET_KEY: string;
     EDGEDB_BRANCH: string;
-
-    EMAIL_SERVER: string;
-    EMAIL_FROM: string;
 
     NEXT_PUBLIC_FIREBASE_FCM_VAPID_KEY: string;
 

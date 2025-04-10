@@ -8,14 +8,12 @@ import { env as storageEnv } from './storage.env';
 export const env = createEnv({
   extends: [analyticsEnv, storageEnv, authEnv],
   server: {
-    APP_ENV: type.string.atLeastLength(1),
     BLOB_STORAGE: type.enumerated('local', 'r2'),
   },
   client: {
     NEXT_PUBLIC_DEPLOYMENT: type.string.atLeastLength(1),
   },
   runtimeEnv: {
-    APP_ENV: process.env.APP_ENV,
     NEXT_PUBLIC_DEPLOYMENT: process.env.NEXT_PUBLIC_DEPLOYMENT,
     BLOB_STORAGE: process.env.BLOB_STORAGE,
   },

@@ -4,15 +4,9 @@ import { useEffect } from 'react';
 import Rollbar from 'rollbar';
 
 import { ResetPage } from '@/components/ResetPage';
-import { clientConfig } from '@/rollbar';
+import { clientConfig } from '@/rollbar/client';
 
-export default function GlobalError({
-  error,
-  reset,
-}: {
-  error: Error;
-  reset: () => void;
-}) {
+export default function GlobalError({ error, reset }: { error: Error; reset: () => void }) {
   useEffect(() => {
     // Root layout and template are not available in the error page
     // so we don't have the RollbarProvider available to use the

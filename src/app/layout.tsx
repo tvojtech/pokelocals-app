@@ -11,7 +11,7 @@ import Footer from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { PostHogProvider } from '@/posthog';
-import { clientConfig } from '@/rollbar';
+import { clientConfig } from '@/rollbar/client';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

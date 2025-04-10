@@ -1,6 +1,6 @@
 namespace NodeJS {
   interface ProcessEnv {
-    DEPLOYMENT: string;
+    NEXT_PUBLIC_DEPLOYMENT: string;
     PLATFORM: string;
     BLOB_STORAGE: 'local' | 'r2';
 

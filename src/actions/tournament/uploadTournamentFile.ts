@@ -9,6 +9,7 @@ import { Match, PlayerScore, Tournament, TournamentWithMetadata, XmlTournament }
 import { xmlToObject } from '@/actions/tournament/xml';
 import { exhaustiveMatchingGuard } from '@/app/utils';
 import { getStore } from '@/blobs';
+import { requireOrganizerFlag } from '@/flags';
 import serviceAccount from '@/serviceAccount.json';
 
 import { loadTournament } from './loadTournament';
@@ -22,10 +23,13 @@ if (!admin.apps.length) {
 export async function uploadTournamentFile(formData: FormData, tournamentId: string) {
   const { userId, orgId } = await auth();
 
-  // fixme: uncomment once organizations are required to organize tournaments
-  // if (!orgId) {
-  //   throw new Error('No organization selected');
-  // }
+  const isOrganizationRequired = await requireOrganizerFlag.run({
+    identify: { userId: userId ?? 'anonymous' },
+  });
+
+  if (!orgId && isOrganizationRequired) {
+    return { error: 'No organization selected' };
+  }
 
   const file = formData.get('file') as File;
 

@@ -1,15 +1,16 @@
 import { GetObjectCommand, PutObjectCommand, S3 } from '@aws-sdk/client-s3';
 
 import { catchError } from '@/app/utils';
+import { env } from '@/env/env';
 
 import { BlobStore } from './types';
 
 const s3Client = new S3({
   region: 'auto',
-  endpoint: `https://${process.env.CLOUDFLARE_R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+  endpoint: `https://${env.CLOUDFLARE_R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
   credentials: {
-    accessKeyId: process.env.CLOUDFLARE_R2_ACCESS_KEY_ID,
-    secretAccessKey: process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY,
+    accessKeyId: env.CLOUDFLARE_R2_ACCESS_KEY_ID,
+    secretAccessKey: env.CLOUDFLARE_R2_SECRET_ACCESS_KEY,
   },
 });
 
@@ -24,10 +25,7 @@ async function get(bucket: string, key: string) {
   );
 
   if (error || !result) {
-    console.info(
-      `Failed to find object for key ${key} in bucket ${bucket}`,
-      error
-    );
+    console.info(`Failed to find object for key ${key} in bucket ${bucket}`, error);
     return undefined;
   }
 
@@ -41,7 +39,7 @@ async function get(bucket: string, key: string) {
 }
 
 export function getStore(namespace: string): BlobStore {
-  const bucket = process.env.CLOUDFLARE_R2_BUCKET_NAME;
+  const bucket = env.CLOUDFLARE_R2_BUCKET_NAME;
   return {
     async get(key) {
       return get(bucket, namespace + '/' + key);

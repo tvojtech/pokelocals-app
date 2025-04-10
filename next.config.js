@@ -1,6 +1,12 @@
-import type { NextConfig } from 'next';
+import { fileURLToPath } from 'node:url';
 
-const nextConfig: NextConfig = {
+import { createJiti } from 'jiti';
+const jiti = createJiti(fileURLToPath(import.meta.url));
+
+await jiti.import('./src/env/env');
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
     domains: ['cdn.discordapp.com'],
   },

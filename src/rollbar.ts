@@ -1,17 +1,19 @@
 import Rollbar from 'rollbar';
 
+import { env } from './env/env';
+
 const baseConfig: Rollbar.Configuration = {
   captureUncaught: true,
   captureUnhandledRejections: true,
-  environment: process.env.DEPLOYMENT,
+  environment: env.DEPLOYMENT,
 };
 
 export const clientConfig = {
-  accessToken: process.env.NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN,
+  accessToken: env.NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN,
   ...baseConfig,
 };
 
 export const serverInstance = new Rollbar({
-  accessToken: process.env.ROLLBAR_SERVER_TOKEN,
+  accessToken: env.ROLLBAR_SERVER_TOKEN,
   ...baseConfig,
 });

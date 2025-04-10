@@ -2,6 +2,8 @@
 
 import { auth, currentUser } from '@clerk/nextjs/server';
 
+import { env } from '@/env/env';
+
 export async function createNewOrganizerRequest(formData: FormData) {
   const { userId } = await auth();
 
@@ -42,7 +44,7 @@ export async function createNewOrganizerRequest(formData: FormData) {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.CLERK_SECRET_KEY}`,
+        Authorization: `Bearer ${env.CLERK_SECRET_KEY}`,
       },
       body: JSON.stringify({
         public_metadata: {

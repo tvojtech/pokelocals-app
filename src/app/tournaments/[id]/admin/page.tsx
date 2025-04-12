@@ -28,7 +28,7 @@ export default async function TournamentAdminPage({ params }: TournamentAdminPag
   }
 
   const isOrganizationRequired = await requireOrganizerFlag.run({
-    identify: { userId: userId ?? 'anonymous' },
+    identify: { userId: userId },
   });
 
   if (!orgId && isOrganizationRequired) {
@@ -45,7 +45,7 @@ export default async function TournamentAdminPage({ params }: TournamentAdminPag
         <OrganizationAvatar />
         <h1 className="text-2xl font-bold">{tournamentResult?.tournament.data.name || 'New tournament'}</h1>
       </div>
-      <div className="mx-auto flex max-w-lg flex-col items-center justify-center space-y-4">
+      <div className="mx-auto flex max-w-2xl flex-col items-center justify-center space-y-4">
         <PageActions tournamentId={id} />
         <FileUpload tournamentId={id} />
       </div>

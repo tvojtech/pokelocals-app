@@ -6,10 +6,14 @@ import { redirect } from 'next/navigation';
 import { Alert } from '@/components/Alert';
 import { Loading } from '@/components/Loading';
 
-import { NewOrganizationForm } from './NewOrganizationForm';
+import { NoOrganization } from './NoOrganization';
 import { Organizations } from './Organizations';
 
-export default function OrganizationsPage() {
+export default function OrganizationManagement({
+  isOrganizationManagementEnabled,
+}: {
+  isOrganizationManagementEnabled: boolean;
+}) {
   const { user, isLoaded } = useUser();
   const hasOrganizations = !!user?.organizationMemberships.length;
 
@@ -23,16 +27,16 @@ export default function OrganizationsPage() {
 
   if (user?.publicMetadata.waitlist) {
     return (
-      <Alert
-        type="info"
-        message="Thank you for joining! You will be notified when your application is
-        approved."
-      />
+      <Alert type="info" message="Thank you for joining! You will be notified when your application is approved." />
     );
   }
 
   if (!hasOrganizations) {
-    return <NewOrganizationForm />;
+    return <NoOrganization />;
+  }
+
+  if (!isOrganizationManagementEnabled) {
+    return <Alert message="Organization management will be available soon." type="info" />;
   }
 
   return <Organizations />;

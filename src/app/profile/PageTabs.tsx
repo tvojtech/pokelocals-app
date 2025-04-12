@@ -7,12 +7,12 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 export enum PageTypes {
   player = 'player',
-  organizer = 'organizer',
+  organization = 'organization',
 }
 
 const pageTypeToTextMappping: Record<PageTypes, { title: string; slug: string }> = {
-  [PageTypes.player]: { title: 'Player profile', slug: 'player' },
-  [PageTypes.organizer]: { title: 'Organizer', slug: 'organizer' },
+  [PageTypes.player]: { title: 'Player profile', slug: PageTypes.player },
+  [PageTypes.organization]: { title: 'Organization', slug: PageTypes.organization },
 };
 
 export function PageTabs() {

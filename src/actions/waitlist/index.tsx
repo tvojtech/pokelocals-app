@@ -20,6 +20,7 @@ export async function createNewOrganizerRequest(formData: FormData) {
   const name = formData.get('name');
   const website = formData.get('website');
   const location = formData.get('location');
+  const message = formData.get('message');
   const avg_tournament_size = formData.get('avg_tournament_size');
 
   const response = await fetch('https://api.getwaitlist.com/api/v1/signup', {
@@ -35,6 +36,7 @@ export async function createNewOrganizerRequest(formData: FormData) {
         website,
         location,
         avg_tournament_size,
+        message,
       },
     }),
   });

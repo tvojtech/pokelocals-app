@@ -18,12 +18,9 @@ export const PokemonIdForm = clientOnlyComponent(() => {
   };
 
   return (
-    <form
-      action={onSubmit}
-      onReset={() => setIsEditing(false)}
-      className="space-y-2 w-full">
+    <form action={onSubmit} onReset={() => setIsEditing(false)} className="w-full space-y-2">
       <label className="block">My pokemon ID:</label>
-      <div className="flex gap-3 px-4">
+      <div className="flex gap-3">
         <input
           type="text"
           defaultValue={myId}
@@ -31,7 +28,7 @@ export const PokemonIdForm = clientOnlyComponent(() => {
           placeholder="Enter your Pokemon ID"
           disabled={!isEditing}
           readOnly={!isEditing}
-          className="outline-2 border border-slate-300 p-1 px-2 text-black disabled:bg-slate-100 flex-grow"
+          className="flex-grow border border-slate-300 p-1 px-2 text-black outline-2 disabled:bg-slate-100"
         />
         {isEditing ? (
           <>

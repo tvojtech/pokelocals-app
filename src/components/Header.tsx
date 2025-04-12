@@ -2,7 +2,7 @@ import { auth } from '@clerk/nextjs/server';
 import { MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 
-import { OrganizationSwitcher } from '@/app/profile/organizer/OrganizationSwitcher';
+import { OrganizationSwitcher } from '@/app/profile/organization/OrganizationSwitcher';
 import { HeaderDrawer } from '@/components/HeaderDrawer';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/buttons/button';

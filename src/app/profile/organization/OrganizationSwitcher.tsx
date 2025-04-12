@@ -1,6 +1,7 @@
 'use client';
 
 import { useOrganization, useOrganizationList } from '@clerk/nextjs';
+import { useEffect } from 'react';
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
@@ -9,6 +10,12 @@ export function OrganizationSwitcher() {
   const { userMemberships, setActive, isLoaded } = useOrganizationList({
     userMemberships: true,
   });
+
+  useEffect(() => {
+    if (!organization && userMemberships?.data && userMemberships.data.length > 0 && isLoaded) {
+      setActive?.({ organization: userMemberships.data[0].organization.id });
+    }
+  }, [userMemberships, setActive, isLoaded, organization]);
 
   // If not loaded yet, or user has 0-1 organizations, don't render anything
   if (!isLoaded || !userMemberships?.data || userMemberships.data.length === 0) {

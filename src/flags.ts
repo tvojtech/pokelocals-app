@@ -13,3 +13,15 @@ export const requireOrganizerFlag = flag<boolean, { userId: string }>({
     return requireOrganizer ?? true;
   },
 });
+
+export const organizationManagementFlag = flag<boolean, { userId: string }>({
+  key: 'organization-management',
+  async decide({ entities }) {
+    const requireOrganizer = await getPostHogClient().isFeatureEnabled(
+      'organization-management',
+      entities?.userId ?? 'anonymous'
+    );
+
+    return requireOrganizer ?? true;
+  },
+});

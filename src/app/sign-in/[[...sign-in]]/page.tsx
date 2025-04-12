@@ -12,7 +12,7 @@ export default async function SignInPage(props: { searchParams: Promise<SearchPa
     redirect(returnUrl);
   }
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="mx-auto flex max-w-2xl justify-center">
       <SignIn forceRedirectUrl={returnUrl} signUpUrl="/sign-up" withSignUp />
     </div>
   );

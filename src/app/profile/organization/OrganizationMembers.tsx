@@ -63,9 +63,16 @@ function MembersTableBody({
   const isAdmin = currentUserMembership?.role === 'org:admin';
   const otherAdmins = users.data.filter(m => m.role === 'org:admin' && m.publicUserData.userId !== user?.id);
 
+  const sortedMembers = users.data.toSorted((a, b) => {
+    // Sort members: current user first, then others alphabetically by identifier
+    if (a.publicUserData.userId === user?.id) return -1;
+    if (b.publicUserData.userId === user?.id) return 1;
+    return a.publicUserData.identifier.localeCompare(b.publicUserData.identifier);
+  });
+
   return (
     <>
-      {users.data.map(member => {
+      {sortedMembers.map(member => {
         const isCurrentUser = member.publicUserData.userId === user?.id;
         const canRemove = isAdmin && (!isCurrentUser || otherAdmins.length > 0);
         const canChangeRole = isAdmin && (!isCurrentUser || otherAdmins.length > 0);

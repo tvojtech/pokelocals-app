@@ -79,7 +79,7 @@ function AddMemberForm() {
 
   const [, formAction, isPending] = useActionState(addOrganizationMemberAction, undefined);
   return (
-    <form action={formAction} className="flex max-w-96 justify-center gap-2">
+    <form action={formAction} className="flex justify-center gap-2">
       <Input name="email" type="email" placeholder="User email" />
       <LoadingButton type="submit" variant="outline" isLoading={isPending}>
         Add user

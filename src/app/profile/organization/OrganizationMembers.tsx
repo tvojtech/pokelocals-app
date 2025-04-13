@@ -100,7 +100,7 @@ function MembersTableBody({
               <MemberRoleSelect member={member} canChangeRole={canChangeRole} />
             </TableCell>
             <TableCell>
-              <RemoveMemberButton member={member} canRemove={canRemove} />
+              <RemoveMemberButton member={member} canRemove={canRemove && !isCurrentUser} />
             </TableCell>
           </TableRow>
         );

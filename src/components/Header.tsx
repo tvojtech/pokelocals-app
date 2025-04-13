@@ -13,7 +13,7 @@ import { UserButton } from './UserButton';
 export async function Header() {
   const { sessionId } = await auth();
   return (
-    <header className="border-b-2 bg-slate-50 text-gray-800 shadow-sm print:hidden">
+    <header className="border-b-2 shadow-sm print:hidden">
       <nav>
         <div className="flex h-16 items-center justify-between px-4 py-4 lg:container md:px-10 lg:mx-auto">
           <Link href="/" prefetch={false}>

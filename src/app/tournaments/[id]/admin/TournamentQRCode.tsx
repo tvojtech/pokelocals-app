@@ -4,6 +4,7 @@ import { useToggle } from '@uidotdev/usehooks';
 import { QrCode } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 
+import { Card } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 export function TournamentQRCode({ tournamentUrl }: { tournamentUrl: string }) {
@@ -36,9 +37,9 @@ export function TournamentQRCode({ tournamentUrl }: { tournamentUrl: string }) {
           className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-slate-50 bg-opacity-95 p-4"
           onClick={() => toggle()}>
           <QRCodeSVG value={tournamentUrl} className="m-10 h-60 w-60" />
-          <p className="rounded-lg border border-slate-500 bg-slate-50 bg-opacity-100 p-4">
-            Scan the QR code to open pairings on your phone.
-          </p>
+          <Card className="p-4">
+            <p>Scan the QR code to open pairings on your phone.</p>
+          </Card>
         </div>
       </div>
     </>

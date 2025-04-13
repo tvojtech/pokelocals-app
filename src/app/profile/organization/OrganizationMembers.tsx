@@ -6,7 +6,16 @@ import React, { Suspense, useActionState, useCallback, useMemo, useState } from 
 import { addOrganizationMember } from '@/actions/organizations';
 import { Loading } from '@/components/Loading';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/buttons/button';
 import { LoadingButton } from '@/components/ui/buttons/loading-button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -27,7 +36,7 @@ export function OrganizationMembers({ membership }: { membership: OrganizationMe
     <div className="space-y-2">
       <AddMemberForm />
       <Table>
-        <TableCaption>List of users in {membership?.organization.name}</TableCaption>
+        <TableCaption>List of members</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>Identifier</TableHead>
@@ -118,7 +127,7 @@ function AddMemberForm() {
   return (
     <>
       <form action={formAction} className="flex justify-center gap-2">
-        <Input name="email" type="email" placeholder="User email" />
+        <Input name="email" type="email" placeholder="User email" disabled={isDisabled} />
         <LoadingButton type="submit" variant="outline" isLoading={isPending} disabled={isDisabled}>
           Add user
         </LoadingButton>
@@ -136,17 +145,20 @@ function MemberRoleSelect({
   canChangeRole: boolean;
 }) {
   const { organization } = useOrganization();
+  const { user } = useUser();
+  const isCurrentUser = member.publicUserData.userId === user?.id;
   const [isChangingRole, setIsChangingRole] = useState(false);
+  const [showWarningDialog, setShowWarningDialog] = useState(false);
+  const [pendingNewRole, setPendingNewRole] = useState<string | null>(null);
 
   const changeRole = useCallback(
     async (newRole: string) => {
       if (organization) {
         setIsChangingRole(true);
-        const updatedMemberResult = await organization.updateMember({
+        await organization.updateMember({
           userId: member.publicUserData.userId!,
           role: newRole,
         });
-        console.log(updatedMemberResult);
         await organization.reload();
         setIsChangingRole(false);
       }
@@ -154,9 +166,26 @@ function MemberRoleSelect({
     [member.publicUserData.userId, organization]
   );
 
+  const handleRoleChange = (newRole: string) => {
+    if (isCurrentUser && member.role === 'org:admin' && newRole !== 'org:admin') {
+      setPendingNewRole(newRole);
+      setShowWarningDialog(true);
+    } else {
+      changeRole(newRole);
+    }
+  };
+
+  const handleConfirmRoleChange = () => {
+    if (pendingNewRole) {
+      changeRole(pendingNewRole);
+      setShowWarningDialog(false);
+      setPendingNewRole(null);
+    }
+  };
+
   return (
     <div className="flex items-center gap-2">
-      <Select defaultValue={member.role} disabled={!canChangeRole || isChangingRole} onValueChange={changeRole}>
+      <Select value={member.role} disabled={!canChangeRole || isChangingRole} onValueChange={handleRoleChange}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select role" />
         </SelectTrigger>
@@ -166,6 +195,26 @@ function MemberRoleSelect({
         </SelectContent>
       </Select>
       {isChangingRole && <Loader2 className="h-4 w-4 animate-spin" />}
+
+      <Dialog open={showWarningDialog} onOpenChange={setShowWarningDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Warning: Changing Role</DialogTitle>
+            <DialogDescription>
+              You are about to change your role from Admin to Member. This will remove your access to organization
+              administration functions. Are you sure you want to proceed?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowWarningDialog(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleConfirmRoleChange}>
+              Confirm Change
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

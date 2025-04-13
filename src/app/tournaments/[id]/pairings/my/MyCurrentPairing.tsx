@@ -1,5 +1,6 @@
 import { Player, Pod, Tournament } from '@/actions/tournament';
 import { PairingsRow } from '@/app/tournaments/[id]/pairings/PairingsRow';
+import { Card, CardContent } from '@/components/ui/card';
 
 export function MyCurrentPairing({ me, pod: myPod, tournament }: { me: Player; pod: Pod; tournament: Tournament }) {
   const currentRound = myPod.rounds[myPod.rounds.length - 1];
@@ -13,8 +14,10 @@ export function MyCurrentPairing({ me, pod: myPod, tournament }: { me: Player; p
   const opponent = myPairing.player1 === me.userid ? myPairing.player2 : myPairing.player1;
 
   return (
-    <div className="-ml-2 grid grid-cols-3">
-      <PairingsRow match={{ ...myPairing, player1: me.userid, player2: opponent }} tournament={tournament} />
-    </div>
+    <Card>
+      <CardContent className="grid grid-cols-3 p-4">
+        <PairingsRow match={{ ...myPairing, player1: me.userid, player2: opponent }} tournament={tournament} />
+      </CardContent>
+    </Card>
   );
 }

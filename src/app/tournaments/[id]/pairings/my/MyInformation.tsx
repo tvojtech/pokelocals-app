@@ -8,7 +8,6 @@ import { MyMatches } from '@/app/tournaments/[id]/pairings/my/MyMatches';
 import { guessFullName } from '@/app/utils';
 import { Alert } from '@/components/Alert';
 import { clientOnlyComponent } from '@/components/clientOnlyComponent';
-import { Separator } from '@/components/ui/separator';
 
 export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(({ tournament }) => {
   const { myId } = useMyPokemonId();
@@ -55,7 +54,6 @@ export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(({ 
   return (
     <div className="space-y-6">
       <MyCurrentPairing me={me} pod={myPod} tournament={tournament} />
-      <Separator />
       <MyMatches me={me} pod={myPod} tournament={tournament} />
     </div>
   );

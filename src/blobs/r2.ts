@@ -51,6 +51,18 @@ export function getStore(namespace: string): BlobStore {
       }
       return { content: JSON.parse(value.content), metadata: value.metadata };
     },
+    async set(key, data, options) {
+      const command = new PutObjectCommand({
+        Bucket: bucket,
+        Key: namespace + '/' + key,
+        Body: data,
+        Metadata: {
+          ...(options?.metadata ?? {}),
+        },
+      });
+
+      await s3Client.send(command);
+    },
     async setJSON(key, data, options) {
       const command = new PutObjectCommand({
         Bucket: bucket,

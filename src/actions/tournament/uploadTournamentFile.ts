@@ -49,12 +49,27 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const xmlString = buffer.toString('utf-8');
+
+    if (orgId || userId) {
+      const now = new Date().getTime();
+      const key = orgId ? `orgs/${orgId}/${tournamentId}/time/${now}` : `users/${userId}/${tournamentId}/time/${now}`;
+      const xmlStore = await getStore(`xml/tournaments`);
+      await xmlStore.set(key, xmlString, {
+        metadata: {
+          uploaded_at: new Date().toISOString(),
+          uploaded_by: orgId ?? userId ?? 'anonymous',
+          upload_user: userId,
+          upload_org: orgId ?? '',
+        } as TournamentWithMetadata['metadata'],
+      });
+    }
+
     const tournament = calculatePlayerScores(xmlToObject(xmlString));
     const metadata: TournamentWithMetadata['metadata'] = {
       uploaded_at: new Date().toISOString(),
       uploaded_by: orgId ?? userId ?? 'anonymous',
-      upload_user: userId ?? undefined,
-      upload_org: orgId ?? undefined,
+      upload_user: userId ?? '',
+      upload_org: orgId ?? '',
     };
 
     const store = await getStore('tournaments');

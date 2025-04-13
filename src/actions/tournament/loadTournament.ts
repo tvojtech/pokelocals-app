@@ -20,6 +20,8 @@ export async function loadTournament(tournamentId: string): Promise<TournamentWi
         metadata: {
           uploaded_at: result.metadata.uploaded_at,
           uploaded_by: result.metadata.uploaded_by,
+          upload_user: result.metadata.upload_user,
+          upload_org: result.metadata.upload_org,
         },
       };
     },

@@ -53,6 +53,8 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
     const metadata: TournamentWithMetadata['metadata'] = {
       uploaded_at: new Date().toISOString(),
       uploaded_by: orgId ?? userId ?? 'anonymous',
+      upload_user: userId ?? undefined,
+      upload_org: orgId ?? undefined,
     };
 
     const store = await getStore('tournaments');

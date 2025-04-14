@@ -32,11 +32,16 @@ const getJSON =
 
 const set = (namespace: string) => (key: string, data: string, options?: { metadata?: BlobMetadata }) => {
   const path = `/tmp/${namespace}/${key}`;
-  fs.mkdirSync(`/tmp/${namespace}`, { recursive: true });
-  fs.writeFile(path, data, { encoding: 'utf-8' }, err => {
-    if (err) {
-      throw err;
-    }
+
+  return new Promise<void>((resolve, reject) => {
+    fs.mkdirSync(`/tmp/${namespace}`, { recursive: true });
+    fs.writeFile(path, data, { encoding: 'utf-8' }, err => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
   });
 };
 const setJSON = (namespace: string) => (key: string, data: unknown) => {

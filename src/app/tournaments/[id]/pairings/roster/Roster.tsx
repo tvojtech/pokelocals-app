@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Division, Player, Tournament } from '@/actions/tournament';
 import { getPlayerName } from '@/app/pokemonUtils';
-import { Alert } from '@/components/Alert';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 
 const getPlayerDivision = (player: Player) => {
@@ -38,7 +38,11 @@ const groupPlayersByDivision = (players: Player[]): Record<Division, Player[]> =
 export function Roster({ tournament }: { tournament: Tournament }) {
   const { players } = tournament;
   if (!players || Object.keys(players).length === 0) {
-    return <Alert type="warning" message="Roster not published yet." />;
+    return (
+      <Alert variant="warning">
+        <AlertDescription>Roster not published yet.</AlertDescription>
+      </Alert>
+    );
   }
 
   const playersByDivision = groupPlayersByDivision(Object.values(players));

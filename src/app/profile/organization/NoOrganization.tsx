@@ -4,7 +4,7 @@ import { useUser } from '@clerk/nextjs';
 import { useActionState, useCallback } from 'react';
 
 import { createNewOrganizerRequest } from '@/actions/waitlist';
-import { Alert } from '@/components/Alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { LoadingButton } from '@/components/ui/buttons/loading-button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FormControl } from '@/components/ui/forms/FormControl';
@@ -35,16 +35,15 @@ export function NoOrganization() {
 
   return (
     <div className="mx-auto w-full max-w-2xl space-y-4">
-      <Alert
-        type="info"
-        title="You have no organization"
-        message={
+      <Alert variant="info">
+        <AlertTitle>You have no organization</AlertTitle>
+        <AlertDescription>
           <ul className="list-disc pl-4">
             <li>Please fill in the form below and we&apos;ll create an organization for you or;</li>
             <li>if your LGS already has an organization, please ask your administrator to assign you to it.</li>
           </ul>
-        }
-      />
+        </AlertDescription>
+      </Alert>
       <Card>
         <CardHeader>
           <CardTitle>Become an organizer</CardTitle>

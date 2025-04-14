@@ -5,7 +5,7 @@ import React from 'react';
 
 import { listTournaments } from '@/actions/tournament';
 import { CreateTournamentButton } from '@/app/tournaments/CreateTournamentButton';
-import { Alert } from '@/components/Alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { buttonVariants } from '@/components/ui/buttons/button';
 import { requireOrganizerFlag } from '@/flags';
 
@@ -31,29 +31,19 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-4">
       {!orgId && !isOrganizationRequired && (
-        <Alert
-          type="warning"
-          message={
-            <>
-              <h2 className="text-lg font-bold">{alertTitle}</h2>
-              <p>{alertMessage}</p>
-            </>
-          }
-        />
+        <Alert variant="warning">
+          <AlertTitle>{alertTitle}</AlertTitle>
+          <AlertDescription>{alertMessage}</AlertDescription>
+        </Alert>
       )}
       {!orgId && isOrganizationRequired && (
-        <Alert
-          type="warning"
-          message={
-            <>
-              <h2 className="text-lg font-bold">To create tournaments, you need to be an organizer.</h2>
-              <p>To become one, go to user profile page, and request the organizer role.</p>
-            </>
-          }
-        />
+        <Alert variant="warning">
+          <AlertTitle>To create tournaments, you need to be an organizer.</AlertTitle>
+          <AlertDescription>To become one, go to user profile page, and request the organizer role.</AlertDescription>
+        </Alert>
       )}
 
-      {((isOrganizationRequired && orgId) || !isOrganizationRequired) && <CreateTournamentButton />}
+      {(!isOrganizationRequired || (isOrganizationRequired && orgId)) && <CreateTournamentButton />}
       {tournaments?.length ? (
         <div className="space-y-4">
           <h2 className="text-2xl font-bold">My tournaments</h2>

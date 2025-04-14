@@ -1,9 +1,9 @@
 import { auth } from '@clerk/nextjs/server';
 
 import { loadTournament } from '@/actions/tournament';
-import { Alert } from '@/components/Alert';
 import { FileUpload } from '@/components/FileUpload';
 import { OrganizationAvatar } from '@/components/OrganizationAvatar';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { requireOrganizerFlag } from '@/flags';
 
 import { PageActions } from './PageActions';
@@ -22,7 +22,9 @@ export default async function TournamentAdminPage({ params }: TournamentAdminPag
   if (uploadedBy !== userId && uploadedBy !== orgId) {
     return (
       <div>
-        <Alert type="warning" message="You are not allowed to manage this tournament." />
+        <Alert variant="warning">
+          <AlertDescription>You are not allowed to manage this tournament.</AlertDescription>
+        </Alert>
       </div>
     );
   }
@@ -34,7 +36,9 @@ export default async function TournamentAdminPage({ params }: TournamentAdminPag
   if (!orgId && isOrganizationRequired) {
     return (
       <div>
-        <Alert type="warning" message="You need to be part of an organization to manage tournaments." />
+        <Alert variant="warning">
+          <AlertDescription>You need to be part of an organization to manage tournaments.</AlertDescription>
+        </Alert>
       </div>
     );
   }

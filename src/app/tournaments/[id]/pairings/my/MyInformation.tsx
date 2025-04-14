@@ -6,8 +6,8 @@ import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/Inline
 import { MyCurrentPairing } from '@/app/tournaments/[id]/pairings/my/MyCurrentPairing';
 import { MyMatches } from '@/app/tournaments/[id]/pairings/my/MyMatches';
 import { guessFullName } from '@/app/utils';
-import { Alert } from '@/components/Alert';
 import { clientOnlyComponent } from '@/components/clientOnlyComponent';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(({ tournament }) => {
   const { myId } = useMyPokemonId();
@@ -23,23 +23,25 @@ export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(({ 
   if (!me) {
     console.log('me not found');
     return (
-      <Alert
-        type="error"
-        title="You are not registered in the tournament!"
-        message={`Is your Pokemon ID correct? (ID: ${myId})`}
-      />
+      <Alert variant="destructive">
+        <AlertTitle>You are not registered in the tournament!</AlertTitle>
+        <AlertDescription>Is your Pokemon ID correct? (ID: {myId})</AlertDescription>
+      </Alert>
     );
   }
 
   if (!pods || pods.length === 0) {
     return (
       <>
-        <Alert
-          type="info"
-          title="You are registered in the tournament."
-          message={`Your Pokemon ID: ${myId}. Your name: ${guessFullName(me)}`}
-        />
-        <Alert type="warning" message="Pairings not published yet." />
+        <Alert variant="info">
+          <AlertTitle>You are registered in the tournament.</AlertTitle>
+          <AlertDescription>
+            Your Pokemon ID: {myId}. Your name: {guessFullName(me)}
+          </AlertDescription>
+        </Alert>
+        <Alert variant="warning">
+          <AlertDescription>Pairings not published yet.</AlertDescription>
+        </Alert>
       </>
     );
   }

@@ -2,13 +2,17 @@ import React from 'react';
 
 import { Pod, Round, Tournament } from '@/actions/tournament';
 import { PairingsRow } from '@/app/tournaments/[id]/pairings/PairingsRow';
-import { Alert } from '@/components/Alert';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export function Pairings({ tournament }: { tournament: Tournament }) {
   const { pods } = tournament;
   if (!pods || pods.length === 0) {
-    return <Alert type="warning" message="Pairings not published yet." />;
+    return (
+      <Alert variant="warning">
+        <AlertDescription>Pairings not published yet.</AlertDescription>
+      </Alert>
+    );
   }
   return (
     <div className="columns-sm space-y-8">

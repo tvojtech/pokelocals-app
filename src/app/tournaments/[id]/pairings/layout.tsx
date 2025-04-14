@@ -4,9 +4,9 @@ import { Suspense } from 'react';
 import { loadTournament } from '@/actions/tournament';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { PageTabs } from '@/app/tournaments/[id]/pairings/PageTabs';
-import { Alert } from '@/components/Alert';
 import { Notifications } from '@/components/Notifications';
 import { QRCodeOverlay } from '@/components/QRCodeOverlay';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -62,7 +62,9 @@ export default async function TournamentPairingsLayout({
               <QRCodeOverlay />
             </div>
             <InlinePokemonIdCheckForm />
-            <Alert type="warning" message="Tournament not ready yet." className="mt-2" />
+            <Alert variant="warning" className="mt-2">
+              <AlertDescription>Tournament not ready yet.</AlertDescription>
+            </Alert>
           </>
         )) || (
           <div className="flex items-center justify-between">

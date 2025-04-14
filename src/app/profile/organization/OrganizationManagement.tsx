@@ -3,8 +3,8 @@
 import { useUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 
-import { Alert } from '@/components/Alert';
 import { Loading } from '@/components/Loading';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 import { NoOrganization } from './NoOrganization';
 import { Organizations } from './Organizations';
@@ -27,7 +27,10 @@ export default function OrganizationManagement({
 
   if (user?.publicMetadata.waitlist) {
     return (
-      <Alert type="info" message="Thank you for joining! You will be notified when your application is approved." />
+      <Alert variant="info">
+        <AlertTitle>Thank you for joining!</AlertTitle>
+        <AlertDescription>You will be notified when your application is approved.</AlertDescription>
+      </Alert>
     );
   }
 
@@ -36,7 +39,12 @@ export default function OrganizationManagement({
   }
 
   if (!isOrganizationManagementEnabled) {
-    return <Alert message="Organization management will be available soon." type="info" />;
+    return (
+      <Alert variant="info">
+        <AlertTitle>Organization management will be available soon.</AlertTitle>
+        <AlertDescription>Please check back later.</AlertDescription>
+      </Alert>
+    );
   }
 
   return <Organizations />;

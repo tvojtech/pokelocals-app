@@ -3,7 +3,7 @@ import React from 'react';
 import { Division, Player, Tournament } from '@/actions/tournament';
 import { getPlayerName } from '@/app/pokemonUtils';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Separator } from '@/components/ui/separator';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const getPlayerDivision = (player: Player) => {
   // fixme: this changes every year, find a better way to determine division
@@ -69,15 +69,17 @@ const PlayersSection: React.FC<{
     return p1Name.localeCompare(p2Name);
   });
   return (
-    <div>
-      <h2 className="mb-2 flex w-full justify-center gap-1 border-b-2 text-xl font-bold">
-        <p className="capitalize">{division.toLowerCase()}</p>({sortedPlayers.length} players)
-      </h2>
-      <div className="flex flex-col gap-2">
-        {sortedPlayers.map((player, idx) => (
-          <React.Fragment key={idx}>
-            <div key={idx} className="grid grid-cols-2 gap-2 px-4">
-              <div>{getPlayerName(tournament, player.userid)}</div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <p className="capitalize">{division.toLowerCase()}</p>({sortedPlayers.length} players)
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-2 gap-0 gap-y-1">
+          {sortedPlayers.map((player, idx) => (
+            <React.Fragment key={idx}>
+              <div className="pl-2">{getPlayerName(tournament, player.userid)}</div>
               <div className="flex items-center gap-2">
                 {player.late && <span className="flex items-center gap-2 text-red-600">Late</span>}
                 {player.byes ? (
@@ -87,11 +89,11 @@ const PlayersSection: React.FC<{
                 ) : null}
                 {player.dropped ? <span>drop round {player.dropped.round}</span> : null}
               </div>
-            </div>
-            <Separator />
-          </React.Fragment>
-        ))}
-      </div>
-    </div>
+              {idx < sortedPlayers.length - 1 && <div className="col-span-2 border-t border-t-gray-200" />}
+            </React.Fragment>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 };

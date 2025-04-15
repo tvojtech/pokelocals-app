@@ -51,10 +51,10 @@ export default async function TournamentPairingsLayout({
   return (
     <>
       {tournamentResult && (
-        <h1 className="text-left text-3xl font-bold md:text-center">{tournamentResult.tournament.data.name}</h1>
+        <h1 className="text-left text-xl font-medium md:text-center">{tournamentResult.tournament.data.name}</h1>
       )}
 
-      <div className="mt-8">
+      <div className="mt-4">
         {(!tournamentResult && (
           <>
             <div className="mb-2 flex items-center justify-end">
@@ -75,7 +75,7 @@ export default async function TournamentPairingsLayout({
             </div>
           </div>
         )}
-        <div className="mt-8">
+        <div className="mt-4">
           <Suspense>{children}</Suspense>
         </div>
       </div>

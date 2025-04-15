@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function Standings({ tournament }: { tournament: Tournament }) {
   return (
-    <div className="columns-sm space-y-8">
+    <div className="columns-sm space-y-4">
       {[Division.JUNIORS, Division.SENIORS, Division.MASTERS]
         .filter(division => {
           const standings = tournament.standings?.[division];

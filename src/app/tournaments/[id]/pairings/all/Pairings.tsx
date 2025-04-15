@@ -15,7 +15,7 @@ export function Pairings({ tournament }: { tournament: Tournament }) {
     );
   }
   return (
-    <div className="columns-sm space-y-8">
+    <div className="columns-sm space-y-4">
       {pods.map((pod, idx) => (
         <PairingsSection key={idx} pod={pod} round={pod.rounds[pod.rounds.length - 1]} tournament={tournament} />
       ))}

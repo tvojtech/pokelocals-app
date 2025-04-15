@@ -54,7 +54,7 @@ export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(({ 
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <MyCurrentPairing me={me} pod={myPod} tournament={tournament} />
       <MyMatches me={me} pod={myPod} tournament={tournament} />
     </div>

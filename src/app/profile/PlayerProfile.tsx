@@ -2,7 +2,7 @@ import { PokemonIdForm } from '@/components/PokemonIdForm';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-export default function PlayerProfile() {
+export function PlayerProfile() {
   return (
     <Card className="w-full max-w-2xl">
       <CardHeader>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { useMyPokemonId } from '@/app/hooks';
 import { clientOnlyComponent } from '@/components/clientOnlyComponent';
@@ -10,26 +10,22 @@ import { Input } from './ui/input';
 
 export const PokemonIdForm = clientOnlyComponent(() => {
   const { myId, setMyId } = useMyPokemonId();
-  const [isDirty, setIsDirty] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [value, setValue] = useState(myId);
 
   const onSubmit = () => {
-    const newId = inputRef.current?.value;
-    setMyId(newId);
-    setIsDirty(false);
+    setMyId(value);
   };
 
   return (
-    <form action={onSubmit} onReset={() => setIsDirty(false)} className="w-full space-y-2">
+    <form action={onSubmit} onReset={() => setValue(myId)} className="w-full space-y-2">
       <label className="block">My pokemon ID:</label>
       <Input
         type="text"
-        defaultValue={myId}
-        ref={inputRef}
-        onChange={() => setIsDirty(true)}
+        value={value ?? ''}
+        onChange={evt => setValue(evt.target.value)}
         placeholder="Enter your Pokemon ID"
       />
-      {isDirty && (
+      {value !== myId && (
         <div className="flex items-center gap-2">
           <Button type="submit">Save</Button>
           <Button type="reset" variant="secondary">

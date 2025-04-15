@@ -1,9 +1,0 @@
-[build.environment]
-  NPM_FLAGS = "--force"
-  NODE_VERSION = "22"
-
-[[redirects]]
-  from = "/*"
-  to = "https://ptcg-pairings-redirect.netlify.app/:splat"
-  status = 301
-  force = true

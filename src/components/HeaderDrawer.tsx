@@ -67,10 +67,7 @@ export const HeaderDrawer = clientOnlyComponent(
             )}
             <Separator className="-mx-2 w-[calc(100%+1rem)]" />
             <div className="space-y-1">
-              <Button
-                onClick={sidebarButtonClickHandler('/profile/player')}
-                variant="ghost"
-                className="w-full justify-start">
+              <Button onClick={sidebarButtonClickHandler('/profile')} variant="ghost" className="w-full justify-start">
                 <Settings2 />
                 Profile
               </Button>

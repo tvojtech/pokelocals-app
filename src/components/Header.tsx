@@ -2,7 +2,7 @@ import { auth } from '@clerk/nextjs/server';
 import { MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 
-import { OrganizationSwitcher } from '@/app/profile/organizer/OrganizationSwitcher';
+import { OrganizationSwitcher } from '@/app/profile/organization/OrganizationSwitcher';
 import { HeaderDrawer } from '@/components/HeaderDrawer';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/buttons/button';
@@ -13,7 +13,7 @@ import { UserButton } from './UserButton';
 export async function Header() {
   const { sessionId } = await auth();
   return (
-    <header className="border-b-2 bg-slate-50 text-gray-800 shadow-sm print:hidden">
+    <header className="border-b-2 shadow-sm print:hidden">
       <nav>
         <div className="flex h-16 items-center justify-between px-4 py-4 lg:container md:px-10 lg:mx-auto">
           <Link href="/" prefetch={false}>

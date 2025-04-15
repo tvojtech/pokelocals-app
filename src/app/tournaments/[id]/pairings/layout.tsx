@@ -1,12 +1,12 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import { loadTournament } from '@/app/actions/tournament';
+import { loadTournament } from '@/actions/tournament';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { PageTabs } from '@/app/tournaments/[id]/pairings/PageTabs';
-import { Alert } from '@/components/Alert';
 import { Notifications } from '@/components/Notifications';
 import { QRCodeOverlay } from '@/components/QRCodeOverlay';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -15,21 +15,21 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
 
-  const tournament = await loadTournament(id);
+  const tournamentResult = await loadTournament(id);
 
-  if (!tournament) {
+  if (!tournamentResult) {
     return {};
   }
 
   return {
-    title: tournament?.data.name,
-    description: 'Pairings for ' + tournament?.data.name,
+    title: tournamentResult.tournament.data.name,
+    description: 'Pairings for ' + tournamentResult.tournament.data.name,
     openGraph: {
       type: 'website',
       locale: 'en_US',
       siteName: 'POKÉ LOCALS',
-      title: tournament?.data.name,
-      description: 'Pairings for ' + tournament?.data.name,
+      title: tournamentResult.tournament.data.name,
+      description: 'Pairings for ' + tournamentResult.tournament.data.name,
       images: 'https://app.pokelocals.online/favicon.svg',
     },
   };
@@ -44,23 +44,27 @@ export default async function TournamentPairingsLayout({
 }) {
   const { id } = await params;
 
-  const tournament = await loadTournament(id);
+  const tournamentResult = await loadTournament(id);
 
-  const showStandings = !!tournament?.standings;
+  const showStandings = !!tournamentResult?.tournament.standings;
 
   return (
     <>
-      {tournament && <h1 className="text-left text-3xl font-bold md:text-center">{tournament.data.name}</h1>}
+      {tournamentResult && (
+        <h1 className="text-left text-xl font-medium md:text-center">{tournamentResult.tournament.data.name}</h1>
+      )}
 
-      <div className="mt-8">
-        {(!tournament && (
+      <div className="mt-4">
+        {(!tournamentResult && (
           <>
-            <div className="flex items-center justify-end">
+            <div className="mb-2 flex items-center justify-end">
               <Notifications />
               <QRCodeOverlay />
             </div>
             <InlinePokemonIdCheckForm />
-            <Alert type="warning" message="Tournament not ready yet." />
+            <Alert variant="warning" className="mt-2">
+              <AlertDescription>Tournament not ready yet.</AlertDescription>
+            </Alert>
           </>
         )) || (
           <div className="flex items-center justify-between">
@@ -71,7 +75,7 @@ export default async function TournamentPairingsLayout({
             </div>
           </div>
         )}
-        <div className="mt-8">
+        <div className="mt-4">
           <Suspense>{children}</Suspense>
         </div>
       </div>

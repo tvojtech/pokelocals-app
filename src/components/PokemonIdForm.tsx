@@ -1,60 +1,42 @@
 'use client';
 
-import { Ban, Check, Edit } from 'lucide-react';
 import { useRef, useState } from 'react';
 
 import { useMyPokemonId } from '@/app/hooks';
 import { clientOnlyComponent } from '@/components/clientOnlyComponent';
 
+import { Button } from './ui/buttons/button';
+import { Input } from './ui/input';
+
 export const PokemonIdForm = clientOnlyComponent(() => {
   const { myId, setMyId } = useMyPokemonId();
-  const [isEditing, setIsEditing] = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const onSubmit = () => {
     const newId = inputRef.current?.value;
     setMyId(newId);
-    setIsEditing(false);
+    setIsDirty(false);
   };
 
   return (
-    <form
-      action={onSubmit}
-      onReset={() => setIsEditing(false)}
-      className="space-y-2 w-full">
+    <form action={onSubmit} onReset={() => setIsDirty(false)} className="w-full space-y-2">
       <label className="block">My pokemon ID:</label>
-      <div className="flex gap-3 px-4">
-        <input
-          type="text"
-          defaultValue={myId}
-          ref={inputRef}
-          placeholder="Enter your Pokemon ID"
-          disabled={!isEditing}
-          readOnly={!isEditing}
-          className="outline-2 border border-slate-300 p-1 px-2 text-black disabled:bg-slate-100 flex-grow"
-        />
-        {isEditing ? (
-          <>
-            <button type="submit">
-              <Check size={24} className="text-green-700" />
-            </button>
-            <button type="reset">
-              <Ban size={24} className="text-red-500" />
-            </button>
-          </>
-        ) : (
-          <button
-            type="button"
-            onClick={() => {
-              setIsEditing(true);
-              setTimeout(() => {
-                inputRef.current?.focus();
-              }, 0);
-            }}>
-            <Edit size={24} className="text-yellow-400" />
-          </button>
-        )}
-      </div>
+      <Input
+        type="text"
+        defaultValue={myId}
+        ref={inputRef}
+        onChange={() => setIsDirty(true)}
+        placeholder="Enter your Pokemon ID"
+      />
+      {isDirty && (
+        <div className="flex items-center gap-2">
+          <Button type="submit">Save</Button>
+          <Button type="reset" variant="secondary">
+            Cancel
+          </Button>
+        </div>
+      )}
     </form>
   );
 });

@@ -1,7 +1,10 @@
-import { loadTournament } from '@/app/actions/tournament';
+import { auth } from '@clerk/nextjs/server';
+
+import { loadTournament } from '@/actions/tournament';
 import { FileUpload } from '@/components/FileUpload';
 import { OrganizationAvatar } from '@/components/OrganizationAvatar';
-import { RestrictedPage } from '@/components/RestrictedPage';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { requireOrganizerFlag } from '@/flags';
 
 import { PageActions } from './PageActions';
 
@@ -11,20 +14,45 @@ export type TournamentAdminPageProps = {
 
 export default async function TournamentAdminPage({ params }: TournamentAdminPageProps) {
   const { id } = await params;
-  const tournament = await loadTournament(id);
+  const { userId, orgId } = await auth();
+  const tournamentResult = await loadTournament(id);
+
+  const uploadedBy = tournamentResult?.metadata.uploaded_by;
+
+  if (uploadedBy !== userId && uploadedBy !== orgId) {
+    return (
+      <div>
+        <Alert variant="warning">
+          <AlertDescription>You are not allowed to manage this tournament.</AlertDescription>
+        </Alert>
+      </div>
+    );
+  }
+
+  const isOrganizationRequired = await requireOrganizerFlag.run({
+    identify: { userId: userId },
+  });
+
+  if (!orgId && isOrganizationRequired) {
+    return (
+      <div>
+        <Alert variant="warning">
+          <AlertDescription>You need to be part of an organization to manage tournaments.</AlertDescription>
+        </Alert>
+      </div>
+    );
+  }
 
   return (
-    <RestrictedPage>
-      <div className="space-y-6">
-        <div className="flex items-center justify-center gap-4">
-          <OrganizationAvatar />
-          <h1 className="text-2xl font-bold">{tournament?.data.name ?? 'New tournament'}</h1>
-        </div>
-        <div className="mx-auto flex max-w-lg flex-col items-center justify-center space-y-4">
-          <PageActions tournamentId={id} />
-          <FileUpload tournamentId={id} />
-        </div>
+    <div className="space-y-6">
+      <div className="flex items-center justify-center gap-4">
+        <OrganizationAvatar />
+        <h1 className="text-2xl font-bold">{tournamentResult?.tournament.data.name || 'New tournament'}</h1>
       </div>
-    </RestrictedPage>
+      <div className="mx-auto flex max-w-2xl flex-col items-center justify-center space-y-4">
+        <PageActions tournamentId={id} />
+        <FileUpload tournamentId={id} />
+      </div>
+    </div>
   );
 }

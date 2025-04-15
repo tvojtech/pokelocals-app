@@ -2,8 +2,8 @@
 
 import { useActionState, useCallback, useEffect, useRef, useState } from 'react';
 
-import { uploadTournamentFile } from '@/app/actions/tournament';
-import { Alert } from '@/components/Alert';
+import { uploadTournamentFile } from '@/actions/tournament';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
 
 import { LoadingButton } from './ui/buttons/loading-button';
@@ -98,7 +98,6 @@ export function FileUpload({ tournamentId }: { tournamentId: string }) {
   return (
     <>
       <form action={formAction} className="w-full space-y-4">
-        {(error || state?.error) && <Alert message={error || (state?.error ?? '')} type="error" />}
         <div
           ref={dropZoneRef}
           onClick={handleClick}
@@ -134,6 +133,11 @@ export function FileUpload({ tournamentId }: { tournamentId: string }) {
             {selectedFile && <p className="mt-2 text-sm text-gray-600">Selected: {selectedFile.name}</p>}
           </div>
         </div>
+        {(error || state?.error) && (
+          <Alert variant="destructive">
+            <AlertDescription>{error || (state?.error ?? '')}</AlertDescription>
+          </Alert>
+        )}
         <LoadingButton isLoading={isPending} type="submit" disabled={!selectedFile}>
           Upload
         </LoadingButton>

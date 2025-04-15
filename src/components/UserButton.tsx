@@ -31,7 +31,7 @@ export function UserButton() {
         <DropdownMenuLabel>{user?.primaryEmailAddress?.emailAddress}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/profile/player" prefetch={false}>
+          <Link href="/profile" prefetch={false}>
             <LucideSettings2 /> Profile
           </Link>
         </DropdownMenuItem>

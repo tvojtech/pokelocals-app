@@ -1,4 +1,4 @@
-import { Tournament } from '@/app/actions/tournament';
+import { Tournament } from '@/actions/tournament';
 import { guessFullName } from '@/app/utils';
 
 export function getPlayerName(tournament: Tournament, id: string) {

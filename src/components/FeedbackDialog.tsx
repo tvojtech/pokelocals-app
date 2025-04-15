@@ -4,7 +4,7 @@ import { useToggle } from '@uidotdev/usehooks';
 import { Loader2, MessageCircle, X } from 'lucide-react';
 import { useActionState, useEffect, useRef } from 'react';
 
-import { submitFeedback } from '@/app/actions/feedback';
+import { submitFeedback } from '@/actions/feedback';
 import { Button } from '@/components/ui/buttons/button';
 import {
   Dialog,

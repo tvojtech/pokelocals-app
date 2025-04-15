@@ -5,7 +5,7 @@ import { BellPlus } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useCallback } from 'react';
 
-import { registerNotificationToken } from '@/app/actions/notifications';
+import { registerNotificationToken } from '@/actions/notifications';
 import { catchError } from '@/app/utils';
 import { clientOnlyComponent } from '@/components/clientOnlyComponent';
 import { voidComponent } from '@/components/voidComponent';
@@ -35,11 +35,7 @@ export const Notifications = voidComponent(
       }
     }, [params.id, session?.user?.primaryEmailAddress?.emailAddress, token]);
 
-    if (
-      !session ||
-      !session.user ||
-      !session.user.primaryEmailAddress?.emailAddress
-    ) {
+    if (!session || !session.user || !session.user.primaryEmailAddress?.emailAddress) {
       return null;
     }
 

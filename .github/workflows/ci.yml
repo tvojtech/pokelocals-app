@@ -26,6 +26,14 @@ jobs:
       - name: Install dependencies
         run: npm install --force
 
+      - name: Import environment variables from a file
+        id: import-env
+        shell: bash
+        run: |
+          if [ -f .env.ci ]; then
+            export $(cat .env | xargs)
+          fi
+
       - name: Run lint
         run: npm run lint
 

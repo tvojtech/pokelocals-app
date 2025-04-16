@@ -29,10 +29,7 @@ jobs:
       - name: Import environment variables from a file
         id: import-env
         shell: bash
-        run: |
-          if [ -f .env.ci ]; then
-            export $(cat .env.ci | xargs)
-          fi
+        run: cat .env.ci >> $GITHUB_ENV
 
       - name: Run lint
         run: npm run lint

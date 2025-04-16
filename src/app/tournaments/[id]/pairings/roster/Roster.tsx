@@ -1,27 +1,14 @@
 import React from 'react';
 
 import { Division, Player, Tournament } from '@/actions/tournament';
-import { getPlayerName } from '@/app/pokemonUtils';
+import { getPlayerDivision, getPlayerName } from '@/app/pokemonUtils';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
-const getPlayerDivision = (player: Player) => {
-  // fixme: this changes every year, find a better way to determine division
-  const birthYear = new Date(player.birthdate).getFullYear();
-
-  if (birthYear >= 2013) {
-    return Division.JUNIORS;
-  } else if (birthYear >= 2009) {
-    return Division.SENIORS;
-  } else {
-    return Division.MASTERS;
-  }
-};
 
 const groupPlayersByDivision = (players: Player[]): Record<Division, Player[]> => {
   return players.reduce(
     (acc, player) => {
-      const division = getPlayerDivision(player);
+      const division = getPlayerDivision(new Date(player.birthdate).getFullYear());
       return {
         ...acc,
         [division]: [...(acc[division] || []), player],

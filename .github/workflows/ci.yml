@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  test-and-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22' # Specify the Node.js version you want to use
+
+      - name: Install dependencies
+        run: npm install --force
+
+      - name: Import environment variables from a file
+        id: import-env
+        shell: bash
+        run: cat .env.ci >> $GITHUB_ENV
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test

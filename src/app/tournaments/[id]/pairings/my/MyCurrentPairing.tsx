@@ -11,6 +11,10 @@ export function MyCurrentPairing({ me, pod: myPod, tournament }: { me: Player; p
     return null;
   }
 
+  if (myPairing.outcome !== '0') {
+    return null;
+  }
+
   const opponent = myPairing.player1 === me.userid ? myPairing.player2 : myPairing.player1;
 
   return (

@@ -41,7 +41,7 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
     const storedTournament = await loadTournament(tournamentId);
     if (storedTournament) {
       const { metadata } = storedTournament;
-      if (metadata.uploaded_by !== orgId && metadata.uploaded_by !== userId) {
+      if (metadata.uploaded_by !== orgId && metadata.uploaded_by !== userId && metadata.uploaded_by !== 'anonymous') {
         return { error: 'You are not allowed to manage this tournament.' };
       }
     }

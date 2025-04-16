@@ -19,7 +19,7 @@ export default async function TournamentAdminPage({ params }: TournamentAdminPag
 
   const uploadedBy = tournamentResult?.metadata.uploaded_by;
 
-  if (uploadedBy !== userId && uploadedBy !== orgId) {
+  if (uploadedBy !== userId && uploadedBy !== orgId && uploadedBy !== 'anonymous') {
     return (
       <div>
         <Alert variant="warning">
@@ -30,7 +30,7 @@ export default async function TournamentAdminPage({ params }: TournamentAdminPag
   }
 
   const isOrganizationRequired = await requireOrganizerFlag.run({
-    identify: { userId: userId },
+    identify: { userId: userId ?? 'anonymous' },
   });
 
   if (!orgId && isOrganizationRequired) {

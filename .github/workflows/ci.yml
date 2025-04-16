@@ -31,7 +31,7 @@ jobs:
         shell: bash
         run: |
           if [ -f .env.ci ]; then
-            export $(cat .env | xargs)
+            export $(cat .env.ci | xargs)
           fi
 
       - name: Run lint

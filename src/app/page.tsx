@@ -1,12 +1,13 @@
 import { auth } from '@clerk/nextjs/server';
-import { SquareArrowRight } from 'lucide-react';
+import { FileSymlink } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
 
 import { listTournaments } from '@/actions/tournament';
 import { CreateTournamentButton } from '@/app/tournaments/CreateTournamentButton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { buttonVariants } from '@/components/ui/buttons/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { requireOrganizerFlag } from '@/flags';
 
 export default async function DashboardPage() {
@@ -18,7 +19,7 @@ export default async function DashboardPage() {
 
   const tournaments = await listTournaments();
 
-  const alertTitle = "To create tournaments in the future, you'll need to be an organizer.";
+  const alertTitle = "Starting in May, you'll need to be an organizer to create tournaments.";
   let alertMessage;
   if (!orgId) {
     if (!userId) {
@@ -43,27 +44,46 @@ export default async function DashboardPage() {
         </Alert>
       )}
 
-      {(!isOrganizationRequired || (isOrganizationRequired && orgId)) && <CreateTournamentButton />}
-      {tournaments?.length ? (
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold">My tournaments</h2>
-          <div className="grid grid-cols-[max-content_max-content] gap-2">
-            {tournaments.map(tournament => (
-              <React.Fragment key={tournament.id}>
-                <div className="flex items-center pl-4">{tournament.data.name || 'New tournament'}</div>
-                <Link
-                  href={`/tournaments/${tournament.id}/admin`}
-                  prefetch={false}
-                  className={buttonVariants({ variant: 'link' })}>
-                  <SquareArrowRight />
-                  Go to tournament admin page
-                </Link>
-                <div className="col-span-2 border-b border-b-secondary"></div>
-              </React.Fragment>
-            ))}
-          </div>
+      {!userId && !isOrganizationRequired && <CreateTournamentButton />}
+
+      {userId && (
+        <div className="max-w-2xl space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex flex-wrap items-center justify-between gap-2">
+                My tournaments
+                {(!isOrganizationRequired || (isOrganizationRequired && orgId)) && <CreateTournamentButton />}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {tournaments?.map(tournament => (
+                    <TableRow key={tournament.id}>
+                      <TableCell>{tournament.data.name || 'New tournament'}</TableCell>
+                      <TableCell>
+                        <Link
+                          href={`/tournaments/${tournament.id}/admin`}
+                          prefetch={false}
+                          className={buttonVariants({ variant: 'link', className: 'pl-0' })}>
+                          Go to admin page
+                          <FileSymlink className="h-4 w-4" />
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

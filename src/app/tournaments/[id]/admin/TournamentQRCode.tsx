@@ -34,7 +34,7 @@ export function TournamentQRCode({ tournamentUrl }: { tournamentUrl: string }) {
       <div className="relative">
         {buttonContent}
         <div
-          className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-slate-50 bg-opacity-95 p-4"
+          className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-slate-50 bg-opacity-95 p-4 dark:bg-secondary dark:bg-opacity-95"
           onClick={() => toggle()}>
           <QRCodeSVG value={tournamentUrl} className="m-10 h-60 w-60" />
           <Card className="p-4">

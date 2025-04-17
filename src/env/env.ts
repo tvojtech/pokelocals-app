@@ -9,6 +9,7 @@ export const env = createEnv({
   extends: [analyticsEnv, storageEnv, authEnv],
   server: {
     BLOB_STORAGE: type.enumerated('local', 'r2'),
+    FEEDBACK_DISCORD_WEBHOOK_URL: type.string.atLeastLength(1),
   },
   client: {
     NEXT_PUBLIC_DEPLOYMENT: type.string.atLeastLength(1),
@@ -16,5 +17,6 @@ export const env = createEnv({
   runtimeEnv: {
     NEXT_PUBLIC_DEPLOYMENT: process.env.NEXT_PUBLIC_DEPLOYMENT,
     BLOB_STORAGE: process.env.BLOB_STORAGE,
+    FEEDBACK_DISCORD_WEBHOOK_URL: process.env.FEEDBACK_DISCORD_WEBHOOK_URL,
   },
 });

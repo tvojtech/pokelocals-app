@@ -1,5 +1,6 @@
 'use client';
 
+import { useUser } from '@clerk/nextjs';
 import { useToggle } from '@uidotdev/usehooks';
 import { Loader2, MessageCircle, X } from 'lucide-react';
 import { useActionState, useEffect, useRef } from 'react';
@@ -17,6 +18,8 @@ import {
 } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 
+import { Input } from './ui/input';
+
 export function FeedbackDialog({
   button,
   afterSuccessfulSubmit,
@@ -24,14 +27,17 @@ export function FeedbackDialog({
   button?: React.ReactNode;
   afterSuccessfulSubmit?: () => void;
 }) {
+  const { user } = useUser();
   const [isOpen, toggle] = useToggle(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
   const [, formAction, isPending] = useActionState(async () => {
     if (!textareaRef.current) {
       return;
     }
     const result = await submitFeedback({
       description: textareaRef.current?.value,
+      email: emailRef.current?.value,
     });
 
     toggle(false);
@@ -61,8 +67,8 @@ export function FeedbackDialog({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="space-y-4">
-        <DialogHeader className="space-y-6">
+      <DialogContent>
+        <DialogHeader className="space-y-4">
           <DialogTitle className="flex flex-row items-center justify-between">
             <div className="flex flex-row items-center gap-2">
               <MessageCircle />
@@ -78,7 +84,17 @@ export function FeedbackDialog({
           </DialogDescription>
         </DialogHeader>
         <form action={formAction} className="space-y-4">
-          <Textarea ref={textareaRef} required rows={4} />
+          <Textarea ref={textareaRef} placeholder="What's on your mind?" required rows={4} />
+          {!user && (
+            <div className="space-y-2">
+              <Input ref={emailRef} placeholder="Your email (optional)" />
+              <DialogDescription>
+                We will use the email if we need to clarify your feedback. If you don&apos;t want to be contacted, leave
+                it blank.
+              </DialogDescription>
+            </div>
+          )}
+
           <div className="flex w-full justify-end">
             <Button type="submit" disabled={isPending}>
               {isPending ? (

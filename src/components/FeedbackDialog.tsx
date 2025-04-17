@@ -87,7 +87,7 @@ export function FeedbackDialog({
           <Textarea ref={textareaRef} placeholder="What's on your mind?" required rows={4} />
           {!user && (
             <div className="space-y-2">
-              <Input ref={emailRef} placeholder="Your email (optional)" />
+              <Input ref={emailRef} placeholder="Your email (optional)" type="email" />
               <DialogDescription>
                 We will use the email if we need to clarify your feedback. If you don&apos;t want to be contacted, leave
                 it blank.

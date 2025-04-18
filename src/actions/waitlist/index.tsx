@@ -23,21 +23,29 @@ export async function createNewOrganizerRequest(formData: FormData) {
   const message = formData.get('message');
   const avg_tournament_size = formData.get('avg_tournament_size');
 
-  const response = await fetch('https://api.getwaitlist.com/api/v1/signup', {
+  const webhookUrl = env.WAITLIST_DISCORD_WEBHOOK_URL;
+
+  const response = await fetch(webhookUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      waitlist_id: '25839',
-      email: user.primaryEmailAddress?.emailAddress,
-      metadata: {
-        name,
-        website,
-        location,
-        avg_tournament_size,
-        message,
-      },
+      username: 'POKÉ LOCALS',
+      embeds: [
+        {
+          title: 'Waitlist signup',
+          fields: [
+            ...(name ? [{ name: 'Name', value: name }] : []),
+            { name: 'User ID', value: userId },
+            { name: 'Email', value: user.primaryEmailAddress?.emailAddress },
+            ...(website ? [{ name: 'Website', value: website }] : []),
+            ...(location ? [{ name: 'Location', value: location }] : []),
+            ...(avg_tournament_size ? [{ name: 'Avg Tournament Size', value: avg_tournament_size }] : []),
+            ...(message ? [{ name: 'Message', value: message }] : []),
+          ],
+        },
+      ],
     }),
   });
 

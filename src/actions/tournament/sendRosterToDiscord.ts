@@ -14,7 +14,7 @@ export async function sendRosterToDiscord(
 
   await Promise.allSettled(
     webhookUrls.map(webhookUrl => {
-      fetch(webhookUrl, {
+      return fetch(webhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

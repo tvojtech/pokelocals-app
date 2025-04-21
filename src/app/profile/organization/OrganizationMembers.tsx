@@ -129,7 +129,7 @@ function AddMemberForm() {
       <form action={formAction} className="flex justify-center gap-2">
         <Input name="email" type="email" placeholder="User email" disabled={isDisabled} />
         <LoadingButton type="submit" isLoading={isPending} disabled={isDisabled}>
-          Add user
+          Add member
         </LoadingButton>
       </form>
       {state?.error && <p className="p-2 text-sm text-destructive">{state.error}</p>}

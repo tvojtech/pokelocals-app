@@ -40,6 +40,20 @@ const nextConfig = {
           },
         ],
       },
+      {
+        // Source path pattern for the files
+        source: '/images/(.*)',
+        headers: [
+          {
+            // The Cache-Control header
+            key: 'Cache-Control',
+            // public: Can be cached by intermediaries (like CDNs)
+            // max-age=2368800: Cache for cca one month (in seconds)
+            // immutable: Indicates the file content will never change for this URL
+            value: 'public, max-age=2368800, must-revalidate, immutable',
+          },
+        ],
+      },
     ];
   },
   experimental: {

@@ -7,7 +7,7 @@ import { Loading } from '@/components/Loading';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 import { NoOrganization } from './NoOrganization';
-import { Organizations } from './Organizations';
+import { Organization } from './Organization';
 
 export default function OrganizationManagement({
   isOrganizationManagementEnabled,
@@ -47,5 +47,5 @@ export default function OrganizationManagement({
     );
   }
 
-  return <Organizations />;
+  return <Organization />;
 }

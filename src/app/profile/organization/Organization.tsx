@@ -7,9 +7,10 @@ import { Button } from '@/components/ui/buttons/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
+import { DiscordNotificationsSettingsCard } from './DiscordNotificationsSettingsCard';
 import { OrganizationMembers } from './OrganizationMembers';
 
-export function Organizations() {
+export function Organization() {
   const { isLoaded: isUserLoaded } = useUser();
   const { membership, isLoaded: isOrgLoaded } = useOrganization();
 
@@ -17,7 +18,7 @@ export function Organizations() {
 
   return (
     <div className="space-y-6">
-      <Card className="w-full max-w-2xl">
+      <Card className="w-full">
         <CardHeader>
           <CardTitle>
             {isLoading ? (
@@ -36,14 +37,22 @@ export function Organizations() {
             )}
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          {isLoading ? (
-            <Loading />
-          ) : membership?.role === 'org:admin' ? (
-            <OrganizationMembers membership={membership} />
-          ) : (
-            <LeaveOrganizationButton />
-          )}
+        <CardContent className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>Organization members</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {isLoading ? (
+                <Loading />
+              ) : membership?.role === 'org:admin' ? (
+                <OrganizationMembers membership={membership} />
+              ) : (
+                <LeaveOrganizationButton />
+              )}
+            </CardContent>
+          </Card>
+          <DiscordNotificationsSettingsCard />
         </CardContent>
       </Card>
     </div>

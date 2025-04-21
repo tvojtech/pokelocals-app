@@ -28,3 +28,31 @@ export async function addOrganizationMember(email: string) {
 
   return { success: 'User added to organization' };
 }
+
+export async function updateDiscordWebhook(
+  discordWebhooks: {
+    url: string;
+    name: string;
+  }[]
+) {
+  const { userId, orgId, has } = await auth();
+
+  if (!userId || !orgId || !has({ role: 'org:admin' })) {
+    throw new Error('Unauthorized');
+  }
+
+  const organization = await clerkClient.organizations.getOrganization({ organizationId: orgId });
+
+  if (!organization) {
+    throw new Error('Organization not found');
+  }
+
+  await clerkClient.organizations.updateOrganizationMetadata(organization.id, {
+    publicMetadata: {
+      ...organization.publicMetadata,
+      discordWebhooks,
+    },
+  });
+
+  return { success: 'Discord webhook updated' };
+}

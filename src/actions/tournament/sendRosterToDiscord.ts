@@ -12,9 +12,9 @@ export async function sendRosterToDiscord(
     throw new Error('Unauthorized');
   }
 
-  const results = await Promise.allSettled(
+  await Promise.allSettled(
     webhookUrls.map(webhookUrl => {
-      fetch(webhookUrl, {
+      return fetch(webhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -31,6 +31,4 @@ export async function sendRosterToDiscord(
       });
     })
   );
-
-  console.log(results);
 }

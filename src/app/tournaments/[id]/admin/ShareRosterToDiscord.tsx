@@ -5,7 +5,7 @@ import { useToggle } from '@uidotdev/usehooks';
 import { useId, useState } from 'react';
 
 import { sendRosterToDiscord } from '@/actions/tournament';
-import { Button } from '@/components/ui/buttons/button';
+import { LoadingButton } from '@/components/ui/buttons/loading-button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
@@ -15,14 +15,17 @@ export function ShareRosterToDiscord({ rosterUrl, tournamentName }: { rosterUrl:
   const discordWebhooks = (organization?.publicMetadata.discordWebhooks ?? []) as { name: string; url: string }[];
   const [selectedWebhooks, setSelectedWebhooks] = useState<string[]>(discordWebhooks.map(webhook => webhook.url));
   const [isOpen, toggleOpen] = useToggle();
+  const [isLoading, setIsLoading] = useState(false);
   const id = useId();
 
   const handleClick = async () => {
+    setIsLoading(true);
     await sendRosterToDiscord(selectedWebhooks, {
       username: organization?.name ?? 'POKÉ LOCALS',
       title: tournamentName ? 'Roster for ' + tournamentName : 'Roster',
       description: rosterUrl,
     });
+    setIsLoading(false);
     toggleOpen(false);
   };
 
@@ -66,9 +69,9 @@ export function ShareRosterToDiscord({ rosterUrl, tournamentName }: { rosterUrl:
               </div>
             </div>
           ))}
-          <Button onClick={handleClick} disabled={selectedWebhooks.length === 0}>
+          <LoadingButton onClick={handleClick} disabled={selectedWebhooks.length === 0} isLoading={isLoading}>
             Share
-          </Button>
+          </LoadingButton>
         </div>
       </PopoverContent>
     </Popover>

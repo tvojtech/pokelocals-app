@@ -19,7 +19,9 @@ export default async function DashboardPage() {
 
   const tournaments = await listTournaments();
 
-  const alertTitle = "Starting in May, you'll need to be an organizer to create tournaments.";
+  const alertTitle = isOrganizationRequired
+    ? 'To create tournaments, you need to be an organizer.'
+    : "Starting in May, you'll need to be an organizer to create tournaments.";
   let alertMessage;
   if (!orgId) {
     if (!userId) {

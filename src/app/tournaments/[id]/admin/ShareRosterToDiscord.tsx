@@ -2,7 +2,7 @@
 
 import { useOrganization } from '@clerk/nextjs';
 import { useToggle } from '@uidotdev/usehooks';
-import { useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 
 import { sendRosterToDiscord } from '@/actions/tournament';
 import { LoadingButton } from '@/components/ui/buttons/loading-button';
@@ -13,10 +13,21 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 export function ShareRosterToDiscord({ rosterUrl, tournamentName }: { rosterUrl: string; tournamentName?: string }) {
   const { isLoaded, organization } = useOrganization();
   const discordWebhooks = (organization?.publicMetadata.discordWebhooks ?? []) as { name: string; url: string }[];
-  const [selectedWebhooks, setSelectedWebhooks] = useState<string[]>(discordWebhooks.map(webhook => webhook.url));
+  const [selectedWebhooks, setSelectedWebhooks] = useState<string[]>([]);
   const [isOpen, toggleOpen] = useToggle();
   const [isLoading, setIsLoading] = useState(false);
   const id = useId();
+
+  useEffect(() => {
+    if (isLoaded) {
+      setSelectedWebhooks(
+        (organization?.publicMetadata.discordWebhooks as { name: string; url: string }[] | undefined)?.map(
+          webhook => webhook.url
+        ) ?? []
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoaded]);
 
   const handleClick = async () => {
     setIsLoading(true);

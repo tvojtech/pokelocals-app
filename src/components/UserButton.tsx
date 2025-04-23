@@ -1,7 +1,7 @@
 'use client';
 
 import { useClerk, useUser } from '@clerk/nextjs';
-import { LucideLogOut, LucideSettings2 } from 'lucide-react';
+import { BookOpen, LucideLogOut, LucideSettings2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -30,6 +30,12 @@ export function UserButton() {
       <DropdownMenuContent>
         <DropdownMenuLabel>{user?.primaryEmailAddress?.emailAddress}</DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href="https://docs.pokelocals.online/docs" target="_blank">
+            <BookOpen />
+            Documentation
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/profile" prefetch={false}>
             <LucideSettings2 /> Profile

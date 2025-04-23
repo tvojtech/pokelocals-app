@@ -2,7 +2,8 @@
 
 import { useClerk, useSession } from '@clerk/nextjs';
 import { useToggle } from '@uidotdev/usehooks';
-import { LogIn, LogOut, Menu, Settings2, X } from 'lucide-react';
+import { BookOpen, LogIn, LogOut, Menu, Settings2, X } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'nextjs-toploader/app';
 
 import { clientOnlyComponent } from '@/components/clientOnlyComponent';
@@ -67,6 +68,12 @@ export const HeaderDrawer = clientOnlyComponent(
             )}
             <Separator className="-mx-2 w-[calc(100%+1rem)]" />
             <div className="space-y-1">
+              <Button variant="ghost" className="w-full justify-start" asChild>
+                <Link href="https://docs.pokelocals.online/docs" target="_blank">
+                  <BookOpen />
+                  Documentation
+                </Link>
+              </Button>
               <Button onClick={sidebarButtonClickHandler('/profile')} variant="ghost" className="w-full justify-start">
                 <Settings2 />
                 Profile

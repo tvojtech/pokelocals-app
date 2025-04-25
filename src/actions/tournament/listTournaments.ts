@@ -14,18 +14,18 @@ export async function listTournaments() {
   }
 
   return unstable_cache(
-    async () => {
+    async (organizationId: string) => {
       return db
         .select({
           id: tournaments.id,
           name: tournaments.name,
         })
         .from(tournaments)
-        .where(eq(tournaments.organizationId, orgId))
+        .where(eq(tournaments.organizationId, organizationId))
         .orderBy(desc(tournaments.updatedAt))
         .execute();
     },
     ['tournaments'],
     { tags: ['tournaments'] }
-  )();
+  )(orgId);
 }

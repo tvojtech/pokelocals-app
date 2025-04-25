@@ -1,6 +1,7 @@
 import { auth } from '@clerk/nextjs/server';
+import { notFound } from 'next/navigation';
 
-import { loadTournament } from '@/actions/tournament';
+import { loadTournamentMetadata } from '@/actions/tournament/loadTournamentMetadata';
 import { FileUpload } from '@/components/FileUpload';
 import { OrganizationAvatar } from '@/components/OrganizationAvatar';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -15,11 +16,15 @@ export type TournamentAdminPageProps = {
 export default async function TournamentAdminPage({ params }: TournamentAdminPageProps) {
   const { id } = await params;
   const { userId, orgId } = await auth();
-  const tournamentResult = await loadTournament(id);
+  const tournamentResult = await loadTournamentMetadata(id);
 
-  const uploadedBy = tournamentResult?.metadata.uploaded_by;
+  if (!tournamentResult) {
+    return notFound();
+  }
 
-  if (uploadedBy !== userId && uploadedBy !== orgId && uploadedBy !== 'anonymous') {
+  const uploadedBy = tournamentResult.organizationId;
+
+  if (uploadedBy !== orgId) {
     return (
       <div>
         <Alert variant="warning">
@@ -47,10 +52,10 @@ export default async function TournamentAdminPage({ params }: TournamentAdminPag
     <div className="space-y-6">
       <div className="flex items-center justify-center gap-4">
         <OrganizationAvatar />
-        <h1 className="text-2xl font-bold">{tournamentResult?.tournament.data.name || 'New tournament'}</h1>
+        <h1 className="text-2xl font-bold">{tournamentResult.name || 'New tournament'}</h1>
       </div>
       <div className="mx-auto flex max-w-2xl flex-col items-center justify-center space-y-4">
-        <PageActions tournamentId={id} tournamentName={tournamentResult?.tournament.data.name} />
+        <PageActions tournamentId={id} tournamentName={tournamentResult.name} />
         <FileUpload tournamentId={id} />
       </div>
     </div>

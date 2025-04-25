@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import { loadTournament } from '@/actions/tournament';
+import { loadTournamentData } from '@/actions/tournament';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { PageTabs } from '@/app/tournaments/[id]/pairings/PageTabs';
 import { Notifications } from '@/components/Notifications';
@@ -15,21 +15,21 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
 
-  const tournamentResult = await loadTournament(id);
+  const tournamentResult = await loadTournamentData(id);
 
   if (!tournamentResult) {
     return {};
   }
 
   return {
-    title: tournamentResult.tournament.data.name,
-    description: 'Pairings for ' + tournamentResult.tournament.data.name,
+    title: tournamentResult.data.name,
+    description: 'Pairings for ' + tournamentResult.data.name,
     openGraph: {
       type: 'website',
       locale: 'en_US',
       siteName: 'POKÉ LOCALS',
-      title: tournamentResult.tournament.data.name,
-      description: 'Pairings for ' + tournamentResult.tournament.data.name,
+      title: tournamentResult.data.name,
+      description: 'Pairings for ' + tournamentResult.data.name,
       images: 'https://app.pokelocals.online/favicon.svg',
     },
   };
@@ -44,14 +44,14 @@ export default async function TournamentPairingsLayout({
 }) {
   const { id } = await params;
 
-  const tournamentResult = await loadTournament(id);
+  const tournamentResult = await loadTournamentData(id);
 
-  const showStandings = !!tournamentResult?.tournament.standings;
+  const showStandings = !!tournamentResult?.standings;
 
   return (
     <>
       {tournamentResult && (
-        <h1 className="text-left text-xl font-medium md:text-center">{tournamentResult.tournament.data.name}</h1>
+        <h1 className="text-left text-xl font-medium md:text-center">{tournamentResult.data.name}</h1>
       )}
 
       <div className="mt-4">

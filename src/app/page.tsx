@@ -66,9 +66,9 @@ export default async function DashboardPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {tournaments?.map(tournament => (
+                  {tournaments.map(tournament => (
                     <TableRow key={tournament.id}>
-                      <TableCell>{tournament.data.name || 'New tournament'}</TableCell>
+                      <TableCell>{tournament.name || 'New tournament'}</TableCell>
                       <TableCell>
                         <Link
                           href={`/tournaments/${tournament.id}/admin`}

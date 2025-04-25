@@ -1,18 +1,21 @@
 'use server';
 
 import { auth } from '@clerk/nextjs/server';
+import { eq } from 'drizzle-orm';
 import admin from 'firebase-admin';
 import { revalidateTag } from 'next/cache';
 
-import { listNotificationTokens } from '@/actions/notifications';
-import { Match, PlayerScore, Tournament, TournamentWithMetadata, XmlTournament } from '@/actions/tournament/types';
+// import { listNotificationTokens } from '@/actions/notifications';
 import { xmlToObject } from '@/actions/tournament/xml';
-import { exhaustiveMatchingGuard } from '@/app/utils';
+import { redis } from '@/app/db';
 import { getStore } from '@/blobs';
 import { requireOrganizerFlag } from '@/flags';
+import { db } from '@/lib/db';
+import { tournaments } from '@/lib/db/schema';
 import serviceAccount from '@/serviceAccount.json';
 
-import { loadTournament } from './loadTournament';
+import { loadTournamentMetadata } from './loadTournamentMetadata';
+import { calculatePlayerScores } from './tournamentUtils';
 
 if (!admin.apps.length) {
   admin.initializeApp({
@@ -23,9 +26,11 @@ if (!admin.apps.length) {
 export async function uploadTournamentFile(formData: FormData, tournamentId: string) {
   const { userId, orgId } = await auth();
 
-  const isOrganizationRequired = await requireOrganizerFlag.run({
-    identify: { userId: userId ?? 'anonymous' },
-  });
+  if (!userId || !orgId) {
+    return { error: 'Unauthorized' };
+  }
+
+  const isOrganizationRequired = await requireOrganizerFlag.run({ identify: { userId } });
 
   if (!orgId && isOrganizationRequired) {
     return { error: 'No organization selected' };
@@ -38,42 +43,42 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
   }
 
   try {
-    const storedTournament = await loadTournament(tournamentId);
-    if (storedTournament) {
-      const { metadata } = storedTournament;
-      if (metadata.uploaded_by !== orgId && metadata.uploaded_by !== userId && metadata.uploaded_by !== 'anonymous') {
-        return { error: 'You are not allowed to manage this tournament.' };
-      }
+    const tournamentMetadata = await loadTournamentMetadata(tournamentId);
+
+    if (!tournamentMetadata) {
+      return { error: 'Tournament not found' };
+    }
+
+    if (tournamentMetadata.organizationId !== orgId) {
+      return { error: 'You are not allowed to manage this tournament.' };
     }
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const xmlString = buffer.toString('utf-8');
 
-    if (orgId || userId) {
-      const now = new Date().getTime();
-      const key = orgId ? `orgs/${orgId}/${tournamentId}/time/${now}` : `users/${userId}/${tournamentId}/time/${now}`;
-      const xmlStore = await getStore(`xml/tournaments`);
-      await xmlStore.set(key, xmlString, {
-        metadata: {
-          uploaded_at: new Date().toISOString(),
-          uploaded_by: orgId ?? userId ?? 'anonymous',
-          upload_user: userId,
-          upload_org: orgId ?? '',
-        } as TournamentWithMetadata['metadata'],
-      });
-    }
+    const key = `${tournamentId}/time/${Date.now()}`;
+    const xmlStore = await getStore(`tournaments`);
+    await xmlStore.set(key, xmlString);
 
     const tournament = calculatePlayerScores(xmlToObject(xmlString));
-    const metadata: TournamentWithMetadata['metadata'] = {
-      uploaded_at: new Date().toISOString(),
-      uploaded_by: orgId ?? userId ?? 'anonymous',
-      upload_user: userId ?? '',
-      upload_org: orgId ?? '',
-    };
 
-    const store = await getStore('tournaments');
-    await store.setJSON(tournamentId, tournament, { metadata });
+    await db
+      .update(tournaments)
+      .set({
+        name: tournament.data.name,
+        playerCount: Math.max(Object.keys(tournament.players).length, tournamentMetadata.playerCount),
+      })
+      .where(eq(tournaments.id, tournamentId));
+
+    const redisKey = `tournaments/${tournamentId}`;
+    await redis
+      .multi()
+      .set(redisKey, JSON.stringify(tournament))
+      .expire(redisKey, 604800) // 1 week
+      .exec();
+
+    revalidateTag('tournaments');
     revalidateTag(tournamentId);
 
     // const payload: Message = {
@@ -84,17 +89,17 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
     //   },
     // };
 
-    const tokens = (await listNotificationTokens(tournamentId)).map(({ token }) => token);
+    // const tokens = (await listNotificationTokens(tournamentId)).map(({ token }) => token);
 
-    if (tokens.length > 0) {
-      await admin.messaging().sendEachForMulticast({
-        tokens,
-        notification: {
-          title: 'Pairings are online',
-          body: 'The tournament has been updated',
-        },
-      });
-    }
+    // if (tokens.length > 0) {
+    //   await admin.messaging().sendEachForMulticast({
+    //     tokens,
+    //     notification: {
+    //       title: 'Pairings are online',
+    //       body: 'The tournament has been updated',
+    //     },
+    //   });
+    // }
 
     return { success: true };
   } catch (error) {
@@ -102,95 +107,3 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
     return { error: 'Failed to upload file' };
   }
 }
-
-function calculatePlayerScores(tournament: XmlTournament): Tournament {
-  const { players, pods } = tournament;
-
-  let scores: Record<string, PlayerScore> = players.reduce(
-    (acc, player) => ({
-      ...acc,
-      [player.userid]: { wins: 0, ties: 0, losses: 0 },
-    }),
-    {} as Record<string, PlayerScore>
-  );
-
-  const addScore = createScoreCalculator(scores);
-
-  pods.forEach(pod => {
-    pod.rounds.forEach(round => {
-      round.matches.forEach(match => {
-        const player1Result = mapOutcomeToPlayerResult(match, match.player1);
-        if (player1Result && player1Result !== PlayerResult.not_finished) {
-          scores = addScore(match.player1, player1Result);
-        }
-        if (match.player2) {
-          const player2Result = mapOutcomeToPlayerResult(match, match.player2);
-          if (player2Result && player2Result !== PlayerResult.not_finished) {
-            scores = addScore(match.player2, player2Result);
-          }
-        }
-      });
-    });
-  });
-
-  return {
-    ...tournament,
-    scores,
-    players: players.reduce((acc, player) => ({ ...acc, [player.userid]: player }), {}),
-  };
-}
-
-enum PlayerResult {
-  win = 'win',
-  loss = 'loss',
-  tie = 'tie',
-  not_finished = 'not_finished',
-}
-
-const mapOutcomeToPlayerResult = (match: Match, player: string): PlayerResult | undefined => {
-  const matchOutcome = match.outcome;
-  if (!matchOutcome || matchOutcome === '0') {
-    // not finished match
-    return PlayerResult.not_finished;
-  } else if (matchOutcome === '1') {
-    return player === match.player1 ? PlayerResult.win : PlayerResult.loss;
-  } else if (matchOutcome === '2') {
-    return player === match.player1 ? PlayerResult.loss : PlayerResult.win;
-  } else if (matchOutcome === '3') {
-    return PlayerResult.tie;
-  } else if (matchOutcome === '4' || matchOutcome === '5') {
-    return player === match.player1 ? PlayerResult.win : PlayerResult.loss;
-  } else if (matchOutcome === '8') {
-    return player === match.player1 ? PlayerResult.loss : PlayerResult.win;
-  }
-};
-
-const createScoreCalculator =
-  (playerScores: Record<string, PlayerScore>) => (player: string, outcome: PlayerResult) => {
-    switch (outcome) {
-      case PlayerResult.win:
-        playerScores[player] = {
-          ...playerScores[player],
-          wins: playerScores[player].wins + 1,
-        };
-        break;
-      case PlayerResult.loss:
-        playerScores[player] = {
-          ...playerScores[player],
-          losses: playerScores[player].losses + 1,
-        };
-        break;
-      case PlayerResult.tie:
-        playerScores[player] = {
-          ...playerScores[player],
-          ties: playerScores[player].ties + 1,
-        };
-        break;
-      case PlayerResult.not_finished:
-        break;
-      default:
-        exhaustiveMatchingGuard(outcome, 'Invalid outcome: ' + outcome);
-    }
-
-    return playerScores;
-  };

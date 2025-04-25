@@ -7,6 +7,6 @@ export default {
   out: './drizzle',
   dialect: 'postgresql',
   dbCredentials: {
-    url: env.SUPABASE_DB_URL,
+    url: env.POSTGRES_DB_URL,
   },
 } satisfies Config;

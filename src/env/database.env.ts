@@ -3,9 +3,9 @@ import { type } from 'arktype';
 
 export const env = createEnv({
   server: {
-    SUPABASE_DB_URL: type.string.atLeastLength(1),
+    POSTGRES_DB_URL: type.string.atLeastLength(1),
   },
   runtimeEnv: {
-    SUPABASE_DB_URL: process.env.SUPABASE_DB_URL,
+    POSTGRES_DB_URL: process.env.POSTGRES_DB_URL,
   },
 });

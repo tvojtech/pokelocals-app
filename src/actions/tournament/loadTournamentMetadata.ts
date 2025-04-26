@@ -18,6 +18,9 @@ export async function loadTournamentMetadata(tournamentId: string) {
         .select({
           id: tournaments.id,
           name: tournaments.name,
+          tomId: tournaments.tomId,
+          startDate: tournaments.startDate,
+          uploaded: tournaments.uploaded,
           playerCount: tournaments.playerCount,
           organizationId: tournaments.organizationId,
         })

@@ -1,4 +1,4 @@
-import { integer, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { boolean, integer, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 export const tournaments = pgTable('tournaments', {
   id: uuid('id').primaryKey(),
@@ -8,6 +8,10 @@ export const tournaments = pgTable('tournaments', {
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedBy: text('updated_by').notNull(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
+
+  uploaded: boolean('uploaded').notNull().default(false),
+  tomId: text('tom_id').default(''),
+  startDate: text('start_date').default(''),
 
   playerCount: integer('player_count').notNull().default(0),
 });

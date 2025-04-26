@@ -57,16 +57,28 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
     const buffer = Buffer.from(bytes);
     const xmlString = buffer.toString('utf-8');
 
+    const tournament = calculatePlayerScores(xmlToObject(xmlString));
+
+    if (
+      tournamentMetadata.uploaded &&
+      ((tournamentMetadata.tomId ?? '') !== (tournament.data.id ?? '') ||
+        (tournamentMetadata.startDate ?? '') !== (tournament.data.startdate ?? '') ||
+        (tournamentMetadata.name ?? '') !== (tournament.data.name ?? ''))
+    ) {
+      return { error: 'Uploading different tournament file!' };
+    }
+
     const key = `${tournamentId}/time/${Date.now()}`;
     const xmlStore = await getStore(`tournaments`);
     await xmlStore.set(key, xmlString);
-
-    const tournament = calculatePlayerScores(xmlToObject(xmlString));
 
     await db
       .update(tournaments)
       .set({
         name: tournament.data.name,
+        uploaded: true,
+        tomId: tournament.data.id,
+        startDate: tournament.data.startdate,
         playerCount: Math.max(Object.keys(tournament.players).length, tournamentMetadata.playerCount),
       })
       .where(eq(tournaments.id, tournamentId));

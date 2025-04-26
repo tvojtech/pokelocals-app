@@ -3,7 +3,12 @@ import { PairingsRow } from '@/app/tournaments/[id]/pairings/PairingsRow';
 import { Card, CardContent } from '@/components/ui/card';
 
 export function MyCurrentPairing({ me, pod: myPod, tournament }: { me: Player; pod: Pod; tournament: Tournament }) {
+  if (myPod.rounds.length === 0) {
+    return null;
+  }
+
   const currentRound = myPod.rounds[myPod.rounds.length - 1];
+
   const myPairing = currentRound.matches.find(match => match.player1 === me.userid || match.player2 === me.userid);
 
   if (!myPairing) {

@@ -30,7 +30,7 @@ export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(({ 
     );
   }
 
-  if (!pods || pods.length === 0) {
+  if (!pods || pods.length === 0 || pods.every(pod => pod.rounds.length === 0)) {
     return (
       <>
         <Alert variant="info">

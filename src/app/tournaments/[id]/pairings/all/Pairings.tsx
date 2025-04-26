@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function Pairings({ tournament }: { tournament: Tournament }) {
   const { pods } = tournament;
-  if (!pods || pods.length === 0) {
+  if (!pods || pods.length === 0 || pods.every(pod => pod.rounds.length === 0)) {
     return (
       <Alert variant="warning">
         <AlertDescription>Pairings not published yet.</AlertDescription>
@@ -16,9 +16,13 @@ export function Pairings({ tournament }: { tournament: Tournament }) {
   }
   return (
     <div className="columns-sm space-y-4">
-      {pods.map((pod, idx) => (
-        <PairingsSection key={idx} pod={pod} round={pod.rounds[pod.rounds.length - 1]} tournament={tournament} />
-      ))}
+      {pods.map((pod, idx) => {
+        if (pod.rounds.length === 0) {
+          return null;
+        }
+        const round = pod.rounds[pod.rounds.length - 1];
+        return <PairingsSection key={idx} pod={pod} round={round} tournament={tournament} />;
+      })}
     </div>
   );
 }

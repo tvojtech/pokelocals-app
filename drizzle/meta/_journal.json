@@ -36,6 +36,20 @@
       "when": 1745623457299,
       "tag": "0004_empty_molly_hayes",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1745627558080,
+      "tag": "0005_broken_james_howlett",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1745627616635,
+      "tag": "0006_sparkling_omega_flight",
+      "breakpoints": true
     }
   ]
 }

@@ -1,10 +1,11 @@
 import { Match, PlayerScore, Tournament, XmlTournament } from '@/actions/tournament/types';
 import { exhaustiveMatchingGuard } from '@/app/utils';
 
-enum PlayerResult {
+export enum PlayerResult {
   win = 'win',
   loss = 'loss',
   tie = 'tie',
+  bye = 'bye',
   not_finished = 'not_finished',
 }
 
@@ -45,7 +46,7 @@ export function calculatePlayerScores(tournament: XmlTournament): Tournament {
   };
 }
 
-const mapOutcomeToPlayerResult = (match: Match, player: string): PlayerResult | undefined => {
+export const mapOutcomeToPlayerResult = (match: Match, player: string): PlayerResult | undefined => {
   const matchOutcome = match.outcome;
   if (!matchOutcome || matchOutcome === '0') {
     // not finished match
@@ -56,10 +57,17 @@ const mapOutcomeToPlayerResult = (match: Match, player: string): PlayerResult | 
     return player === match.player1 ? PlayerResult.loss : PlayerResult.win;
   } else if (matchOutcome === '3') {
     return PlayerResult.tie;
-  } else if (matchOutcome === '4' || matchOutcome === '5') {
+  } else if (matchOutcome === '4') {
     return player === match.player1 ? PlayerResult.win : PlayerResult.loss;
+  } else if (matchOutcome === '5') {
+    return PlayerResult.bye;
   } else if (matchOutcome === '8') {
     return player === match.player1 ? PlayerResult.loss : PlayerResult.win;
+  } else if (matchOutcome === '10') {
+    // double game loss
+    return PlayerResult.loss;
+  } else {
+    console.error('Unknown match outcome: ' + matchOutcome);
   }
 };
 
@@ -67,6 +75,7 @@ const createScoreCalculator =
   (playerScores: Record<string, PlayerScore>) => (player: string, outcome: PlayerResult) => {
     switch (outcome) {
       case PlayerResult.win:
+      case PlayerResult.bye:
         playerScores[player] = {
           ...playerScores[player],
           wins: playerScores[player].wins + 1,

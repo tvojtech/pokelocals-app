@@ -7,6 +7,9 @@ export function getPlayerName(tournament: Tournament, id: string) {
 }
 
 export function getPlayerDivision(playerYear: number) {
+  // FIXME: using current date to determine division is not correct
+  // calculating division in future will provide incorrect results
+  // we should use the start date of the tournament to determine the division
   const now = new Date();
   const currentYear = now.getFullYear();
   const currentMonth = now.getMonth();
@@ -21,11 +24,4 @@ export function getPlayerDivision(playerYear: number) {
   } else {
     return Division.MASTERS;
   }
-}
-
-export enum MatchOutcome {
-  BYE = 'BYE',
-  TIE = 'TIE',
-  WIN = 'WIN',
-  LOSS = 'LOSS',
 }

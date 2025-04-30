@@ -16,12 +16,12 @@ export default async function Profile() {
     <Tabs defaultValue="player">
       <TabsList>
         <TabsTrigger value="player">Player profile</TabsTrigger>
-        {isOrganizationManagementEnabled && <TabsTrigger value="organization">Organization</TabsTrigger>}
+        {isOrganizationManagementEnabled && userId && <TabsTrigger value="organization">Organization</TabsTrigger>}
       </TabsList>
       <TabsContent value="player">
         <PlayerProfile />
       </TabsContent>
-      {isOrganizationManagementEnabled && (
+      {isOrganizationManagementEnabled && userId && (
         <TabsContent value="organization">
           <OrganizationManagement isOrganizationManagementEnabled={isOrganizationManagementEnabled} />
         </TabsContent>

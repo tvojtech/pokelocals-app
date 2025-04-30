@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm';
 import { boolean, index, integer, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 export const tournaments = pgTable(
@@ -16,6 +17,10 @@ export const tournaments = pgTable(
     startDate: text('start_date').default(''),
 
     playerCount: integer('player_count').notNull().default(0),
+
+    expiresAt: timestamp('expires_at', { withTimezone: true })
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP + INTERVAL '5 days'`),
   },
   table => [index('tournaments_organization_idx').on(table.organizationId)]
 );

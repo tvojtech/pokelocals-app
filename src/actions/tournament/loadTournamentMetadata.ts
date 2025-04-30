@@ -1,5 +1,5 @@
 import { auth } from '@clerk/nextjs/server';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, gt } from 'drizzle-orm';
 import { unstable_cache } from 'next/cache';
 
 import { db } from '@/lib/db';
@@ -12,7 +12,7 @@ export async function loadTournamentMetadata(tournamentId: string) {
     throw new Error('Unauthorized');
   }
 
-  return unstable_cache(
+  const cachedTournament = await unstable_cache(
     async (tournamentId: string) => {
       const tournament = await db
         .select({
@@ -23,9 +23,16 @@ export async function loadTournamentMetadata(tournamentId: string) {
           uploaded: tournaments.uploaded,
           playerCount: tournaments.playerCount,
           organizationId: tournaments.organizationId,
+          expiresAt: tournaments.expiresAt,
         })
         .from(tournaments)
-        .where(and(eq(tournaments.id, tournamentId), eq(tournaments.organizationId, orgId)))
+        .where(
+          and(
+            eq(tournaments.id, tournamentId),
+            eq(tournaments.organizationId, orgId),
+            gt(tournaments.expiresAt, new Date())
+          )
+        )
         .limit(1)
         .execute();
 
@@ -36,6 +43,16 @@ export async function loadTournamentMetadata(tournamentId: string) {
       return tournament[0];
     },
     ['tournaments', tournamentId],
-    { tags: ['tournaments', tournamentId] }
+    { tags: ['tournaments', tournamentId], revalidate: 60 * 60 * 6 }
   )(tournamentId);
+
+  if (!cachedTournament) {
+    return null;
+  }
+
+  if (cachedTournament.expiresAt < new Date()) {
+    return null;
+  }
+
+  return cachedTournament;
 }

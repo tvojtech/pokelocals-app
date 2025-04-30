@@ -9,6 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 import { DiscordNotificationsSettingsCard } from './DiscordNotificationsSettingsCard';
 import { OrganizationMembers } from './OrganizationMembers';
+import { OrganizationStatsCard } from './OrganizationStatsCard';
 
 export function Organization() {
   const { isLoaded: isUserLoaded } = useUser();
@@ -53,6 +54,7 @@ export function Organization() {
             </CardContent>
           </Card>
           <DiscordNotificationsSettingsCard />
+          <OrganizationStatsCard />
         </CardContent>
       </Card>
     </div>

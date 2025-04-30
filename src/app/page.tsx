@@ -42,7 +42,11 @@ export default async function DashboardPage() {
       {!orgId && isOrganizationRequired && (
         <Alert variant="warning">
           <AlertTitle>To create tournaments, you need to be an organizer.</AlertTitle>
-          <AlertDescription>To become one, go to user profile page, and request the organizer role.</AlertDescription>
+          <AlertDescription>
+            {userId
+              ? 'To become one, go to user profile page, and request the organizer role.'
+              : 'To become one, please sign in, go to profile page, and request the organizer role.'}
+          </AlertDescription>
         </Alert>
       )}
 

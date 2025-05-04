@@ -1,0 +1,1 @@
+ALTER TABLE "tournaments" ADD COLUMN "updated_by" text NOT NULL;

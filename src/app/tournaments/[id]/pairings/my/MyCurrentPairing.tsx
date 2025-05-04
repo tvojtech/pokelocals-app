@@ -1,31 +1,46 @@
+'use client';
+
+import { useRollbar } from '@rollbar/react';
+import { useParams } from 'next/navigation';
+
 import { Player, Pod, Tournament } from '@/actions/tournament';
+import { mapOutcomeToPlayerResult, PlayerResult } from '@/actions/tournament/tournamentUtils';
 import { PairingsRow } from '@/app/tournaments/[id]/pairings/PairingsRow';
 import { Card, CardContent } from '@/components/ui/card';
 
 export function MyCurrentPairing({ me, pod: myPod, tournament }: { me: Player; pod: Pod; tournament: Tournament }) {
+  const rollbar = useRollbar();
+  const { id } = useParams();
+
   if (myPod.rounds.length === 0) {
     return null;
   }
 
   const currentRound = myPod.rounds[myPod.rounds.length - 1];
 
-  const myPairing = currentRound.matches.find(match => match.player1 === me.userid || match.player2 === me.userid);
+  const currentMatch = currentRound.matches.find(match => match.player1 === me.userid || match.player2 === me.userid);
 
-  if (!myPairing) {
+  if (!currentMatch) {
     console.log('myPairing not found');
     return null;
   }
 
-  if (myPairing.outcome !== '0') {
+  const outcome = mapOutcomeToPlayerResult(currentMatch, me.userid);
+
+  if (!outcome) {
+    rollbar.error(`Unknown match outcome ${JSON.stringify({ match: currentMatch, tournamentId: id })}`);
+  }
+
+  if (outcome !== PlayerResult.not_finished) {
     return null;
   }
 
-  const opponent = myPairing.player1 === me.userid ? myPairing.player2 : myPairing.player1;
+  const opponent = currentMatch.player1 === me.userid ? currentMatch.player2 : currentMatch.player1;
 
   return (
     <Card>
       <CardContent className="grid grid-cols-3 p-4">
-        <PairingsRow match={{ ...myPairing, player1: me.userid, player2: opponent }} tournament={tournament} />
+        <PairingsRow match={{ ...currentMatch, player1: me.userid, player2: opponent }} tournament={tournament} />
       </CardContent>
     </Card>
   );

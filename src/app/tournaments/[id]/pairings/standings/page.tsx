@@ -10,9 +10,9 @@ export default async function TournamentPairingsStandingsPage({ params }: { para
     return null;
   }
 
-  if (!tournamentResult.tournament.standings) {
+  if (!tournamentResult.standings) {
     return redirect(`/tournaments/${id}/pairings`, RedirectType.replace);
   }
 
-  return <Standings tournament={tournamentResult.tournament} />;
+  return <Standings tournament={tournamentResult} />;
 }

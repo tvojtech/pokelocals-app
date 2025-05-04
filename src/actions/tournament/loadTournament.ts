@@ -1,31 +1,60 @@
 'use server';
 
-import 'server-only';
-
 import { unstable_cache } from 'next/cache';
 
-import { Tournament, TournamentWithMetadata } from '@/actions/tournament/types';
+import { Tournament } from '@/actions/tournament/types';
+import { redis } from '@/app/db';
 import { getStore } from '@/blobs';
 
-export async function loadTournament(tournamentId: string): Promise<TournamentWithMetadata | undefined> {
+import { loadTournamentMetadata } from './loadTournamentMetadata';
+import { calculatePlayerScores } from './tournamentUtils';
+import { xmlToObject } from './xml';
+
+export async function loadTournament(tournamentId: string) {
+  const tournamentMetadata = await loadTournamentMetadata(tournamentId);
+
+  if (!tournamentMetadata) {
+    return undefined;
+  }
+
+  return _loadTournamentData(tournamentId);
+}
+
+async function _loadTournamentData(tournamentId: string): Promise<Tournament | undefined> {
   return unstable_cache(
     async (tournamentId: string) => {
+      const redisKey = `tournaments/${tournamentId}`;
+      const redisResult = await redis.get(redisKey);
+
+      if (redisResult) {
+        return JSON.parse(redisResult);
+      }
+
       const store = await getStore('tournaments');
-      const result = await store.getJSON<Tournament>(tournamentId);
-      if (!result) {
+      const result = await store.list(tournamentId);
+
+      if (!result || result.length === 0) {
         return undefined;
       }
-      return {
-        tournament: result.content,
-        metadata: {
-          uploaded_at: result.metadata.uploaded_at,
-          uploaded_by: result.metadata.uploaded_by,
-          upload_user: result.metadata.upload_user,
-          upload_org: result.metadata.upload_org,
-        },
-      };
+
+      const sortedResult = result.toSorted((a, b) => a.localeCompare(b));
+      const latestResult = await store.get(sortedResult[sortedResult.length - 1]);
+
+      if (!latestResult) {
+        return undefined;
+      }
+
+      const tournament = calculatePlayerScores(xmlToObject(latestResult.content));
+
+      await redis
+        .multi()
+        .set(redisKey, JSON.stringify(tournament))
+        .expire(redisKey, 60 * 60 * 6)
+        .exec();
+
+      return tournament;
     },
     ['tournaments', tournamentId],
-    { tags: ['tournaments', tournamentId] }
+    { tags: ['tournaments', tournamentId], revalidate: 60 * 60 * 6 }
   )(tournamentId);
 }

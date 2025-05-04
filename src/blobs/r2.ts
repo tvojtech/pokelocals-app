@@ -76,10 +76,10 @@ export function getStore(namespace: string): BlobStore {
 
       await s3Client.send(command);
     },
-    async list() {
+    async list(prefix = '') {
       const { Contents: contents = [] } = await s3Client.listObjects({
         Bucket: bucket,
-        Prefix: namespace + '/',
+        Prefix: namespace + '/' + prefix,
       });
 
       return contents

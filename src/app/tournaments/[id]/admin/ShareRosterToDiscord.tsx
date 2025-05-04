@@ -10,7 +10,13 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
-export function ShareRosterToDiscord({ rosterUrl, tournamentName }: { rosterUrl: string; tournamentName?: string }) {
+export function ShareRosterToDiscord({
+  rosterUrl,
+  tournamentName,
+}: {
+  rosterUrl: string;
+  tournamentName?: string | null;
+}) {
   const { isLoaded, organization } = useOrganization();
   const discordWebhooks = (organization?.publicMetadata.discordWebhooks ?? []) as { name: string; url: string }[];
   const [selectedWebhooks, setSelectedWebhooks] = useState<string[]>([]);

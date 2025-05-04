@@ -11,8 +11,10 @@ import { Organization } from './Organization';
 
 export default function OrganizationManagement({
   isOrganizationManagementEnabled,
+  isOrganizationStatsEnabled,
 }: {
   isOrganizationManagementEnabled: boolean;
+  isOrganizationStatsEnabled: boolean;
 }) {
   const { user, isLoaded } = useUser();
   const hasOrganizations = !!user?.organizationMemberships.length;
@@ -47,5 +49,5 @@ export default function OrganizationManagement({
     );
   }
 
-  return <Organization />;
+  return <Organization isOrganizationStatsEnabled={isOrganizationStatsEnabled} />;
 }

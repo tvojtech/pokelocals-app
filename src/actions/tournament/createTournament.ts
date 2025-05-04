@@ -1,23 +1,33 @@
 'use server';
 
 import { auth } from '@clerk/nextjs/server';
-import { v4 as uuid } from 'uuid';
+import { revalidateTag } from 'next/cache';
+import { v7 as uuid } from 'uuid';
 
-import { getStore } from '@/blobs';
-
-import tournamentTemplate from './tournamentTemplate.json';
-import { Tournament, TournamentWithMetadata } from './types';
+import { db } from '@/lib/db';
+import { tournaments } from '@/lib/db/schema';
 
 export async function createTournamentAction() {
   const { userId, orgId } = await auth();
+
+  if (!userId || !orgId) {
+    throw new Error('Unauthorized');
+  }
+
   const id = uuid();
 
-  const store = await getStore('tournaments');
-  const metadata: TournamentWithMetadata['metadata'] = {
-    uploaded_at: new Date().toISOString(),
-    uploaded_by: orgId ?? userId ?? 'anonymous',
-  };
-  await store.setJSON(id, tournamentTemplate as Tournament, { metadata });
+  await db
+    .insert(tournaments)
+    .values({
+      id,
+      createdBy: userId,
+      updatedBy: userId,
+      organizationId: orgId,
+    })
+    .execute();
+
+  revalidateTag('tournaments');
+  revalidateTag(id);
 
   return { id };
 }

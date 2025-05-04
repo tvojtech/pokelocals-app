@@ -3,10 +3,11 @@ import { type } from 'arktype';
 
 import { env as analyticsEnv } from './analytics.env';
 import { env as authEnv } from './auth.env';
+import { env as databaseEnv } from './database.env';
 import { env as storageEnv } from './storage.env';
 
 export const env = createEnv({
-  extends: [analyticsEnv, storageEnv, authEnv],
+  extends: [analyticsEnv, storageEnv, authEnv, databaseEnv],
   server: {
     BLOB_STORAGE: type.enumerated('local', 'r2'),
     FEEDBACK_DISCORD_WEBHOOK_URL: type.string.atLeastLength(1),

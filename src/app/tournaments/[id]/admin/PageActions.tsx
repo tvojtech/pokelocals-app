@@ -8,7 +8,13 @@ import { useTournamentMyPairingsUrl, useTournamentRosterUrl } from '@/hooks/useT
 import { ShareRosterToDiscord } from './ShareRosterToDiscord';
 import { TournamentQRCode } from './TournamentQRCode';
 
-export function PageActions({ tournamentId, tournamentName }: { tournamentId: string; tournamentName?: string }) {
+export function PageActions({
+  tournamentId,
+  tournamentName,
+}: {
+  tournamentId: string;
+  tournamentName?: string | null;
+}) {
   const myPairingsUrl = useTournamentMyPairingsUrl(tournamentId);
   const rosterUrl = useTournamentRosterUrl(tournamentId);
   return (

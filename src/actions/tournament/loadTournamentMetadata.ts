@@ -1,5 +1,7 @@
+'use server';
+
 import { auth } from '@clerk/nextjs/server';
-import { and, eq, gt } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { unstable_cache } from 'next/cache';
 
 import { db } from '@/lib/db';
@@ -26,13 +28,7 @@ export async function loadTournamentMetadata(tournamentId: string) {
           expiresAt: tournaments.expiresAt,
         })
         .from(tournaments)
-        .where(
-          and(
-            eq(tournaments.id, tournamentId),
-            eq(tournaments.organizationId, orgId),
-            gt(tournaments.expiresAt, new Date())
-          )
-        )
+        .where(and(eq(tournaments.id, tournamentId), eq(tournaments.organizationId, orgId)))
         .limit(1)
         .execute();
 
@@ -50,7 +46,7 @@ export async function loadTournamentMetadata(tournamentId: string) {
     return null;
   }
 
-  if (cachedTournament.expiresAt < new Date()) {
+  if (cachedTournament.expiresAt < new Date().toISOString()) {
     return null;
   }
 

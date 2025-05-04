@@ -1,17 +1,26 @@
 'use server';
 
-import 'server-only';
-
 import { unstable_cache } from 'next/cache';
 
 import { Tournament } from '@/actions/tournament/types';
 import { redis } from '@/app/db';
 import { getStore } from '@/blobs';
 
+import { loadTournamentMetadata } from './loadTournamentMetadata';
 import { calculatePlayerScores } from './tournamentUtils';
 import { xmlToObject } from './xml';
 
-export async function loadTournamentData(tournamentId: string): Promise<Tournament | undefined> {
+export async function loadTournament(tournamentId: string) {
+  const tournamentMetadata = await loadTournamentMetadata(tournamentId);
+
+  if (!tournamentMetadata) {
+    return undefined;
+  }
+
+  return _loadTournamentData(tournamentId);
+}
+
+async function _loadTournamentData(tournamentId: string): Promise<Tournament | undefined> {
   return unstable_cache(
     async (tournamentId: string) => {
       const redisKey = `tournaments/${tournamentId}`;
@@ -40,12 +49,12 @@ export async function loadTournamentData(tournamentId: string): Promise<Tourname
       await redis
         .multi()
         .set(redisKey, JSON.stringify(tournament))
-        .expire(redisKey, 604800) // 1 week
+        .expire(redisKey, 60 * 60 * 6)
         .exec();
 
       return tournament;
     },
     ['tournaments', tournamentId],
-    { tags: ['tournaments', tournamentId] }
+    { tags: ['tournaments', tournamentId], revalidate: 60 * 60 * 6 }
   )(tournamentId);
 }

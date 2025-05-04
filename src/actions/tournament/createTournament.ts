@@ -1,6 +1,7 @@
 'use server';
 
 import { auth } from '@clerk/nextjs/server';
+import { revalidateTag } from 'next/cache';
 import { v7 as uuid } from 'uuid';
 
 import { db } from '@/lib/db';
@@ -24,6 +25,9 @@ export async function createTournamentAction() {
       organizationId: orgId,
     })
     .execute();
+
+  revalidateTag('tournaments');
+  revalidateTag(id);
 
   return { id };
 }

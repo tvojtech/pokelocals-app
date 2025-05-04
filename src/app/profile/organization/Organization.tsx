@@ -11,7 +11,7 @@ import { DiscordNotificationsSettingsCard } from './DiscordNotificationsSettings
 import { OrganizationMembers } from './OrganizationMembers';
 import { OrganizationStatsCard } from './OrganizationStatsCard';
 
-export function Organization() {
+export function Organization({ isOrganizationStatsEnabled }: { isOrganizationStatsEnabled: boolean }) {
   const { isLoaded: isUserLoaded } = useUser();
   const { membership, isLoaded: isOrgLoaded } = useOrganization();
 
@@ -54,7 +54,7 @@ export function Organization() {
             </CardContent>
           </Card>
           <DiscordNotificationsSettingsCard />
-          <OrganizationStatsCard />
+          {isOrganizationStatsEnabled && <OrganizationStatsCard />}
         </CardContent>
       </Card>
     </div>

@@ -1,7 +1,7 @@
 'use server';
 
 import { auth } from '@clerk/nextjs/server';
-import { and, desc, eq, gt } from 'drizzle-orm';
+import { and, desc, eq } from 'drizzle-orm';
 import { unstable_cache } from 'next/cache';
 
 import { db } from '@/lib/db';
@@ -13,7 +13,7 @@ export async function listTournaments() {
     return [];
   }
 
-  const cachedTournaments = await unstable_cache(
+  return unstable_cache(
     async (organizationId: string) => {
       return db
         .select({
@@ -22,15 +22,11 @@ export async function listTournaments() {
           expiresAt: tournaments.expiresAt,
         })
         .from(tournaments)
-        .where(and(eq(tournaments.organizationId, organizationId), gt(tournaments.expiresAt, new Date())))
+        .where(and(eq(tournaments.organizationId, organizationId)))
         .orderBy(desc(tournaments.updatedAt))
         .execute();
     },
     ['tournaments'],
     { tags: ['tournaments'], revalidate: 60 * 60 * 6 }
   )(orgId);
-
-  return cachedTournaments.filter(ct => {
-    return ct.expiresAt > new Date();
-  });
 }

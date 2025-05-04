@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import { loadTournamentData } from '@/actions/tournament';
+import { loadTournament } from '@/actions/tournament';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { PageTabs } from '@/app/tournaments/[id]/pairings/PageTabs';
 import { Notifications } from '@/components/Notifications';
@@ -15,7 +15,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
 
-  const tournamentResult = await loadTournamentData(id);
+  const tournamentResult = await loadTournament(id);
 
   if (!tournamentResult) {
     return {};
@@ -44,7 +44,7 @@ export default async function TournamentPairingsLayout({
 }) {
   const { id } = await params;
 
-  const tournamentResult = await loadTournamentData(id);
+  const tournamentResult = await loadTournament(id);
 
   const showStandings = !!tournamentResult?.standings;
 

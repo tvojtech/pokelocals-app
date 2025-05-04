@@ -1,7 +1,7 @@
 import { auth } from '@clerk/nextjs/server';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { organizationManagementFlag } from '@/flags';
+import { organizationManagementFlag, organizationStatsFlag } from '@/flags';
 
 import OrganizationManagement from './organization/OrganizationManagement';
 import { PlayerProfile } from './PlayerProfile';
@@ -9,6 +9,9 @@ import { PlayerProfile } from './PlayerProfile';
 export default async function Profile() {
   const { userId } = await auth();
   const isOrganizationManagementEnabled = await organizationManagementFlag.run({
+    identify: { userId: userId ?? 'anonymous' },
+  });
+  const isOrganizationStatsEnabled = await organizationStatsFlag.run({
     identify: { userId: userId ?? 'anonymous' },
   });
 
@@ -23,7 +26,10 @@ export default async function Profile() {
       </TabsContent>
       {isOrganizationManagementEnabled && userId && (
         <TabsContent value="organization">
-          <OrganizationManagement isOrganizationManagementEnabled={isOrganizationManagementEnabled} />
+          <OrganizationManagement
+            isOrganizationManagementEnabled={isOrganizationManagementEnabled}
+            isOrganizationStatsEnabled={isOrganizationStatsEnabled}
+          />
         </TabsContent>
       )}
     </Tabs>

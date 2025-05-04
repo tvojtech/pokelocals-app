@@ -42,7 +42,7 @@ export default async function TournamentAdminPage({ params }: TournamentAdminPag
     return (
       <div>
         <Alert variant="warning">
-          <AlertDescription>You need to be part of an organization to manage tournaments.</AlertDescription>
+          <AlertDescription>You need to be member of an organization to manage tournaments.</AlertDescription>
         </Alert>
       </div>
     );

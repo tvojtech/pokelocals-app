@@ -57,6 +57,20 @@
       "when": 1746049547940,
       "tag": "0007_reflective_firebird",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1746058573315,
+      "tag": "0008_stormy_enchantress",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1746386979276,
+      "tag": "0009_moaning_sandman",
+      "breakpoints": true
     }
   ]
 }

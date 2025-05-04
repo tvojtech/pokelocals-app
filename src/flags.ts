@@ -25,3 +25,15 @@ export const organizationManagementFlag = flag<boolean, { userId: string }>({
     return requireOrganizer ?? true;
   },
 });
+
+export const organizationStatsFlag = flag<boolean, { userId: string }>({
+  key: 'organization-stats',
+  async decide({ entities }) {
+    const isOrganizationStatsEnabled = await getPostHogClient().isFeatureEnabled(
+      'organization-stats',
+      entities?.userId ?? 'anonymous'
+    );
+
+    return isOrganizationStatsEnabled ?? false;
+  },
+});

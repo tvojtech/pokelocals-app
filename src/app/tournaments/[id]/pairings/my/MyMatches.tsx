@@ -1,5 +1,11 @@
+'use client';
+
+import { useRollbar } from '@rollbar/react';
+import { useParams } from 'next/navigation';
+
 import { Match, Player, Pod, Tournament } from '@/actions/tournament';
-import { getPlayerName, MatchOutcome } from '@/app/pokemonUtils';
+import { mapOutcomeToPlayerResult, PlayerResult } from '@/actions/tournament/tournamentUtils';
+import { getPlayerName } from '@/app/pokemonUtils';
 import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -16,9 +22,10 @@ export function MyMatches({ me, pod: myPod, tournament }: { me: Player; pod: Pod
 
   return (
     <div className="flex flex-col gap-1">
-      {myMatches.map(({ match, round }, idx) => (
-        <ResultRow key={idx} round={round} match={match} tournament={tournament} me={me} />
-      ))}
+      {myMatches.map(
+        ({ match, round }, idx) =>
+          (match && <ResultRow key={idx} round={round} match={match} tournament={tournament} me={me} />) || null
+      )}
     </div>
   );
 }
@@ -30,22 +37,20 @@ function ResultRow({
   me,
 }: {
   round: string;
-  match: Match | undefined;
+  match: Match;
   tournament: Tournament;
   me: Player;
 }) {
-  let outcome: MatchOutcome, opponent;
-  if (match?.outcome === '5') {
-    outcome = MatchOutcome.BYE;
-  } else if (match?.outcome === '3') {
-    outcome = MatchOutcome.TIE;
-  } else if (match?.outcome === '0') {
-    return null;
-  } else if (match?.player1 === me.userid) {
-    outcome = match?.outcome === '1' ? MatchOutcome.WIN : MatchOutcome.LOSS;
-  } else {
-    outcome = match?.outcome === '1' ? MatchOutcome.LOSS : MatchOutcome.WIN;
+  const rollbar = useRollbar();
+  const { id } = useParams();
+
+  const outcome = mapOutcomeToPlayerResult(match, me.userid);
+
+  if (!outcome) {
+    rollbar.error(`Unknown match outcome ${JSON.stringify({ match, tournamentId: id })}`);
   }
+
+  let opponent;
 
   if (match?.player1 === me.userid) {
     opponent = match?.player2;
@@ -68,11 +73,11 @@ function ResultRow({
           <span>R{round}:</span>
           <span
             className={cn('font-bold', {
-              'text-green-600': outcome === MatchOutcome.WIN,
-              'text-red-600': outcome === MatchOutcome.LOSS,
-              'text-yellow-600': outcome === MatchOutcome.TIE,
+              'text-green-600': outcome === PlayerResult.win,
+              'text-red-600': outcome === PlayerResult.loss,
+              'text-yellow-600': outcome === PlayerResult.tie,
             })}>
-            {outcome === MatchOutcome.WIN ? 'W' : outcome === MatchOutcome.LOSS ? 'L' : 'T'}
+            {outcome === PlayerResult.win ? 'W' : outcome === PlayerResult.loss ? 'L' : 'T'}
           </span>
           <div>
             vs. {getPlayerName(tournament, opponent)} <PlayerScore score={tournament.scores[opponent]} />

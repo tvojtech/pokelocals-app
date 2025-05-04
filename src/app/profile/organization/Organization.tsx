@@ -9,8 +9,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 import { DiscordNotificationsSettingsCard } from './DiscordNotificationsSettingsCard';
 import { OrganizationMembers } from './OrganizationMembers';
+import { OrganizationStatsCard } from './OrganizationStatsCard';
 
-export function Organization() {
+export function Organization({ isOrganizationStatsEnabled }: { isOrganizationStatsEnabled: boolean }) {
   const { isLoaded: isUserLoaded } = useUser();
   const { membership, isLoaded: isOrgLoaded } = useOrganization();
 
@@ -53,6 +54,7 @@ export function Organization() {
             </CardContent>
           </Card>
           <DiscordNotificationsSettingsCard />
+          {isOrganizationStatsEnabled && <OrganizationStatsCard />}
         </CardContent>
       </Card>
     </div>

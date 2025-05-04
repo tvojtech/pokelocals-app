@@ -9,6 +9,7 @@ import { buttonVariants } from '@/components/ui/buttons/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { requireOrganizerFlag } from '@/flags';
+import { cn } from '@/lib/utils';
 
 export default async function DashboardPage() {
   const { userId, orgId } = await auth();
@@ -70,17 +71,22 @@ export default async function DashboardPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {tournaments?.map(tournament => (
+                  {tournaments.map(tournament => (
                     <TableRow key={tournament.id}>
-                      <TableCell>{tournament.data.name || 'New tournament'}</TableCell>
+                      <TableCell
+                        className={cn(tournament.expiresAt < new Date().toISOString() && 'text-muted-foreground')}>
+                        {tournament.name || 'New tournament'}
+                      </TableCell>
                       <TableCell>
-                        <Link
-                          href={`/tournaments/${tournament.id}/admin`}
-                          prefetch={false}
-                          className={buttonVariants({ variant: 'link', className: 'pl-0' })}>
-                          Go to admin page
-                          <FileSymlink className="h-4 w-4" />
-                        </Link>
+                        {tournament.expiresAt > new Date().toISOString() && (
+                          <Link
+                            href={`/tournaments/${tournament.id}/admin`}
+                            prefetch={false}
+                            className={buttonVariants({ variant: 'link', className: 'pl-0' })}>
+                            Go to admin page
+                            <FileSymlink className="h-4 w-4" />
+                          </Link>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}

@@ -1,0 +1,1 @@
+CREATE INDEX "tournaments_expires_at_organization_idx" ON "tournaments" USING btree ("expires_at","organization_id");

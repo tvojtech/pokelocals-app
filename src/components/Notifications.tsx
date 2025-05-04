@@ -5,8 +5,7 @@ import { BellPlus } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useCallback } from 'react';
 
-import { registerNotificationToken } from '@/actions/notifications';
-import { catchError } from '@/app/utils';
+// import { registerNotificationToken } from '@/actions/notifications';
 import { clientOnlyComponent } from '@/components/clientOnlyComponent';
 import { voidComponent } from '@/components/voidComponent';
 import useFcmToken from '@/hooks/useFcmToken';
@@ -19,19 +18,18 @@ export const Notifications = voidComponent(
 
     const handleClick = useCallback(async () => {
       if (session?.user?.primaryEmailAddress?.emailAddress && token) {
-        const [error, result] = await catchError(
-          registerNotificationToken({
-            token,
-            tournamentId: params.id,
-            email: session.user?.primaryEmailAddress?.emailAddress,
-          })
-        );
-
-        if (error) {
-          console.error('Error registering notification token', error);
-        } else {
-          console.log('Notification token registered', result);
-        }
+        // const [error, result] = await catchError(
+        // registerNotificationToken({
+        //   token,
+        //   tournamentId: params.id,
+        //   email: session.user?.primaryEmailAddress?.emailAddress,
+        // })
+        // );
+        // if (error) {
+        //   console.error('Error registering notification token', error);
+        // } else {
+        //   console.log('Notification token registered', result);
+        // }
       }
     }, [params.id, session?.user?.primaryEmailAddress?.emailAddress, token]);
 

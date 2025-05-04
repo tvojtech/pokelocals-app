@@ -10,6 +10,10 @@ vi.mock('server-only', () => {
   };
 });
 
+vi.mock('postgres', () => {
+  return { default: () => {} };
+});
+
 describe('getPlayerDivision', () => {
   beforeEach(() => {
     // tell vitest we use mocked time

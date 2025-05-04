@@ -8,5 +8,5 @@ export default async function TournamentPairingsAllPage({ params }: { params: Pr
     return null;
   }
 
-  return <Pairings tournament={tournamentResult.tournament} />;
+  return <Pairings tournament={tournamentResult} />;
 }

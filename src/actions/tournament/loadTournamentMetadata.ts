@@ -8,11 +8,7 @@ import { db } from '@/lib/db';
 import { tournaments } from '@/lib/db/schema';
 
 export async function loadTournamentMetadata(tournamentId: string) {
-  const { userId, orgId } = await auth();
-
-  if (!userId || !orgId) {
-    throw new Error('Unauthorized');
-  }
+  const { orgId } = await auth();
 
   const cachedTournament = await unstable_cache(
     async (tournamentId: string) => {

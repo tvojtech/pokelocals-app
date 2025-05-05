@@ -5,6 +5,7 @@ import { useToggle } from '@uidotdev/usehooks';
 import { useEffect, useId, useState } from 'react';
 
 import { sendRosterToDiscord } from '@/actions/tournament';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { LoadingButton } from '@/components/ui/buttons/loading-button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -46,13 +47,7 @@ export function ShareRosterToDiscord({
     toggleOpen(false);
   };
 
-  if (!isLoaded || !organization) {
-    return null;
-  }
-
-  if (discordWebhooks.length === 0) {
-    return null;
-  }
+  const isDisabled = !isLoaded || !organization || !selectedWebhooks || selectedWebhooks.length === 0;
 
   return (
     <Popover open={isOpen} onOpenChange={toggleOpen}>
@@ -66,27 +61,34 @@ export function ShareRosterToDiscord({
       </PopoverTrigger>
       <PopoverContent>
         <div className="flex flex-col gap-4">
-          {discordWebhooks.map(webhook => (
-            <div key={webhook.url}>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id={`${id}-${webhook.url}`}
-                  checked={selectedWebhooks.includes(webhook.url)}
-                  onCheckedChange={checked =>
-                    setSelectedWebhooks(prev =>
-                      checked ? [...prev, webhook.url] : prev.filter(url => url !== webhook.url)
-                    )
-                  }
-                />
-                <label
-                  htmlFor={`${id}-${webhook.url}`}
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  {webhook.name}
-                </label>
+          {discordWebhooks.length > 0 ? (
+            discordWebhooks.map(webhook => (
+              <div key={webhook.url}>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`${id}-${webhook.url}`}
+                    checked={selectedWebhooks.includes(webhook.url)}
+                    onCheckedChange={checked =>
+                      setSelectedWebhooks(prev =>
+                        checked ? [...prev, webhook.url] : prev.filter(url => url !== webhook.url)
+                      )
+                    }
+                  />
+                  <label
+                    htmlFor={`${id}-${webhook.url}`}
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    {webhook.name}
+                  </label>
+                </div>
               </div>
-            </div>
-          ))}
-          <LoadingButton onClick={handleClick} disabled={selectedWebhooks.length === 0} isLoading={isLoading}>
+            ))
+          ) : (
+            <Alert variant="warning">
+              <AlertTitle>No webhooks found</AlertTitle>
+              <AlertDescription>Create a webhook in your organization profile first.</AlertDescription>
+            </Alert>
+          )}
+          <LoadingButton onClick={handleClick} disabled={isDisabled} isLoading={isLoading}>
             Share
           </LoadingButton>
         </div>

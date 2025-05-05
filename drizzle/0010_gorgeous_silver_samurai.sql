@@ -1,0 +1,1 @@
+ALTER TABLE "tournaments" ALTER COLUMN "expires_at" SET DEFAULT CURRENT_TIMESTAMP + INTERVAL '9 days';

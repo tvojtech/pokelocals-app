@@ -1,24 +1,25 @@
 import React from 'react';
 
-import { Division, DivisionStandings, Tournament } from '@/actions/tournament';
+import { Division, DivisionStandings, Tournament, TournamentWithUnofficialStandings } from '@/actions/tournament';
 import { getPlayerName } from '@/app/pokemonUtils';
 import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-export function Standings({ tournament }: { tournament: Tournament }) {
+export function Standings({ tournament }: { tournament: TournamentWithUnofficialStandings }) {
+  console.log(tournament.unofficialStandings);
   return (
     <div className="columns-sm space-y-4">
       {[Division.JUNIORS, Division.SENIORS, Division.MASTERS]
         .filter(division => {
-          const standings = tournament.standings?.[division];
+          const standings = (tournament.standings ?? tournament.unofficialStandings)?.[division];
           return standings && (standings.finished.length > 0 || standings.dnf.length > 0);
         })
         .map(division =>
-          tournament.standings?.[division] ? (
+          (tournament.standings ?? tournament.unofficialStandings)?.[division] ? (
             <StandingsSection
               key={division}
               division={division as Division}
-              standings={tournament.standings[division]}
+              standings={(tournament.standings ?? tournament.unofficialStandings)[division]}
               tournament={tournament}
             />
           ) : null

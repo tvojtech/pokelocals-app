@@ -7,7 +7,6 @@ import {
   TournamentWithUnofficialStandings,
   XmlTournament,
 } from '@/actions/tournament/types';
-import { getPlayerDivision } from '@/app/pokemonUtils';
 import { exhaustiveMatchingGuard } from '@/app/utils';
 
 export enum PlayerResult {
@@ -61,15 +60,15 @@ export function calculateUnofficialStandings(tournament: Tournament): Tournament
       ...player,
       score: tournament.scores[player.userid].wins * 3 + tournament.scores[player.userid].ties,
     }))
-    .toSorted((a, b) => b.score - a.score)
+    .toSorted((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      if (a.firstname !== b.firstname) return a.firstname.localeCompare(b.firstname);
+      return a.lastname.localeCompare(b.lastname);
+    })
     .reduce(
       (acc, player) => ({
         ...acc,
-        // FIXME: remove usage getPlayerDivision, only temporary hack
-        [player.division ?? getPlayerDivision(new Date(player.birthdate).getFullYear())]: [
-          ...acc[player.division ?? getPlayerDivision(new Date(player.birthdate).getFullYear())],
-          player,
-        ],
+        [player.division]: [...acc[player.division], player],
       }),
       {
         [Division.JUNIORS]: [],

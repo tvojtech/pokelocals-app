@@ -46,8 +46,6 @@ export default async function TournamentPairingsLayout({
 
   const tournamentResult = await loadTournament(id);
 
-  const showStandings = !!tournamentResult?.standings;
-
   return (
     <>
       {tournamentResult && (
@@ -68,7 +66,7 @@ export default async function TournamentPairingsLayout({
           </>
         )) || (
           <div className="flex items-center justify-between">
-            <PageTabs showStandings={showStandings} />
+            <PageTabs />
             <div className="flex items-center gap-2">
               <Notifications />
               <QRCodeOverlay />

@@ -15,7 +15,7 @@ import { tournaments } from '@/lib/db/schema';
 import serviceAccount from '@/serviceAccount.json';
 
 import { loadTournamentMetadata } from './loadTournamentMetadata';
-import { calculatePlayerScores } from './tournamentUtils';
+import { calculatePlayerScores, calculateUnofficialStandings } from './tournamentUtils';
 
 if (!admin.apps.length) {
   admin.initializeApp({
@@ -57,7 +57,7 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
     const buffer = Buffer.from(bytes);
     const xmlString = buffer.toString('utf-8');
 
-    const tournament = calculatePlayerScores(xmlToObject(xmlString));
+    const tournament = calculateUnofficialStandings(calculatePlayerScores(xmlToObject(xmlString)));
 
     if (
       tournamentMetadata.uploaded &&

@@ -1,4 +1,12 @@
-import { Match, PlayerScore, Tournament, XmlTournament } from '@/actions/tournament/types';
+import {
+  Division,
+  Match,
+  Player,
+  PlayerScore,
+  Tournament,
+  TournamentWithUnofficialStandings,
+  XmlTournament,
+} from '@/actions/tournament/types';
 import { exhaustiveMatchingGuard } from '@/app/utils';
 
 export enum PlayerResult {
@@ -43,6 +51,47 @@ export function calculatePlayerScores(tournament: XmlTournament): Tournament {
     ...tournament,
     scores,
     players: players.reduce((acc, player) => ({ ...acc, [player.userid]: player }), {}),
+  };
+}
+
+export function calculateUnofficialStandings(tournament: Tournament): TournamentWithUnofficialStandings {
+  const playersByDivision = Object.values(tournament.players)
+    .map(player => ({
+      ...player,
+      score: tournament.scores[player.userid].wins * 3 + tournament.scores[player.userid].ties,
+    }))
+    .toSorted((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      if (a.firstname !== b.firstname) return a.firstname.localeCompare(b.firstname);
+      return a.lastname.localeCompare(b.lastname);
+    })
+    .reduce(
+      (acc, player) => ({
+        ...acc,
+        [player.division]: [...acc[player.division], player],
+      }),
+      {
+        [Division.JUNIORS]: [],
+        [Division.SENIORS]: [],
+        [Division.MASTERS]: [],
+      } as Record<Division, Player[]>
+    );
+  return {
+    ...tournament,
+    unofficialStandings: {
+      [Division.JUNIORS]: {
+        dnf: [],
+        finished: playersByDivision[Division.JUNIORS].map((player, idx) => ({ id: player.userid, place: idx + 1 })),
+      },
+      [Division.SENIORS]: {
+        dnf: [],
+        finished: playersByDivision[Division.SENIORS].map((player, idx) => ({ id: player.userid, place: idx + 1 })),
+      },
+      [Division.MASTERS]: {
+        dnf: [],
+        finished: playersByDivision[Division.MASTERS].map((player, idx) => ({ id: player.userid, place: idx + 1 })),
+      },
+    },
   };
 }
 

@@ -2,12 +2,12 @@
 
 import { unstable_cache } from 'next/cache';
 
-import { Tournament } from '@/actions/tournament/types';
+import { TournamentWithUnofficialStandings } from '@/actions/tournament/types';
 import { redis } from '@/app/db';
 import { getStore } from '@/blobs';
 
 import { loadTournamentMetadata } from './loadTournamentMetadata';
-import { calculatePlayerScores } from './tournamentUtils';
+import { calculatePlayerScores, calculateUnofficialStandings } from './tournamentUtils';
 import { xmlToObject } from './xml';
 
 export async function loadTournament(tournamentId: string) {
@@ -20,14 +20,14 @@ export async function loadTournament(tournamentId: string) {
   return _loadTournamentData(tournamentId);
 }
 
-async function _loadTournamentData(tournamentId: string): Promise<Tournament | undefined> {
+async function _loadTournamentData(tournamentId: string): Promise<TournamentWithUnofficialStandings | undefined> {
   return unstable_cache(
     async (tournamentId: string) => {
       const redisKey = `tournaments/${tournamentId}`;
       const redisResult = await redis.get(redisKey);
 
       if (redisResult) {
-        return JSON.parse(redisResult);
+        return calculateUnofficialStandings(JSON.parse(redisResult));
       }
 
       const store = await getStore('tournaments');
@@ -44,7 +44,7 @@ async function _loadTournamentData(tournamentId: string): Promise<Tournament | u
         return undefined;
       }
 
-      const tournament = calculatePlayerScores(xmlToObject(latestResult.content));
+      const tournament = calculateUnofficialStandings(calculatePlayerScores(xmlToObject(latestResult.content)));
 
       await redis
         .multi()

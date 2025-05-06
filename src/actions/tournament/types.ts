@@ -13,6 +13,7 @@ export interface Player {
   dropped?: {
     round: number;
   };
+  division: Division;
 }
 
 export type PlayerScore = {
@@ -64,6 +65,10 @@ export interface XmlTournament {
 export interface Tournament extends Omit<XmlTournament, 'players'> {
   players: Record<string, Player>;
   scores: Record<string, PlayerScore>;
+}
+
+export interface TournamentWithUnofficialStandings extends Tournament {
+  unofficialStandings: TournamentStandings;
 }
 
 export interface Pod {

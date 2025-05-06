@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { XMLParser } from 'fast-xml-parser';
 
+import { getPlayerDivision } from '@/app/pokemonUtils';
+
 import { Division, Match, Player, Pod, Round, Subgroup, TournamentStandings, XmlTournament } from './types';
 
 export function xmlToObject(xmlString: string): XmlTournament {
@@ -86,6 +88,7 @@ const parsePlayers = (players: any) => {
       late: !!p.late,
       byes: p.byes ? Number(p.byes) : 0,
       ...(p.dropped ? { dropped: { round: Number(p.dropped.round) } } : {}),
+      division: getPlayerDivision(new Date(p.birthdate).getFullYear()),
     };
   }, players);
 };

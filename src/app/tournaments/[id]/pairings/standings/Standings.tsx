@@ -1,28 +1,49 @@
 import React from 'react';
 
-import { Division, DivisionStandings, Tournament } from '@/actions/tournament';
+import { Division, DivisionStandings, Tournament, TournamentWithUnofficialStandings } from '@/actions/tournament';
 import { getPlayerName } from '@/app/pokemonUtils';
 import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-export function Standings({ tournament }: { tournament: Tournament }) {
+export function Standings({ tournament }: { tournament: TournamentWithUnofficialStandings }) {
+  const isStandingsOfficial = !!tournament.standings;
+
+  const standings = isStandingsOfficial ? tournament.standings : tournament.unofficialStandings;
+
   return (
-    <div className="columns-sm space-y-4">
-      {[Division.JUNIORS, Division.SENIORS, Division.MASTERS]
-        .filter(division => {
-          const standings = tournament.standings?.[division];
-          return standings && (standings.finished.length > 0 || standings.dnf.length > 0);
-        })
-        .map(division =>
-          tournament.standings?.[division] ? (
-            <StandingsSection
-              key={division}
-              division={division as Division}
-              standings={tournament.standings[division]}
-              tournament={tournament}
-            />
-          ) : null
-        )}
+    <div className="space-y-4">
+      {!isStandingsOfficial && (
+        <Alert variant="warning">
+          <AlertTitle>Standings are not official</AlertTitle>
+          <AlertDescription className="space-y-2">
+            <p>
+              Standings are calculated based on player scores, without considering player resistance. Players with
+              identical scores are sorted by their names.
+            </p>
+            <p>Official standings may be published after the tournament.</p>
+          </AlertDescription>
+        </Alert>
+      )}
+      <div className="columns-sm space-y-4">
+        {[Division.JUNIORS, Division.SENIORS, Division.MASTERS]
+          .filter(division => {
+            const standingsPerDivision = standings?.[division];
+            return (
+              standingsPerDivision && (standingsPerDivision.finished.length > 0 || standingsPerDivision.dnf.length > 0)
+            );
+          })
+          .map(division =>
+            standings?.[division] ? (
+              <StandingsSection
+                key={division}
+                division={division as Division}
+                standings={standings[division]}
+                tournament={tournament}
+              />
+            ) : null
+          )}
+      </div>
     </div>
   );
 }

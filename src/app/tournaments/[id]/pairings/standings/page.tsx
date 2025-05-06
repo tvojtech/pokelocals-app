@@ -1,5 +1,3 @@
-import { redirect, RedirectType } from 'next/navigation';
-
 import { loadTournament } from '@/actions/tournament';
 import { Standings } from '@/app/tournaments/[id]/pairings/standings/Standings';
 
@@ -8,10 +6,6 @@ export default async function TournamentPairingsStandingsPage({ params }: { para
   const tournamentResult = await loadTournament(id);
   if (!tournamentResult) {
     return null;
-  }
-
-  if (!tournamentResult.standings) {
-    return redirect(`/tournaments/${id}/pairings`, RedirectType.replace);
   }
 
   return <Standings tournament={tournamentResult} />;

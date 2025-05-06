@@ -20,7 +20,7 @@ const pageTypeToTextMappping: Record<PageTypes, { title: string; slug: PageTypes
   [PageTypes.standings]: { title: 'Standings', slug: PageTypes.standings, icon: <Trophy className="h-4 w-4" /> },
 };
 
-export function PageTabs({ showStandings }: { showStandings: boolean }) {
+export function PageTabs() {
   const path = usePathname();
   const { id } = useParams<{ id: string }>();
   const urlPageType = path.split('/').pop();
@@ -30,21 +30,19 @@ export function PageTabs({ showStandings }: { showStandings: boolean }) {
   return (
     <Tabs value={pageType}>
       <TabsList>
-        {Object.keys(PageTypes)
-          .filter(key => showStandings || key !== PageTypes.standings)
-          .map(key => (
-            <TabsTrigger
-              key={key}
-              value={key}
-              onClick={() => {
-                router.push(`/tournaments/${id}/pairings/${key}`);
-                setPageType(key as PageTypes);
-              }}
-              className="flex items-center gap-2">
-              <span>{pageTypeToTextMappping[key as PageTypes].icon}</span>
-              {pageType === key && <span>{pageTypeToTextMappping[key as PageTypes].title}</span>}
-            </TabsTrigger>
-          ))}
+        {Object.keys(PageTypes).map(key => (
+          <TabsTrigger
+            key={key}
+            value={key}
+            onClick={() => {
+              router.push(`/tournaments/${id}/pairings/${key}`);
+              setPageType(key as PageTypes);
+            }}
+            className="flex items-center gap-2">
+            <span>{pageTypeToTextMappping[key as PageTypes].icon}</span>
+            {pageType === key && <span>{pageTypeToTextMappping[key as PageTypes].title}</span>}
+          </TabsTrigger>
+        ))}
       </TabsList>
     </Tabs>
   );

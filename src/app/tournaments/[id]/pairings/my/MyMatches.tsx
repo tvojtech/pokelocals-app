@@ -77,7 +77,10 @@ function ResultRow({
               'text-red-600': outcome === PlayerResult.loss,
               'text-yellow-600': outcome === PlayerResult.tie,
             })}>
-            {outcome === PlayerResult.win ? 'W' : outcome === PlayerResult.loss ? 'L' : 'T'}
+            {outcome === PlayerResult.win && 'W'}
+            {outcome === PlayerResult.loss && 'L'}
+            {outcome === PlayerResult.tie && 'T'}
+            {outcome === PlayerResult.not_finished && '?'}
           </span>
           <div>
             vs. {getPlayerName(tournament, opponent)} <PlayerScore score={tournament.scores[opponent]} />

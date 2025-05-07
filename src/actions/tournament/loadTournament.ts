@@ -55,6 +55,6 @@ async function _loadTournamentData(tournamentId: string): Promise<TournamentWith
       return tournament;
     },
     ['tournaments', tournamentId],
-    { tags: ['tournaments', tournamentId], revalidate: 60 * 60 * 6 }
+    { tags: ['tournaments', tournamentId] }
   )(tournamentId);
 }

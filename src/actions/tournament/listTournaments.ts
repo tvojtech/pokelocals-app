@@ -27,6 +27,6 @@ export async function listTournaments() {
         .execute();
     },
     ['tournaments'],
-    { tags: ['tournaments'], revalidate: 60 * 60 * 6 }
+    { tags: ['tournaments'] }
   )(orgId);
 }

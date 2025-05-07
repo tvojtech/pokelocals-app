@@ -32,7 +32,7 @@ export async function loadTournamentMetadata(tournamentId: string) {
       return tournament[0];
     },
     ['tournaments', tournamentId],
-    { tags: ['tournaments', tournamentId], revalidate: 60 * 60 * 6 }
+    { tags: ['tournaments', tournamentId] }
   )(tournamentId);
 
   if (!cachedTournament) {

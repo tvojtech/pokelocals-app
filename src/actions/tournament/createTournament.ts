@@ -27,7 +27,7 @@ export async function createTournamentAction() {
     .execute();
 
   revalidateTag('tournaments');
-  revalidateTag(id);
+  revalidateTag(`tournaments:${id}`);
 
   return { id };
 }

@@ -88,7 +88,7 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
       .exec();
 
     revalidateTag('tournaments');
-    revalidateTag(tournamentId);
+    revalidateTag(`tournaments:${tournamentId}`);
 
     // const payload: Message = {
     //   webpush: link && {

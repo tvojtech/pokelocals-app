@@ -54,7 +54,7 @@ async function _loadTournamentData(tournamentId: string): Promise<TournamentWith
 
       return tournament;
     },
-    ['tournaments', tournamentId],
-    { tags: ['tournaments', tournamentId] }
+    ['tournaments', `tournaments:${tournamentId}`],
+    { tags: ['tournaments', `tournaments:${tournamentId}`] }
   )(tournamentId);
 }

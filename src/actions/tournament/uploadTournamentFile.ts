@@ -9,7 +9,6 @@ import { revalidateTag } from 'next/cache';
 import { xmlToObject } from '@/actions/tournament/xml';
 import { redis } from '@/app/db';
 import { getStore } from '@/blobs';
-import { requireOrganizerFlag } from '@/flags';
 import { db } from '@/lib/db';
 import { tournaments } from '@/lib/db/schema';
 import serviceAccount from '@/serviceAccount.json';
@@ -30,9 +29,7 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
     return { error: 'Unauthorized' };
   }
 
-  const isOrganizationRequired = await requireOrganizerFlag.run({ identify: { userId } });
-
-  if (!orgId && isOrganizationRequired) {
+  if (!orgId) {
     return { error: 'No organization selected' };
   }
 

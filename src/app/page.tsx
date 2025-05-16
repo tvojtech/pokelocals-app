@@ -1,101 +1,93 @@
 import { auth } from '@clerk/nextjs/server';
-import { FileSymlink } from 'lucide-react';
+import { FileSymlink, Handshake } from 'lucide-react';
 import Link from 'next/link';
+import React from 'react';
 
 import { listTournaments } from '@/actions/tournament';
-import { CreateTournamentButton } from '@/app/tournaments/CreateTournamentButton';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { loadOrganization } from '@/actions/tournament/loadOrganization';
 import { buttonVariants } from '@/components/ui/buttons/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { requireOrganizerFlag } from '@/flags';
 import { cn } from '@/lib/utils';
+
+import { CreateTournamentButton } from './tournaments/CreateTournamentButton';
 
 export default async function DashboardPage() {
   const { userId, orgId } = await auth();
 
-  const isOrganizationRequired = await requireOrganizerFlag.run({
-    identify: { userId: userId ?? 'anonymous' },
-  });
-
-  const tournaments = await listTournaments();
-
-  const alertTitle = isOrganizationRequired
-    ? 'To create tournaments, you need to be an organizer.'
-    : "Starting in May, you'll need to be an organizer to create tournaments.";
-  let alertMessage;
-  if (!orgId) {
-    if (!userId) {
-      alertMessage = 'To become one, please sign in, go to profile page, and request the organizer role.';
-    } else {
-      alertMessage = 'To become one, go to profile page, and request the organizer role.';
-    }
-  }
+  const tournaments = await listTournaments({});
+  const organizationTournaments = orgId ? await listTournaments({ organizationId: orgId }) : [];
+  const organizationIds = new Set(tournaments.map(tournament => tournament.organizationId));
+  const organizations = (await Promise.all(Array.from(organizationIds).map(id => loadOrganization(id)))).reduce(
+    (acc, organization) => ({ ...acc, [organization.id]: organization.name }),
+    {} as Record<string, string>
+  );
 
   return (
-    <div className="space-y-4">
-      {!orgId && !isOrganizationRequired && (
-        <Alert variant="warning">
-          <AlertTitle>{alertTitle}</AlertTitle>
-          <AlertDescription>{alertMessage}</AlertDescription>
-        </Alert>
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      {orgId && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex flex-wrap items-center justify-between gap-2">
+              Organization tournaments
+              {userId && <CreateTournamentButton disabled={!orgId} />}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {organizationTournaments.length === 0 && <div className="text-center">No tournaments found.</div>}
+            {organizationTournaments.length > 0 && (
+              <div className="grid grid-cols-2 gap-0 gap-y-1">
+                {organizationTournaments.map((tournament, idx) => (
+                  <React.Fragment key={tournament.id}>
+                    <div className="pl-2">{tournament.name || 'New tournament'}</div>
+                    <div className="flex items-center justify-end gap-2">
+                      {orgId === tournament.organizationId && (
+                        <Link
+                          href={`/tournaments/${tournament.id}/admin`}
+                          prefetch={false}
+                          className={cn(buttonVariants({ variant: 'link' }), 'h-[unset] p-0')}>
+                          Admin page
+                          <FileSymlink className="h-4 w-4" />
+                        </Link>
+                      )}
+                    </div>
+                    {idx < organizationTournaments.length - 1 && (
+                      <div className="col-span-2 border-t border-t-gray-200" />
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       )}
-      {!orgId && isOrganizationRequired && (
-        <Alert variant="warning">
-          <AlertTitle>To create tournaments, you need to be an organizer.</AlertTitle>
-          <AlertDescription>
-            {userId
-              ? 'To become one, go to user profile page, and request the organizer role.'
-              : 'To become one, please sign in, go to profile page, and request the organizer role.'}
-          </AlertDescription>
-        </Alert>
-      )}
-
-      {!userId && !isOrganizationRequired && <CreateTournamentButton />}
-
-      {userId && (
-        <div className="max-w-2xl space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-wrap items-center justify-between gap-2">
-                My tournaments
-                {(!isOrganizationRequired || (isOrganizationRequired && orgId)) && <CreateTournamentButton />}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {tournaments.map(tournament => (
-                    <TableRow key={tournament.id}>
-                      <TableCell
-                        className={cn(tournament.expiresAt < new Date().toISOString() && 'text-muted-foreground')}>
-                        {tournament.name || 'New tournament'}
-                      </TableCell>
-                      <TableCell>
-                        {tournament.expiresAt > new Date().toISOString() && (
-                          <Link
-                            href={`/tournaments/${tournament.id}/admin`}
-                            prefetch={false}
-                            className={buttonVariants({ variant: 'link', className: 'pl-0' })}>
-                            Go to admin page
-                            <FileSymlink className="h-4 w-4" />
-                          </Link>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </div>
-      )}
+      <Card>
+        <CardHeader>
+          <CardTitle>Tournaments</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {tournaments.length === 0 && <div className="text-center">No tournaments found.</div>}
+          {tournaments.length > 0 && (
+            <div className="grid grid-cols-2 gap-0 gap-y-1">
+              {tournaments.map((tournament, idx) => (
+                <React.Fragment key={tournament.id}>
+                  <div className="pl-2">{tournament.name || 'New tournament'}</div>
+                  <div className="row-span-2 flex items-start justify-end gap-2">
+                    <Link
+                      href={`/tournaments/${tournament.id}/pairings`}
+                      prefetch={false}
+                      className={cn(buttonVariants({ variant: 'link' }), 'h-[unset] p-0')}>
+                      Pairings
+                      <Handshake className="h-4 w-4" />
+                    </Link>
+                  </div>
+                  <div className="pl-2">{organizations[tournament.organizationId]}</div>
+                  {idx < tournaments.length - 1 && <div className="col-span-2 border-t border-t-gray-200" />}
+                </React.Fragment>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

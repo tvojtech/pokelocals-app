@@ -5,7 +5,6 @@ import { loadTournamentMetadata } from '@/actions/tournament/loadTournamentMetad
 import { FileUpload } from '@/components/FileUpload';
 import { OrganizationAvatar } from '@/components/OrganizationAvatar';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { requireOrganizerFlag } from '@/flags';
 
 import { PageActions } from './PageActions';
 
@@ -15,7 +14,7 @@ export type TournamentAdminPageProps = {
 
 export default async function TournamentAdminPage({ params }: TournamentAdminPageProps) {
   const { id } = await params;
-  const { userId, orgId } = await auth();
+  const { orgId } = await auth();
   const tournamentResult = await loadTournamentMetadata(id);
 
   if (!tournamentResult) {
@@ -34,11 +33,7 @@ export default async function TournamentAdminPage({ params }: TournamentAdminPag
     );
   }
 
-  const isOrganizationRequired = await requireOrganizerFlag.run({
-    identify: { userId: userId ?? 'anonymous' },
-  });
-
-  if (!orgId && isOrganizationRequired) {
+  if (!orgId) {
     return (
       <div>
         <Alert variant="warning">

@@ -2,7 +2,7 @@
 
 import { Handshake, List, Trophy, UserRound } from 'lucide-react';
 import { useParams, usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -23,9 +23,19 @@ const pageTypeToTextMappping: Record<PageTypes, { title: string; slug: PageTypes
 export function PageTabs() {
   const path = usePathname();
   const { id } = useParams<{ id: string }>();
-  const urlPageType = path.split('/').pop();
+  const pathElements = path.split('/');
+  const urlPageType = pathElements[pathElements.length - 1];
   const [pageType, setPageType] = useState<PageTypes>((urlPageType as PageTypes) || PageTypes.my);
   const router = useRouter();
+
+  useEffect(() => {
+    if (urlPageType !== pageType) {
+      setPageType(urlPageType as PageTypes);
+    }
+    // it's intentional to not include pageType in the dependency array
+    // we only want to update pageType if urlPageType changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlPageType]);
 
   return (
     <Tabs value={pageType}>

@@ -31,8 +31,8 @@ export async function loadTournamentMetadata(tournamentId: string) {
 
       return tournament[0];
     },
-    ['tournaments', tournamentId],
-    { tags: ['tournaments', tournamentId] }
+    ['tournaments', `tournaments:${tournamentId}`],
+    { tags: ['tournaments', `tournaments:${tournamentId}`] }
   )(tournamentId);
 
   if (!cachedTournament) {

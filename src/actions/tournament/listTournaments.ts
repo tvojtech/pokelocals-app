@@ -28,6 +28,6 @@ export async function listTournaments({ organizationId }: { organizationId?: str
         .execute();
     },
     ['tournaments', `tournaments:org_${organizationId}`],
-    { tags: ['tournaments', `tournaments:org_${organizationId}`] }
+    { tags: ['tournaments', `tournaments:org_${organizationId ?? 'all'}`] }
   )({ organizationId });
 }

@@ -1,5 +1,5 @@
 export { createTournamentAction } from './createTournament';
-export { listOrganizationTournaments } from './listOrganizationTournaments';
+export { listTournaments } from './listTournaments';
 export { loadTournament } from './loadTournament';
 export { loadTournamentMetadata } from './loadTournamentMetadata';
 export { sendRosterToDiscord } from './sendRosterToDiscord';

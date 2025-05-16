@@ -28,6 +28,7 @@ export async function createTournamentAction() {
 
   revalidateTag('tournaments');
   revalidateTag(`tournaments:${id}`);
+  revalidateTag(`tournaments:org_${orgId}`);
 
   return { id };
 }

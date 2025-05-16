@@ -7,7 +7,7 @@ import { unstable_cache } from 'next/cache';
 import { db } from '@/lib/db';
 import { tournaments } from '@/lib/db/schema';
 
-export async function listTournaments() {
+export async function listOrganizationTournaments() {
   const { userId, orgId } = await auth();
   if (!userId || !orgId) {
     return [];

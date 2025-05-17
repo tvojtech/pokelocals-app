@@ -2,7 +2,7 @@
 
 import { useClerk, useSession } from '@clerk/nextjs';
 import { useToggle } from '@uidotdev/usehooks';
-import { BookOpen, LogIn, LogOut, Menu, Settings2, X } from 'lucide-react';
+import { BookOpen, LogIn, LogOut, Menu, Settings2, Trophy, X } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'nextjs-toploader/app';
 
@@ -68,6 +68,10 @@ export const HeaderDrawer = clientOnlyComponent(
             )}
             <Separator className="-mx-2 w-[calc(100%+1rem)]" />
             <div className="space-y-1">
+              <Button onClick={sidebarButtonClickHandler('/')} variant="ghost" className="w-full justify-start">
+                <Trophy />
+                Tournaments
+              </Button>
               <Button variant="ghost" className="w-full justify-start" asChild>
                 <Link href="https://docs.pokelocals.online/docs" target="_blank">
                   <BookOpen />

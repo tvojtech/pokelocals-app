@@ -1,5 +1,5 @@
 import { auth } from '@clerk/nextjs/server';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, Trophy } from 'lucide-react';
 import Link from 'next/link';
 
 import { OrganizationSwitcher } from '@/app/profile/organization/OrganizationSwitcher';
@@ -20,6 +20,14 @@ export async function Header() {
             <Logo />
           </Link>
           <ul className="hidden space-x-4 md:flex md:items-center">
+            <li>
+              <Button variant="link" asChild>
+                <Link href="/" prefetch={false}>
+                  <Trophy />
+                  Tournaments
+                </Link>
+              </Button>
+            </li>
             <li>
               <FeedbackDialog
                 button={

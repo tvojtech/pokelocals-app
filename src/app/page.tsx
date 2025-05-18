@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import { listTournaments } from '@/actions/tournament';
 import { loadOrganization } from '@/actions/tournament/loadOrganization';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { buttonVariants } from '@/components/ui/buttons/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -16,8 +17,11 @@ export default async function HomePage() {
   const tournaments = (await listTournaments({})).filter(tournament => tournament.uploaded);
   const organizationIds = new Set(tournaments.map(tournament => tournament.organizationId));
   const organizations = (await Promise.all(Array.from(organizationIds).map(id => loadOrganization(id)))).reduce(
-    (acc, organization) => ({ ...acc, [organization.id]: organization.name }),
-    {} as Record<string, string>
+    (acc, organization) => ({
+      ...acc,
+      [organization.id]: { name: organization.name, imageUrl: organization.imageUrl },
+    }),
+    {} as Record<string, { name: string; imageUrl: string }>
   );
 
   return (
@@ -34,8 +38,11 @@ export default async function HomePage() {
               {tournaments.map((tournament, idx) => (
                 <div key={tournament.id} className="grid grid-cols-2 gap-0 gap-y-1 md:grid-cols-3">
                   <div className="pl-2">{tournament.name || 'New tournament'}</div>
-                  <div className="col-start-1 pl-2 text-muted-foreground md:col-start-2">
-                    by {organizations[tournament.organizationId]}
+                  <div className="col-start-1 flex flex-row items-center gap-2 pl-2 text-muted-foreground md:col-start-2">
+                    <Avatar className="size-5">
+                      <AvatarImage src={organizations[tournament.organizationId]?.imageUrl} />
+                    </Avatar>
+                    by {organizations[tournament.organizationId]?.name}
                   </div>
                   <div className="col-start-2 row-start-1 flex items-start justify-end gap-2 pr-2 md:col-start-3">
                     <Link

@@ -26,7 +26,7 @@ export async function listTournaments({ organizationId }: { organizationId?: str
             ].filter(Boolean)
           )
         )
-        .orderBy(desc(tournaments.expiresAt))
+        .orderBy(desc(tournaments.createdAt))
         .execute();
     },
     ['tournaments', `tournaments:org_${organizationId}`],

@@ -6,6 +6,12 @@ export function useMyPokemonId() {
   return { myId, setMyId };
 }
 
+export function useOrganizerAlertDismissed() {
+  const [dismissed, setDismissed] = useLocalStorage<boolean>('organizerAlertDismissed', false);
+
+  return { dismissed, setDismissed };
+}
+
 export function useWindowLocation() {
   const isClient = useIsClient();
   if (!isClient) {

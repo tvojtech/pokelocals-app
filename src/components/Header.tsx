@@ -1,5 +1,5 @@
 import { auth } from '@clerk/nextjs/server';
-import { MessageCircle, Trophy } from 'lucide-react';
+import { Building2, MessageCircle, Trophy } from 'lucide-react';
 import Link from 'next/link';
 
 import { OrganizationSwitcher } from '@/app/profile/organization/OrganizationSwitcher';
@@ -11,7 +11,7 @@ import { FeedbackDialog } from './FeedbackDialog';
 import { UserButton } from './UserButton';
 
 export async function Header() {
-  const { sessionId } = await auth();
+  const { sessionId, orgId } = await auth();
   return (
     <header className="border-b-2 shadow-sm print:hidden">
       <nav>
@@ -28,6 +28,16 @@ export async function Header() {
                 </Link>
               </Button>
             </li>
+            {orgId && (
+              <li>
+                <Button variant="link" asChild>
+                  <Link href="/dashboard" prefetch={false}>
+                    <Building2 />
+                    Organization dashboard
+                  </Link>
+                </Button>
+              </li>
+            )}
             <li>
               <FeedbackDialog
                 button={

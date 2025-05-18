@@ -1,6 +1,6 @@
 'use server';
 
-import { and, eq, gt } from 'drizzle-orm';
+import { and, desc, eq, gt } from 'drizzle-orm';
 import { unstable_cache } from 'next/cache';
 
 import { db } from '@/lib/db';
@@ -25,6 +25,7 @@ export async function listTournaments({ organizationId }: { organizationId?: str
             ].filter(Boolean)
           )
         )
+        .orderBy(desc(tournaments.expiresAt))
         .execute();
     },
     ['tournaments', `tournaments:org_${organizationId}`],

@@ -13,6 +13,7 @@ export async function listTournaments({ organizationId }: { organizationId?: str
         .select({
           id: tournaments.id,
           name: tournaments.name,
+          uploaded: tournaments.uploaded,
           expiresAt: tournaments.expiresAt,
           organizationId: tournaments.organizationId,
         })

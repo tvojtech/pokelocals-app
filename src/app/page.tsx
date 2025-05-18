@@ -13,7 +13,7 @@ import { DismissableOrganizerAlert } from './__components/DismissableOrganizerAl
 export default async function HomePage() {
   const { userId, orgId } = await auth();
 
-  const tournaments = await listTournaments({});
+  const tournaments = (await listTournaments({})).filter(tournament => tournament.uploaded);
   const organizationIds = new Set(tournaments.map(tournament => tournament.organizationId));
   const organizations = (await Promise.all(Array.from(organizationIds).map(id => loadOrganization(id)))).reduce(
     (acc, organization) => ({ ...acc, [organization.id]: organization.name }),

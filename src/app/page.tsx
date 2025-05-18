@@ -38,9 +38,9 @@ export default async function HomePage() {
           {tournaments.length > 0 && (
             <>
               {tournaments.map((tournament, idx) => (
-                <div key={tournament.id} className="grid grid-cols-1 gap-0 gap-y-1 p-2 md:grid-cols-3">
+                <div key={tournament.id} className="grid grid-cols-1 gap-0 gap-y-1 p-2 pb-0 md:grid-cols-3">
                   <div className="pl-2">{tournament.name || 'New tournament'}</div>
-                  <div className="flex flex-row items-center gap-2 pl-2 text-muted-foreground md:col-start-2">
+                  <div className="flex flex-row gap-2 pl-2 text-muted-foreground md:col-start-2">
                     <Avatar className="size-5">
                       <AvatarImage src={organizations[tournament.organizationId]?.imageUrl} />
                     </Avatar>

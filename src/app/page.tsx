@@ -38,15 +38,15 @@ export default async function HomePage() {
           {tournaments.length > 0 && (
             <>
               {tournaments.map((tournament, idx) => (
-                <div key={tournament.id} className="grid grid-cols-2 gap-0 gap-y-1 md:grid-cols-3">
+                <div key={tournament.id} className="grid grid-cols-1 gap-0 gap-y-1 p-2 md:grid-cols-3">
                   <div className="pl-2">{tournament.name || 'New tournament'}</div>
-                  <div className="col-start-1 flex flex-row items-center gap-2 pl-2 text-muted-foreground md:col-start-2">
+                  <div className="flex flex-row items-center gap-2 pl-2 text-muted-foreground md:col-start-2">
                     <Avatar className="size-5">
                       <AvatarImage src={organizations[tournament.organizationId]?.imageUrl} />
                     </Avatar>
                     by {organizations[tournament.organizationId]?.name}
                   </div>
-                  <div className="col-start-2 row-start-1 flex items-start justify-end gap-2 pr-2 md:col-start-3">
+                  <div className="flex items-start gap-2 px-2 md:col-start-3 md:justify-end">
                     <Link
                       href={`/tournaments/${tournament.id}/pairings`}
                       prefetch={false}
@@ -55,9 +55,7 @@ export default async function HomePage() {
                       <Handshake className="h-4 w-4" />
                     </Link>
                   </div>
-                  {idx < tournaments.length - 1 && (
-                    <div className="col-span-2 border-t border-t-gray-200 md:col-span-3" />
-                  )}
+                  {idx < tournaments.length - 1 && <div className="border-t border-t-gray-200 md:col-span-3" />}
                 </div>
               ))}
             </>

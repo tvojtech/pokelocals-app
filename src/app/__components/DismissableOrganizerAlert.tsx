@@ -1,39 +1,31 @@
-'use client';
-
+import { cookies } from 'next/headers';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
-import { useOrganizerAlertDismissed } from '@/app/hooks';
-import { clientOnlyComponent } from '@/components/clientOnlyComponent';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/buttons/button';
-import { cn } from '@/lib/utils';
 
-export const DismissableOrganizerAlert = clientOnlyComponent(function DismissableOrganizerAlert() {
-  const { dismissed, setDismissed } = useOrganizerAlertDismissed();
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => setVisible(true), 100);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, []);
+export async function DismissableOrganizerAlert() {
+  const dismissed = (await cookies()).get('dismissedOrganizerAlert')?.value === 'true';
 
   if (dismissed) {
     return null;
   }
 
   return (
-    <Alert
-      variant="info"
-      className={cn('transition-opacity', visible ? 'opacity-100' : 'opacity-0')}
-      style={{ transitionDuration: '2000ms' }}>
+    <Alert variant="info" style={{ transitionDuration: '2000ms' }}>
       <AlertTitle className="flex items-center justify-between">
         Want to organize a tournament?
-        <Button variant="link" onClick={() => setDismissed(true)}>
-          Dismiss
-        </Button>
+        <form
+          action={async () => {
+            'use server';
+            (await cookies()).set('dismissedOrganizerAlert', 'true', {
+              httpOnly: true,
+              sameSite: 'lax',
+              maxAge: 60 * 60 * 24 * 365 * 10, // 10 years - never expire
+            });
+          }}>
+          <Button variant="link">Dismiss</Button>
+        </form>
       </AlertTitle>
       <AlertDescription>
         <p>You need to be an organizer.</p>
@@ -51,4 +43,4 @@ export const DismissableOrganizerAlert = clientOnlyComponent(function Dismissabl
       </AlertDescription>
     </Alert>
   );
-});
+}

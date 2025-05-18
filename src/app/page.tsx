@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
 import { DismissableOrganizerAlert } from './__components/DismissableOrganizerAlert';
+import { OrganizationDashboardAlert } from './__components/OrganizationDashboardAlert';
 
 export default async function HomePage() {
   const { userId, orgId } = await auth();
@@ -27,6 +28,7 @@ export default async function HomePage() {
   return (
     <div className="mx-auto max-w-4xl space-y-4">
       {userId && !orgId && <DismissableOrganizerAlert />}
+      {orgId && <OrganizationDashboardAlert />}
       <Card>
         <CardHeader>
           <CardTitle>Recent tournaments</CardTitle>

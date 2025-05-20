@@ -10,10 +10,8 @@ import { NoOrganization } from './NoOrganization';
 import { Organization } from './Organization';
 
 export default function OrganizationManagement({
-  isOrganizationManagementEnabled,
   isOrganizationStatsEnabled,
 }: {
-  isOrganizationManagementEnabled: boolean;
   isOrganizationStatsEnabled: boolean;
 }) {
   const { user, isLoaded } = useUser();
@@ -38,15 +36,6 @@ export default function OrganizationManagement({
 
   if (!hasOrganizations) {
     return <NoOrganization />;
-  }
-
-  if (!isOrganizationManagementEnabled) {
-    return (
-      <Alert variant="info">
-        <AlertTitle>Organization management will be available soon.</AlertTitle>
-        <AlertDescription>Please check back later.</AlertDescription>
-      </Alert>
-    );
   }
 
   return <Organization isOrganizationStatsEnabled={isOrganizationStatsEnabled} />;

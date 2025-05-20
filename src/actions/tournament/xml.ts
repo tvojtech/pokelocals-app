@@ -36,7 +36,7 @@ export function xmlToObject(xmlString: string): XmlTournament {
       overflowtablestart: Number(jsonData.tournament.data.overflowtablestart),
     },
     timeelapsed: Number(jsonData.tournament.timeelapsed),
-    players: parsePlayers(jsonData.tournament.players.player),
+    players: parsePlayers(jsonData.tournament.players.player, new Date(jsonData.tournament.data.startdate)),
     pods: parsePods(jsonData.tournament.pods.pod),
     standings: jsonData.tournament?.standings?.pod ? parseStandings(jsonData.tournament.standings.pod) : undefined,
   };
@@ -73,7 +73,7 @@ const parseStandings = (standings: any): XmlTournament['standings'] => {
     );
 };
 
-const parsePlayers = (players: any) => {
+const parsePlayers = (players: any, startDate: Date) => {
   return parseXmlArray<any, Player>((p: any) => {
     return {
       userid: p['@_userid'],
@@ -88,7 +88,7 @@ const parsePlayers = (players: any) => {
       late: !!p.late,
       byes: p.byes ? Number(p.byes) : 0,
       ...(p.dropped ? { dropped: { round: Number(p.dropped.round) } } : {}),
-      division: getPlayerDivision(new Date(p.birthdate).getFullYear()),
+      division: getPlayerDivision(new Date(p.birthdate).getFullYear(), startDate),
     };
   }, players);
 };

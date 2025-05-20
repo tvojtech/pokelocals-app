@@ -67,7 +67,9 @@ const StandingsSection: React.FC<{
             .map(({ id, place }, idx) => (
               <React.Fragment key={idx}>
                 <div className="pl-2">{place}.</div>
-                <div className="flex items-center gap-2">{getPlayerName(tournament, id)}</div>
+                <div className="flex items-center gap-2">
+                  {getPlayerName(tournament, id, division !== Division.MASTERS)}
+                </div>
                 <PlayerScore score={tournament.scores[id]} />
                 {idx < standings.finished.length - 1 && <div className="col-span-3 border-t border-t-gray-200" />}
               </React.Fragment>

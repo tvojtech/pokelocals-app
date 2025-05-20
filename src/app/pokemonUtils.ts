@@ -1,16 +1,16 @@
 import { Division, Tournament } from '@/actions/tournament';
 import { guessFullName } from '@/app/utils';
 
-export function getPlayerName(tournament: Tournament, id: string) {
+export function getPlayerName(tournament: Tournament, id: string, anonymize: boolean = false) {
   const player = tournament.players[id];
-  return guessFullName(player);
+  return guessFullName({
+    firstname: player.firstname,
+    lastname: anonymize ? player.lastname.charAt(0) + '.' : player.lastname,
+  });
 }
 
-export function getPlayerDivision(playerYear: number) {
-  // FIXME: using current date to determine division is not correct
-  // calculating division in future will provide incorrect results
-  // we should use the start date of the tournament to determine the division
-  const now = new Date();
+export function getPlayerDivision(playerYear: number, startDate: Date) {
+  const now = startDate;
   const currentYear = now.getFullYear();
   const currentMonth = now.getMonth();
   const seasonStartYear = currentYear - (currentMonth < 7 ? 1 : 0);

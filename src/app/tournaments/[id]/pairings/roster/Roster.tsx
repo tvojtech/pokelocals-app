@@ -5,10 +5,10 @@ import { getPlayerDivision, getPlayerName } from '@/app/pokemonUtils';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const groupPlayersByDivision = (players: Player[]): Record<Division, Player[]> => {
+const groupPlayersByDivision = (players: Player[], startDate: Date): Record<Division, Player[]> => {
   return players.reduce(
     (acc, player) => {
-      const division = getPlayerDivision(new Date(player.birthdate).getFullYear());
+      const division = getPlayerDivision(new Date(player.birthdate).getFullYear(), startDate);
       return {
         ...acc,
         [division]: [...(acc[division] || []), player],
@@ -32,7 +32,7 @@ export function Roster({ tournament }: { tournament: Tournament }) {
     );
   }
 
-  const playersByDivision = groupPlayersByDivision(Object.values(players));
+  const playersByDivision = groupPlayersByDivision(Object.values(players), new Date(tournament.data.startdate));
 
   return (
     <div className="columns-sm space-y-4">

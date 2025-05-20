@@ -10,7 +10,7 @@ import { LoadingButton } from './ui/buttons/loading-button';
 
 export function FileUpload({ tournamentId }: { tournamentId: string }) {
   const [isDragging, setIsDragging] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<{ result: 'error' | 'success'; message: string } | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -18,10 +18,10 @@ export function FileUpload({ tournamentId }: { tournamentId: string }) {
   const validateFile = (file: File): boolean => {
     const extension = file.name.split('.').pop()?.toLowerCase();
     if (extension !== 'tdf') {
-      setError('Only .tdf files are allowed');
+      setStatus({ result: 'error', message: 'Only .tdf files are allowed' });
       return false;
     }
-    setError(null);
+    setStatus(null);
     return true;
   };
 
@@ -40,6 +40,7 @@ export function FileUpload({ tournamentId }: { tournamentId: string }) {
     const result = await uploadTournamentFile(formData, tournamentId);
 
     if (result.success) {
+      setStatus({ result: 'success', message: 'File uploaded successfully' });
       setSelectedFile(null);
     }
 
@@ -96,52 +97,53 @@ export function FileUpload({ tournamentId }: { tournamentId: string }) {
   }, [handlePaste]);
 
   return (
-    <>
-      <form action={formAction} className="w-full space-y-4">
-        <div
-          ref={dropZoneRef}
-          onClick={handleClick}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-          className={cn(
-            'relative min-h-60 cursor-pointer',
-            'flex flex-col items-center justify-center',
-            'rounded-lg border-2 border-dashed p-8 text-center transition-colors',
-            isDragging ? 'border-gray-400 bg-gray-50' : 'border-gray-300 hover:border-gray-400'
-          )}>
-          <input
-            type="file"
-            id="file"
-            name="file"
-            ref={fileInputRef}
-            accept=".tdf"
-            className="hidden"
-            onChange={e => {
-              if (e.target.files?.length) {
-                handleFileSelect(e.target.files[0]);
-              }
-            }}
-          />
-          <div className="space-y-2">
-            <div className="text-primary">
-              <span className="font-medium">Click to upload</span> or drag and drop
-            </div>
-            <p className="text-sm text-gray-500">
-              Only .tdf files are allowed. You can also paste files from clipboard
-            </p>
-            {selectedFile && <p className="mt-2 text-sm text-gray-600">Selected: {selectedFile.name}</p>}
+    <form action={formAction} className="w-full space-y-4">
+      <div
+        ref={dropZoneRef}
+        onClick={handleClick}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        className={cn(
+          'relative min-h-60 cursor-pointer',
+          'flex flex-col items-center justify-center',
+          'rounded-lg border-2 border-dashed p-8 text-center transition-colors',
+          isDragging ? 'border-gray-400 bg-gray-50' : 'border-gray-300 hover:border-gray-400'
+        )}>
+        <input
+          type="file"
+          id="file"
+          name="file"
+          ref={fileInputRef}
+          accept=".tdf"
+          className="hidden"
+          onChange={e => {
+            if (e.target.files?.length) {
+              handleFileSelect(e.target.files[0]);
+            }
+          }}
+        />
+        <div className="space-y-2">
+          <div className="text-primary">
+            <span className="font-medium">Click to upload</span> or drag and drop
           </div>
+          <p className="text-sm text-gray-500">Only .tdf files are allowed. You can also paste files from clipboard</p>
+          {selectedFile && <p className="mt-2 text-sm text-gray-600">Selected: {selectedFile.name}</p>}
         </div>
-        {(error || state?.error) && (
-          <Alert variant="destructive">
-            <AlertDescription>{error || (state?.error ?? '')}</AlertDescription>
-          </Alert>
-        )}
-        <LoadingButton isLoading={isPending} type="submit" disabled={!selectedFile}>
-          Upload
-        </LoadingButton>
-      </form>
-    </>
+      </div>
+      {(status?.result === 'error' || state?.error) && (
+        <Alert variant="destructive">
+          <AlertDescription>{status?.message || (state?.error ?? '')}</AlertDescription>
+        </Alert>
+      )}
+      {status?.result === 'success' && (
+        <Alert variant="success">
+          <AlertDescription>{status?.message}</AlertDescription>
+        </Alert>
+      )}
+      <LoadingButton isLoading={isPending} type="submit" disabled={!selectedFile}>
+        Upload
+      </LoadingButton>
+    </form>
   );
 }

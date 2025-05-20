@@ -1,9 +1,12 @@
 import { Division, Tournament } from '@/actions/tournament';
 import { guessFullName } from '@/app/utils';
 
-export function getPlayerName(tournament: Tournament, id: string) {
+export function getPlayerName(tournament: Tournament, id: string, anonymize: boolean = false) {
   const player = tournament.players[id];
-  return guessFullName(player);
+  return guessFullName({
+    firstname: player.firstname,
+    lastname: anonymize ? player.lastname.charAt(0) + '.' : player.lastname,
+  });
 }
 
 export function getPlayerDivision(playerYear: number) {

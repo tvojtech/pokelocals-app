@@ -58,7 +58,7 @@ const PairingsSection: React.FC<{
             .toSorted((a, b) => a.tablenumber - b.tablenumber)
             .map((match, idx) => (
               <React.Fragment key={idx}>
-                <PairingsRow match={match} tournament={tournament} />
+                <PairingsRow match={match} tournament={tournament} anonymize />
                 {idx < round.matches.length - 1 && <div className="col-span-3 border-t border-t-gray-200" />}
               </React.Fragment>
             ))}

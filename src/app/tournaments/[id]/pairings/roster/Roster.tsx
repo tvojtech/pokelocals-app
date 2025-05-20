@@ -66,7 +66,7 @@ const PlayersSection: React.FC<{
         <div className="grid grid-cols-2 gap-0 gap-y-1">
           {sortedPlayers.map((player, idx) => (
             <React.Fragment key={idx}>
-              <div className="pl-2">{getPlayerName(tournament, player.userid)}</div>
+              <div className="pl-2">{getPlayerName(tournament, player.userid, division !== Division.MASTERS)}</div>
               <div className="flex items-center gap-2">
                 {player.late && <span className="flex items-center gap-2 text-red-600">Late</span>}
                 {player.byes ? (

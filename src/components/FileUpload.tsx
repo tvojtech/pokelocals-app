@@ -1,16 +1,15 @@
 'use client';
 
 import { useActionState, useCallback, useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 import { uploadTournamentFile } from '@/actions/tournament';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
 
 import { LoadingButton } from './ui/buttons/loading-button';
 
 export function FileUpload({ tournamentId }: { tournamentId: string }) {
   const [isDragging, setIsDragging] = useState(false);
-  const [status, setStatus] = useState<{ result: 'error' | 'success'; message: string } | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -18,10 +17,9 @@ export function FileUpload({ tournamentId }: { tournamentId: string }) {
   const validateFile = (file: File): boolean => {
     const extension = file.name.split('.').pop()?.toLowerCase();
     if (extension !== 'tdf') {
-      setStatus({ result: 'error', message: 'Only .tdf files are allowed' });
+      toast.error('Only .tdf files are allowed');
       return false;
     }
-    setStatus(null);
     return true;
   };
 
@@ -40,14 +38,16 @@ export function FileUpload({ tournamentId }: { tournamentId: string }) {
     const result = await uploadTournamentFile(formData, tournamentId);
 
     if (result.success) {
-      setStatus({ result: 'success', message: 'File uploaded successfully' });
+      toast.success('File uploaded successfully');
       setSelectedFile(null);
+    } else if (result.error) {
+      toast.error(result.error, { duration: 10000 });
     }
 
     return result;
   };
 
-  const [state, formAction, isPending] = useActionState(uploadFileAction, undefined);
+  const [, formAction, isPending] = useActionState(uploadFileAction, undefined);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -131,16 +131,6 @@ export function FileUpload({ tournamentId }: { tournamentId: string }) {
           {selectedFile && <p className="mt-2 text-sm text-gray-600">Selected: {selectedFile.name}</p>}
         </div>
       </div>
-      {(status?.result === 'error' || state?.error) && (
-        <Alert variant="destructive">
-          <AlertDescription>{status?.message || (state?.error ?? '')}</AlertDescription>
-        </Alert>
-      )}
-      {status?.result === 'success' && (
-        <Alert variant="success">
-          <AlertDescription>{status?.message}</AlertDescription>
-        </Alert>
-      )}
       <LoadingButton isLoading={isPending} type="submit" disabled={!selectedFile}>
         Upload
       </LoadingButton>

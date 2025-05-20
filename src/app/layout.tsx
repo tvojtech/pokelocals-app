@@ -9,6 +9,7 @@ import { Suspense } from 'react';
 
 import Footer from '@/components/Footer';
 import { Header } from '@/components/Header';
+import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { PostHogProvider } from '@/posthog';
 import { clientConfig } from '@/rollbar/client';
@@ -64,6 +65,7 @@ export default function RootLayout({
                 <Suspense>
                   <Header />
                   <NextTopLoader showSpinner={false} color="hsl(var(--brand))" />
+                  <Toaster richColors position="top-right" swipeDirections={['left', 'right', 'bottom', 'top']} />
                   <div className="h-full flex-grow">
                     <main className="container mx-auto px-4 py-8">{children}</main>
                   </div>

@@ -11,6 +11,7 @@ import { redis } from '@/app/db';
 import { getStore } from '@/blobs';
 import { db } from '@/lib/db';
 import { tournaments } from '@/lib/db/schema';
+import { rollbarServer } from '@/rollbar/server';
 import serviceAccount from '@/serviceAccount.json';
 
 import { loadTournamentMetadata } from './loadTournamentMetadata';
@@ -113,7 +114,11 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
 
     return { success: true };
   } catch (error) {
-    console.error('Error uploading file:', error);
+    rollbarServer.error({
+      name: 'Failed to upload file',
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
     return { error: 'Failed to upload file' };
   }
 }

@@ -3,9 +3,10 @@
 import { auth } from '@clerk/nextjs/server';
 import { eq } from 'drizzle-orm';
 import admin from 'firebase-admin';
+import { type Message } from 'firebase-admin/messaging';
 import { revalidateTag } from 'next/cache';
 
-// import { listNotificationTokens } from '@/actions/notifications';
+import { listNotificationTokens } from '@/actions/notifications';
 import { xmlToObject } from '@/actions/tournament/xml';
 import { redis } from '@/app/db';
 import { getStore } from '@/blobs';
@@ -92,25 +93,45 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
     revalidateTag(`tournaments:${tournamentId}`);
     revalidateTag(`tournaments:org_${orgId}`);
 
-    // const payload: Message = {
-    //   webpush: link && {
-    //     fcmOptions: {
-    //       link,
-    //     },
-    //   },
-    // };
+    // Send push notifications
+    const link = `/tournaments/${tournamentId}/pairings`;
+    const payload: Message = {
+      webpush: {
+        fcmOptions: {
+          link,
+        },
+      },
+    };
 
-    // const tokens = (await listNotificationTokens(tournamentId)).map(({ token }) => token);
+    const tokens = (await listNotificationTokens(tournamentId)).map(({ token }) => token);
 
-    // if (tokens.length > 0) {
-    //   await admin.messaging().sendEachForMulticast({
-    //     tokens,
-    //     notification: {
-    //       title: 'Pairings are online',
-    //       body: 'The tournament has been updated',
-    //     },
-    //   });
-    // }
+    if (tokens.length > 0) {
+      try {
+        await admin.messaging().sendEachForMulticast({
+          tokens,
+          notification: {
+            title: 'Pairings are online',
+            body: `${tournamentMetadata.name} tournament has been updated`,
+          },
+          webpush: {
+            fcmOptions: {
+              link,
+            },
+          },
+          data: {
+            link,
+          },
+        });
+        console.log(`Successfully sent notifications to ${tokens.length} devices`);
+      } catch (error) {
+        console.error('Error sending notifications:', error);
+        rollbarServer.error({
+          name: 'Failed to send notifications',
+          message: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+        });
+      }
+    }
 
     return { success: true };
   } catch (error) {

@@ -27,3 +27,18 @@ export const tournaments = pgTable(
     index('tournaments_expires_at_organization_idx').on(table.expiresAt, table.organizationId),
   ]
 );
+
+export const notificationTokens = pgTable(
+  'notification_tokens',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    token: text('token').notNull(),
+    email: text('email').notNull(),
+    tournamentId: uuid('tournament_id').notNull().references(() => tournaments.id, { onDelete: 'cascade' }),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+  },
+  table => [
+    index('notification_tokens_token_idx').on(table.token),
+    index('notification_tokens_tournament_idx').on(table.tournamentId),
+  ]
+);

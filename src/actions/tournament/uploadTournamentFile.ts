@@ -57,12 +57,7 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
 
     const tournament = calculateUnofficialStandings(calculatePlayerScores(xmlToObject(xmlString)));
 
-    if (
-      tournamentMetadata.uploaded &&
-      ((tournamentMetadata.tomId ?? '') !== (tournament.data.id ?? '') ||
-        (tournamentMetadata.startDate ?? '') !== (tournament.data.startdate ?? '') ||
-        (tournamentMetadata.name ?? '') !== (tournament.data.name ?? ''))
-    ) {
+    if (tournamentMetadata.uploaded && (tournamentMetadata.tomId ?? '') !== (tournament.data.id ?? '')) {
       return { error: 'Uploading different tournament file!' };
     }
 

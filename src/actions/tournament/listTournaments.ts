@@ -3,6 +3,7 @@
 import { and, desc, eq, gt } from 'drizzle-orm';
 import { unstable_cache } from 'next/cache';
 
+import { getAllTournamentsCacheKey, getOrganizationTournamentsCacheKey } from '@/cache-keys';
 import { db } from '@/lib/db';
 import { tournaments } from '@/lib/db/schema';
 
@@ -29,7 +30,7 @@ export async function listTournaments({ organizationId }: { organizationId?: str
         .orderBy(desc(tournaments.createdAt))
         .execute();
     },
-    ['tournaments', `tournaments:org_${organizationId}`],
-    { tags: ['tournaments', `tournaments:org_${organizationId ?? 'all'}`] }
+    [getAllTournamentsCacheKey(), getOrganizationTournamentsCacheKey(organizationId ?? 'all')],
+    { tags: [getAllTournamentsCacheKey(), getOrganizationTournamentsCacheKey(organizationId ?? 'all')] }
   )({ organizationId });
 }

@@ -9,6 +9,7 @@ import { revalidateTag } from 'next/cache';
 import { xmlToObject } from '@/actions/tournament/xml';
 import { redis } from '@/app/db';
 import { getStore } from '@/blobs';
+import { getAllTournamentsCacheKey, getOrganizationTournamentsCacheKey, getTournamentCacheKey } from '@/cache-keys';
 import { db } from '@/lib/db';
 import { tournaments } from '@/lib/db/schema';
 import { rollbarServer } from '@/rollbar/server';
@@ -88,9 +89,13 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
       .expire(redisKey, 604800) // 1 week
       .exec();
 
-    revalidateTag('tournaments');
-    revalidateTag(`tournaments:${tournamentId}`);
-    revalidateTag(`tournaments:org_${orgId}`);
+    console.log(`uploading: ${tournamentId}`);
+    revalidateTag(getAllTournamentsCacheKey());
+    console.log(`revalidated: ${getAllTournamentsCacheKey()}`);
+    revalidateTag(getOrganizationTournamentsCacheKey(orgId));
+    console.log(`revalidated: ${getOrganizationTournamentsCacheKey(orgId)}`);
+    revalidateTag(getTournamentCacheKey(tournamentId));
+    console.log(`revalidated: ${getTournamentCacheKey(tournamentId)}`);
 
     // const payload: Message = {
     //   webpush: link && {

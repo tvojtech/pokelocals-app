@@ -4,6 +4,7 @@ import { auth } from '@clerk/nextjs/server';
 import { revalidateTag } from 'next/cache';
 import { v7 as uuid } from 'uuid';
 
+import { getAllTournamentsCacheKey, getOrganizationTournamentsCacheKey, getTournamentCacheKey } from '@/cache-keys';
 import { db } from '@/lib/db';
 import { tournaments } from '@/lib/db/schema';
 
@@ -26,9 +27,9 @@ export async function createTournamentAction() {
     })
     .execute();
 
-  revalidateTag('tournaments');
-  revalidateTag(`tournaments:${id}`);
-  revalidateTag(`tournaments:org_${orgId}`);
+  revalidateTag(getAllTournamentsCacheKey());
+  revalidateTag(getTournamentCacheKey(id));
+  revalidateTag(getOrganizationTournamentsCacheKey(orgId));
 
   return { id };
 }

@@ -1,9 +1,11 @@
 import { Metadata } from 'next';
+import { unstable_cacheTag } from 'next/cache';
 import { Suspense } from 'react';
 
 import { loadTournament } from '@/actions/tournament';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { PageTabs } from '@/app/tournaments/[id]/pairings/PageTabs';
+import { getTournamentCacheKey } from '@/cache-keys';
 import { Notifications } from '@/components/Notifications';
 import { QRCodeOverlay } from '@/components/QRCodeOverlay';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -13,7 +15,10 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  'use cache';
   const { id } = await params;
+  unstable_cacheTag(getTournamentCacheKey(id));
+  console.log(`cache miss: layout metadata: ${getTournamentCacheKey(id)}`);
 
   const tournamentResult = await loadTournament(id);
 
@@ -42,7 +47,10 @@ export default async function TournamentPairingsLayout({
   children: React.ReactNode;
   params: Promise<{ id: string }>;
 }) {
+  'use cache';
   const { id } = await params;
+  unstable_cacheTag(getTournamentCacheKey(id));
+  console.log(`cache miss: layout: ${getTournamentCacheKey(id)}`);
 
   const tournamentResult = await loadTournament(id);
 

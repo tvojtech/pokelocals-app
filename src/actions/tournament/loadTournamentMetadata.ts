@@ -3,6 +3,7 @@
 import { eq } from 'drizzle-orm';
 import { unstable_cache } from 'next/cache';
 
+import { getAllTournamentsCacheKey, getTournamentCacheKey } from '@/cache-keys';
 import { db } from '@/lib/db';
 import { tournaments } from '@/lib/db/schema';
 
@@ -31,8 +32,8 @@ export async function loadTournamentMetadata(tournamentId: string) {
 
       return tournament[0];
     },
-    ['tournaments', `tournaments:${tournamentId}`],
-    { tags: ['tournaments', `tournaments:${tournamentId}`] }
+    [getAllTournamentsCacheKey(), getTournamentCacheKey(tournamentId)],
+    { tags: [getAllTournamentsCacheKey(), getTournamentCacheKey(tournamentId)] }
   )(tournamentId);
 
   if (!cachedTournament) {

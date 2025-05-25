@@ -5,6 +5,7 @@ import { unstable_cache } from 'next/cache';
 import { TournamentWithUnofficialStandings } from '@/actions/tournament/types';
 import { redis } from '@/app/db';
 import { getStore } from '@/blobs';
+import { getAllTournamentsCacheKey, getTournamentCacheKey } from '@/cache-keys';
 
 import { loadTournamentMetadata } from './loadTournamentMetadata';
 import { calculatePlayerScores, calculateUnofficialStandings } from './tournamentUtils';
@@ -54,7 +55,7 @@ async function _loadTournamentData(tournamentId: string): Promise<TournamentWith
 
       return tournament;
     },
-    ['tournaments', `tournaments:${tournamentId}`],
-    { tags: ['tournaments', `tournaments:${tournamentId}`] }
+    [getAllTournamentsCacheKey(), getTournamentCacheKey(tournamentId)],
+    { tags: [getAllTournamentsCacheKey(), getTournamentCacheKey(tournamentId)] }
   )(tournamentId);
 }

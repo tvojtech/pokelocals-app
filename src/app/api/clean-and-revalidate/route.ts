@@ -1,4 +1,4 @@
-import { and, eq, gt } from 'drizzle-orm';
+import { and, eq, lt } from 'drizzle-orm';
 import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
   }
   await db
     .delete(tournaments)
-    .where(and(eq(tournaments.uploaded, false), gt(tournaments.expiresAt, new Date().toISOString())));
+    .where(and(eq(tournaments.uploaded, false), lt(tournaments.expiresAt, new Date().toISOString())));
   revalidateTag('tournaments');
   return NextResponse.json({ ok: true });
 }

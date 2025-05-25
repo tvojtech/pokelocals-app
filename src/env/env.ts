@@ -12,6 +12,7 @@ export const env = createEnv({
     BLOB_STORAGE: type.enumerated('local', 'r2'),
     FEEDBACK_DISCORD_WEBHOOK_URL: type.string.atLeastLength(1),
     WAITLIST_DISCORD_WEBHOOK_URL: type.string.atLeastLength(1),
+    CRON_SECRET: type.string.atLeastLength(1),
   },
   client: {
     NEXT_PUBLIC_DEPLOYMENT: type.string.atLeastLength(1),
@@ -21,5 +22,6 @@ export const env = createEnv({
     BLOB_STORAGE: process.env.BLOB_STORAGE,
     FEEDBACK_DISCORD_WEBHOOK_URL: process.env.FEEDBACK_DISCORD_WEBHOOK_URL,
     WAITLIST_DISCORD_WEBHOOK_URL: process.env.WAITLIST_DISCORD_WEBHOOK_URL,
+    CRON_SECRET: process.env.CRON_SECRET,
   },
 });

@@ -73,6 +73,8 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
         tomId: tournament.data.id,
         startDate: tournament.data.startdate,
         playerCount: Math.max(Object.keys(tournament.players).length, tournamentMetadata.playerCount),
+        updatedAt: new Date(),
+        updatedBy: userId,
       })
       .where(eq(tournaments.id, tournamentId));
 

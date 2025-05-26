@@ -65,6 +65,8 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
     const xmlStore = await getStore(`tournaments`);
     await xmlStore.set(key, xmlString);
 
+    const hasPairings = tournament.pods?.some(pod => pod.rounds.length > 0);
+
     await db
       .update(tournaments)
       .set({
@@ -72,9 +74,10 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
         uploaded: true,
         tomId: tournament.data.id,
         startDate: tournament.data.startdate,
-        playerCount: Math.max(Object.keys(tournament.players).length, tournamentMetadata.playerCount),
+        playerCount: hasPairings ? Math.max(Object.keys(tournament.players).length, tournamentMetadata.playerCount) : 0,
         updatedAt: new Date(),
         updatedBy: userId,
+        hasPairings,
       })
       .where(eq(tournaments.id, tournamentId));
 

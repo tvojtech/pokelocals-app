@@ -16,6 +16,8 @@ export const tournaments = pgTable(
     tomId: text('tom_id'),
     startDate: text('start_date'),
 
+    hasPairings: boolean('has_pairings').notNull().default(false),
+
     playerCount: integer('player_count').notNull().default(0),
 
     expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'string' })

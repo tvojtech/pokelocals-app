@@ -78,6 +78,7 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
         updatedAt: new Date(),
         updatedBy: userId,
         hasPairings,
+        expiresAt: new Date(Date.now() + 1209600000).toISOString(),
       })
       .where(eq(tournaments.id, tournamentId));
 
@@ -85,7 +86,7 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
     await redis
       .multi()
       .set(redisKey, JSON.stringify(tournament))
-      .expire(redisKey, 604800) // 1 week
+      .expire(redisKey, 1209600) // 14 days
       .exec();
 
     revalidateTag('tournaments');

@@ -22,7 +22,7 @@ export const tournaments = pgTable(
 
     expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'string' })
       .notNull()
-      .default(sql`CURRENT_TIMESTAMP + INTERVAL '9 days'`),
+      .default(sql`CURRENT_TIMESTAMP + INTERVAL '14 days'`),
   },
   table => [
     index('tournaments_organization_idx').on(table.organizationId),

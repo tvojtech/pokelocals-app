@@ -11,7 +11,10 @@ export async function POST(request: NextRequest) {
   }
   await db
     .delete(tournaments)
-    .where(and(eq(tournaments.uploaded, false), lt(tournaments.expiresAt, new Date().toISOString())));
+    .where(and(eq(tournaments.uploaded, false), lt(tournaments.expiresAt, new Date().toISOString())))
+    .execute();
+
   revalidateTag('tournaments');
+
   return NextResponse.json({ ok: true });
 }

@@ -8,6 +8,8 @@ import { Notifications } from '@/components/Notifications';
 import { QRCodeOverlay } from '@/components/QRCodeOverlay';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
+import { TournamentMenu } from './TournamentMenu';
+
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -58,6 +60,7 @@ export default async function TournamentPairingsLayout({
             <div className="mb-2 flex items-center justify-end">
               <Notifications />
               <QRCodeOverlay />
+              <TournamentMenu />
             </div>
             <InlinePokemonIdCheckForm />
             <Alert variant="warning" className="mt-2">
@@ -70,6 +73,7 @@ export default async function TournamentPairingsLayout({
             <div className="flex items-center gap-2">
               <Notifications />
               <QRCodeOverlay />
+              <TournamentMenu />
             </div>
           </div>
         )}

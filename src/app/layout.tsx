@@ -66,8 +66,8 @@ export default function RootLayout({
                   <Header />
                   <NextTopLoader showSpinner={false} color="hsl(var(--brand))" />
                   <Toaster richColors position="top-right" swipeDirections={['left', 'right', 'bottom', 'top']} />
-                  <div className="h-full flex-grow">
-                    <main className="container mx-auto px-4 py-8">{children}</main>
+                  <div className="flex h-full flex-grow">
+                    <main className="container mx-auto flex-grow px-4 py-8">{children}</main>
                   </div>
                   <Footer />
                 </Suspense>

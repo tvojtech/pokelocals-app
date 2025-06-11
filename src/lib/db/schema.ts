@@ -29,3 +29,15 @@ export const tournaments = pgTable(
     index('tournaments_expires_at_organization_idx').on(table.expiresAt, table.organizationId),
   ]
 );
+
+export const tournamentPlayerDecklists = pgTable('tournament_player_decklist', {
+  id: uuid('id').primaryKey(),
+  playerId: text('player_id').notNull(),
+  playerPokemonId: text('player_pokemon_id').notNull(),
+  tournamentId: uuid('tournament_id')
+    .notNull()
+    .references(() => tournaments.id),
+  decklist: text('decklist').notNull(),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+});

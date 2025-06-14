@@ -1,6 +1,7 @@
 import { onMessage, Unsubscribe } from 'firebase/messaging';
 import { useRouter } from 'nextjs-toploader/app';
 import { useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 import { fetchToken, messaging } from '@/app/firebase';
 
@@ -101,29 +102,28 @@ const useFcmToken = () => {
         console.log('Foreground push notification received:', payload);
         const link = payload.fcmOptions?.link || payload.data?.link;
 
-        // if (link) {
-        //   toast.info(
-        //     `${payload.notification?.title}: ${payload.notification?.body}`,
-        //     {
-        //       action: {
-        //         label: "Visit",
-        //         onClick: () => {
-        //           const link = payload.fcmOptions?.link || payload.data?.link;
-        //           if (link) {
-        //             router.push(link);
-        //           }
-        //         },
-        //       },
-        //     }
-        //   );
-        // } else {
-        //   toast.info(
-        //     `${payload.notification?.title}: ${payload.notification?.body}`
-        //   );
-        // }
+        // Show toast notification
+        if (link) {
+          toast.info(
+            `${payload.notification?.title}: ${payload.notification?.body}`,
+            {
+              action: {
+                label: "View",
+                onClick: () => {
+                  if (link) {
+                    router.push(link);
+                  }
+                },
+              },
+            }
+          );
+        } else {
+          toast.info(
+            `${payload.notification?.title}: ${payload.notification?.body}`
+          );
+        }
 
-        // --------------------------------------------
-        // Disable this if you only want toast notifications.
+        // Also show browser notification
         const n = new Notification(
           payload.notification?.title || 'New message',
           {
@@ -143,7 +143,6 @@ const useFcmToken = () => {
             console.log('No link found in the notification payload');
           }
         };
-        // --------------------------------------------
       });
 
       return unsubscribe;

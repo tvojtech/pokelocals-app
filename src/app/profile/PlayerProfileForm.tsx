@@ -1,23 +1,23 @@
 'use client';
 
-import { useUser } from '@clerk/nextjs';
 import { useActionState } from 'react';
 import { toast } from 'sonner';
 
 import { LoadingButton } from '@/components/ui/buttons/loading-button';
 import { FormControl } from '@/components/ui/forms/FormControl';
 import { Input } from '@/components/ui/input';
-import { updatePlayerProfile } from '@/features/profile/actions';
+import { upsertPlayerProfile } from '@/features/profile/actions';
+import { useUserProfile } from '@/features/profile/hooks/useUserProfile';
 
 export function PlayerProfileForm() {
-  const { user } = useUser();
+  const { profile } = useUserProfile();
 
   const updatePofileAction = async (prevState: unknown, formData: FormData) => {
-    const result = await updatePlayerProfile({
+    const result = await upsertPlayerProfile({
       pokemonId: formData.get('pokemonId') as string,
       firstName: formData.get('firstName') as string,
       lastName: formData.get('lastName') as string,
-      birthDate: formData.get('birthDate') as string,
+      birthDate: new Date(formData.get('birthDate') as string),
     });
 
     if (result.success) {
@@ -38,11 +38,11 @@ export function PlayerProfileForm() {
           <Input
             id={id}
             name="pokemonId"
-            defaultValue={(user?.publicMetadata?.pokemonId as string) ?? ''}
+            defaultValue={(profile?.pokemonId as string) ?? ''}
             type="text"
             placeholder="Enter your Pokémon ID"
             required
-            readOnly={!!user?.publicMetadata?.pokemonId}
+            readOnly={!!profile?.pokemonId}
           />
         )}
       </FormControl>
@@ -51,7 +51,7 @@ export function PlayerProfileForm() {
           <Input
             id={id}
             name="firstName"
-            defaultValue={user?.firstName ?? ''}
+            defaultValue={profile?.firstName ?? ''}
             type="text"
             placeholder="Enter your first name"
             required
@@ -63,7 +63,7 @@ export function PlayerProfileForm() {
           <Input
             id={id}
             name="lastName"
-            defaultValue={user?.lastName ?? ''}
+            defaultValue={profile?.lastName ?? ''}
             type="text"
             placeholder="Enter your last name"
             required
@@ -75,11 +75,11 @@ export function PlayerProfileForm() {
           <Input
             id={id}
             name="birthDate"
-            defaultValue={(user?.publicMetadata?.birthDate as string) ?? ''}
+            defaultValue={profile?.birthDate ? profile.birthDate.toISOString() : ''}
             type="date"
             placeholder="Enter your birthDate"
             required
-            readOnly={!!user?.publicMetadata?.birthDate}
+            readOnly={!!profile?.birthDate}
           />
         )}
       </FormControl>

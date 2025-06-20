@@ -1,1 +1,2 @@
-export * from './updatePlayerProfile';
+export * from './getUserProfile';
+export * from './upsertPlayerProfile';

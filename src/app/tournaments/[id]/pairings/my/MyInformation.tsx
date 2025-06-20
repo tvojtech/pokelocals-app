@@ -1,7 +1,5 @@
 'use client';
 
-import { useUser } from '@clerk/nextjs';
-
 import { Tournament } from '@/actions/tournament';
 import { useMyPokemonId } from '@/app/hooks';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
@@ -10,13 +8,14 @@ import { MyMatches } from '@/app/tournaments/[id]/pairings/my/MyMatches';
 import { guessFullName } from '@/app/utils';
 import { clientOnlyComponent } from '@/components/clientOnlyComponent';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useUserProfile } from '@/features/profile/hooks/useUserProfile';
 
 export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(({ tournament }) => {
+  const { profile } = useUserProfile();
   let { myId } = useMyPokemonId();
-  const { user } = useUser();
 
-  if (user?.publicMetadata?.pokemonId) {
-    myId = user.publicMetadata.pokemonId as string;
+  if (profile?.pokemonId) {
+    myId = profile.pokemonId;
   }
 
   if (!myId) {

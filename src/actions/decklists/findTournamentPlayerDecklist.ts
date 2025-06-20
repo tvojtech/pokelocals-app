@@ -4,7 +4,7 @@ import { auth } from '@clerk/nextjs/server';
 import { and, eq } from 'drizzle-orm';
 
 import { db } from '@/lib/db';
-import { tournamentPlayerDecklists } from '@/lib/db/schema';
+import { tournamentPlayerDecklists, userProfile } from '@/lib/db/schema';
 
 import { loadTournamentMetadata } from '../tournament';
 
@@ -27,11 +27,18 @@ export async function findTournamentPlayerDecklist(tournamentId: string, playerI
   }
 
   const decklists = await db
-    .select()
+    .select({
+      id: tournamentPlayerDecklists.id,
+      playerId: tournamentPlayerDecklists.playerId,
+      playerPokemonId: tournamentPlayerDecklists.playerPokemonId,
+      tournamentId: tournamentPlayerDecklists.tournamentId,
+      decklist: tournamentPlayerDecklists.decklist,
+      createdAt: tournamentPlayerDecklists.createdAt,
+      updatedAt: tournamentPlayerDecklists.updatedAt,
+    })
     .from(tournamentPlayerDecklists)
-    .where(
-      and(eq(tournamentPlayerDecklists.tournamentId, tournamentId), eq(tournamentPlayerDecklists.playerId, playerId))
-    )
+    .leftJoin(userProfile, eq(tournamentPlayerDecklists.playerId, userProfile.id))
+    .where(and(eq(tournamentPlayerDecklists.tournamentId, tournamentId), eq(userProfile.clerkId, playerId)))
     .limit(1)
     .execute();
 

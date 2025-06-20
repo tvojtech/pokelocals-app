@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 
-import { updateUserDecklist } from '@/actions/decklists';
+// import { updateUserDecklist } from '@/actions/decklists';
 import { LoadingButton } from '@/components/ui/buttons/loading-button';
 
 import { DecklistContent } from './DecklistContent';
@@ -27,7 +27,7 @@ export function DecklistManager({
   const [isSavingDecklist, setIsSavingDecklist] = useState(false);
   const handleSaveDecklist = async () => {
     setIsSavingDecklist(true);
-    await updateUserDecklist({ id: selectedDecklistId!, decklist: selectedDecklistContent ?? '' });
+    // await updateUserDecklist({ id: selectedDecklistId!, decklist: selectedDecklistContent ?? '' });
     setIsSavingDecklist(false);
   };
 

@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { saveTournamentPlayerDecklist } from '@/actions/decklists';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { LoadingButton } from '@/components/ui/buttons/loading-button';
 import { DecklistContent } from '@/features/decklists/DecklistContent';
 import { DecklistPreview } from '@/features/decklists/DecklistPreview';
@@ -46,6 +46,8 @@ export function DecklistEditor({
     }, 5000);
   };
 
+  const validationErrors = validateDecklist(selectedDecklistContent);
+
   return (
     <div className="h-full grid-cols-1 gap-2 space-y-2 md:grid md:grid-cols-2 md:grid-rows-[auto_1fr] md:space-y-0">
       <div className="space-y-2 md:col-span-2">
@@ -59,9 +61,23 @@ export function DecklistEditor({
             <AlertDescription>Decklist submitted.</AlertDescription>
           </Alert>
         )}
+        {validationErrors && validationErrors.length > 0 && (
+          <Alert variant="warning">
+            <AlertTitle>Decklist is invalid</AlertTitle>
+            <AlertDescription>
+              {validationErrors?.map((validationError, index) => <p key={index}> {validationError}</p>)}
+            </AlertDescription>
+          </Alert>
+        )}
       </div>
       <DecklistContent decklist={selectedDecklistContent} onDecklistChange={setSelectedDecklistContent} />
       <DecklistPreview decklist={selectedDecklistContent} />
     </div>
   );
+}
+
+function validateDecklist(decklist?: string) {
+  if (!decklist || decklist.trim().length === 0) {
+    return [];
+  }
 }

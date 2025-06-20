@@ -4,6 +4,7 @@ import { auth } from '@clerk/nextjs/server';
 import { and, eq } from 'drizzle-orm';
 import { v7 as uuid } from 'uuid';
 
+import { getUserProfile } from '@/features/profile/actions';
 import { db } from '@/lib/db';
 import { tournamentPlayerDecklists } from '@/lib/db/schema';
 
@@ -40,12 +41,18 @@ export async function saveTournamentPlayerDecklist(
       .where(and(eq(tournamentPlayerDecklists.id, decklistId)))
       .execute();
   } else {
+    const userProfile = await getUserProfile();
+
+    if (!userProfile) {
+      throw new Error('User profile not found');
+    }
+
     await db
       .insert(tournamentPlayerDecklists)
       .values({
         id: uuid(),
         tournamentId,
-        playerId,
+        playerId: userProfile.id,
         playerPokemonId,
         decklist,
         createdAt: new Date(),

@@ -32,12 +32,25 @@ export const tournaments = pgTable(
 
 export const tournamentPlayerDecklists = pgTable('tournament_player_decklist', {
   id: uuid('id').primaryKey(),
-  playerId: text('player_id').notNull(),
+  playerId: uuid('player_id')
+    .references(() => userProfile.id)
+    .notNull(),
   playerPokemonId: text('player_pokemon_id').notNull(),
   tournamentId: uuid('tournament_id')
     .notNull()
     .references(() => tournaments.id),
   decklist: text('decklist').notNull(),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+});
+
+export const userProfile = pgTable('user_profile', {
+  id: uuid('id').primaryKey(),
+  clerkId: text('clerk_id').notNull().unique(),
+  pokemonId: text('pokemon_id').unique(),
+  firstName: text('first_name'),
+  lastName: text('last_name'),
+  birthDate: timestamp('birth_date'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });

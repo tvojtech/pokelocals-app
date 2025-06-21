@@ -9,13 +9,11 @@ import { tournamentPlayerDecklists, userProfile } from '@/lib/db/schema';
 import { loadTournamentMetadata } from '../tournament';
 
 export async function findTournamentPlayerDecklist(tournamentId: string, playerId: string) {
-  const { userId, orgId } = await auth();
+  const [{ userId, orgId }, tournament] = await Promise.all([auth(), loadTournamentMetadata(tournamentId)]);
 
   if (!userId) {
     return { error: 'Not authenticated' };
   }
-
-  const tournament = await loadTournamentMetadata(tournamentId);
 
   if (!tournament) {
     return { error: 'Tournament not found' };

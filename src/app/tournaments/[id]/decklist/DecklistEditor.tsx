@@ -8,6 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { LoadingButton } from '@/components/ui/buttons/loading-button';
 import { DecklistContent } from '@/features/decklists/DecklistContent';
 import { DecklistPreview } from '@/features/decklists/DecklistPreview';
+import { parseDecklist, validateDecklist } from '@/features/decklists/utils';
 
 export function DecklistEditor({
   decklist,
@@ -46,7 +47,10 @@ export function DecklistEditor({
     }, 5000);
   };
 
-  const validationErrors = validateDecklist(selectedDecklistContent);
+  const parseResult = parseDecklist(selectedDecklistContent);
+  const parsedDecklist = 'error' in parseResult ? undefined : parseResult;
+
+  const validationErrors = 'error' in parseResult ? ['Unable to parse decklist.'] : validateDecklist(parsedDecklist);
 
   return (
     <div className="h-full grid-cols-1 gap-2 space-y-2 md:grid md:grid-cols-2 md:grid-rows-[auto_1fr] md:space-y-0">
@@ -71,13 +75,7 @@ export function DecklistEditor({
         )}
       </div>
       <DecklistContent decklist={selectedDecklistContent} onDecklistChange={setSelectedDecklistContent} />
-      <DecklistPreview decklist={selectedDecklistContent} />
+      {parsedDecklist && <DecklistPreview decklist={parsedDecklist} />}
     </div>
   );
-}
-
-function validateDecklist(decklist?: string) {
-  if (!decklist || decklist.trim().length === 0) {
-    return [];
-  }
 }

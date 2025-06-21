@@ -1,8 +1,10 @@
 'use client';
 
-import { Handshake, List } from 'lucide-react';
+import { FileStack, Handshake, List } from 'lucide-react';
+import Link from 'next/link';
 
 import { CopyToClipboardButton } from '@/components/ui/copy-to-clipboard';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useTournamentMyPairingsUrl, useTournamentRosterUrl } from '@/hooks/useTournamentUrl';
 
 import { ShareRosterToDiscord } from './ShareRosterToDiscord';
@@ -19,7 +21,16 @@ export function PageActions({
   const rosterUrl = useTournamentRosterUrl(tournamentId);
   return (
     <div className="flex w-full items-center justify-between gap-4">
-      <div />
+      <div>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Link href={`/tournaments/${tournamentId}/admin/decklists`}>
+              <FileStack />
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent>Decklists</TooltipContent>
+        </Tooltip>
+      </div>
       <div className="flex items-center gap-2">
         <ShareRosterToDiscord rosterUrl={rosterUrl ?? ''} tournamentName={tournamentName} />
         <CopyToClipboardButton textToCopy={rosterUrl ?? ''} tooltip="Copy roster URL" icon={<List />} />

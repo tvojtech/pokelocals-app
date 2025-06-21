@@ -9,7 +9,7 @@ import { buttonVariants } from '@/components/ui/buttons/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
-import { CreateTournamentButton } from '../tournaments/CreateTournamentButton';
+import { CreateTournamentButton } from './CreateTournamentButton';
 
 export default async function DashboardPage() {
   const { userId, orgId } = await auth();

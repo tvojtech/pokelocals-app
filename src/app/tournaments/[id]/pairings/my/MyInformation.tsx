@@ -8,9 +8,15 @@ import { MyMatches } from '@/app/tournaments/[id]/pairings/my/MyMatches';
 import { guessFullName } from '@/app/utils';
 import { clientOnlyComponent } from '@/components/clientOnlyComponent';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useUserProfile } from '@/features/profile/hooks/useUserProfile';
 
 export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(({ tournament }) => {
-  const { myId } = useMyPokemonId();
+  const { profile } = useUserProfile();
+  let { myId } = useMyPokemonId();
+
+  if (profile?.pokemonId) {
+    myId = profile.pokemonId;
+  }
 
   if (!myId) {
     return <InlinePokemonIdCheckForm />;
@@ -25,7 +31,7 @@ export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(({ 
     return (
       <Alert variant="destructive">
         <AlertTitle>You are not registered in the tournament!</AlertTitle>
-        <AlertDescription>Is your Pokemon ID correct? (ID: {myId})</AlertDescription>
+        <AlertDescription>Is your Pokémon ID correct? (ID: {myId})</AlertDescription>
       </Alert>
     );
   }
@@ -36,7 +42,7 @@ export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(({ 
         <Alert variant="info">
           <AlertTitle>You are registered in the tournament.</AlertTitle>
           <AlertDescription>
-            Your Pokemon ID: {myId}. Your name: {guessFullName(me)}
+            Your Pokémon ID: {myId}. Your name: {guessFullName(me)}
           </AlertDescription>
         </Alert>
         <Alert variant="warning">

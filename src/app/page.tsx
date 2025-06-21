@@ -1,5 +1,5 @@
 import { auth } from '@clerk/nextjs/server';
-import { Handshake } from 'lucide-react';
+import { Trophy } from 'lucide-react';
 import Link from 'next/link';
 
 import { listTournaments } from '@/actions/tournament';
@@ -46,13 +46,13 @@ export default async function HomePage() {
                     </Avatar>
                     by {organizations[tournament.organizationId]?.name}
                   </div>
-                  <div className="flex items-start gap-2 px-2 md:col-start-3 md:justify-end">
+                  <div className="flex items-center gap-2 px-2 md:col-start-3 md:justify-end">
                     <Link
                       href={`/tournaments/${tournament.id}/pairings`}
                       prefetch={false}
                       className={cn(buttonVariants({ variant: 'link' }), 'h-[unset] p-0')}>
-                      Pairings
-                      <Handshake className="h-4 w-4" />
+                      Details
+                      <Trophy className="h-4 w-4" />
                     </Link>
                   </div>
                   {idx < tournaments.length - 1 && <div className="border-t border-t-gray-200 md:col-span-3" />}

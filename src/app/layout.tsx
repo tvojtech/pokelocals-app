@@ -1,18 +1,14 @@
 import './globals.css';
 
-import { ClerkProvider } from '@clerk/nextjs';
-import { Provider as RollbarProvider } from '@rollbar/react';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
-import { Suspense } from 'react';
 
 import Footer from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Toaster } from '@/components/ui/sonner';
-import { TooltipProvider } from '@/components/ui/tooltip';
-import { PostHogProvider } from '@/posthog';
-import { clientConfig } from '@/rollbar/client';
+
+import { Providers } from './providers';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -58,23 +54,15 @@ export default function RootLayout({
           COMMIT_REF: {process.env.COMMIT_REF}
           BUILD_ID: {process.env.BUILD_ID}
         </div>
-        <ClerkProvider>
-          <PostHogProvider>
-            <RollbarProvider config={clientConfig}>
-              <TooltipProvider delayDuration={0}>
-                <Suspense>
-                  <Header />
-                  <NextTopLoader showSpinner={false} color="hsl(var(--brand))" />
-                  <Toaster richColors position="top-right" swipeDirections={['left', 'right', 'bottom', 'top']} />
-                  <div className="h-full flex-grow">
-                    <main className="container mx-auto px-4 py-8">{children}</main>
-                  </div>
-                  <Footer />
-                </Suspense>
-              </TooltipProvider>
-            </RollbarProvider>
-          </PostHogProvider>
-        </ClerkProvider>
+        <Providers>
+          <Header />
+          <NextTopLoader showSpinner={false} color="hsl(var(--brand))" />
+          <Toaster richColors position="top-right" swipeDirections={['left', 'right', 'bottom', 'top']} />
+          <div className="flex h-full flex-grow">
+            <main className="container mx-auto flex-grow px-4 py-8">{children}</main>
+          </div>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

@@ -7,9 +7,11 @@ import { cn } from '@/lib/utils';
 export function DecklistContent({
   decklist,
   onDecklistChange,
+  disabled,
 }: {
   decklist?: string;
   onDecklistChange: (decklist: string) => void;
+  disabled: boolean;
 }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   return (
@@ -20,6 +22,7 @@ export function DecklistContent({
           value={decklist ?? ''}
           onChange={e => onDecklistChange(e.target.value)}
           placeholder="Paste your decklist here..."
+          readOnly={disabled}
         />
       </div>
       <div className="relative md:hidden">

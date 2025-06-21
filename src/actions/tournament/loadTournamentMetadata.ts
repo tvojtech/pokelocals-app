@@ -9,21 +9,7 @@ import { tournaments } from '@/lib/db/schema';
 export async function loadTournamentMetadata(tournamentId: string) {
   const cachedTournament = await unstable_cache(
     async (tournamentId: string) => {
-      const tournament = await db
-        .select({
-          id: tournaments.id,
-          name: tournaments.name,
-          tomId: tournaments.tomId,
-          startDate: tournaments.startDate,
-          uploaded: tournaments.uploaded,
-          playerCount: tournaments.playerCount,
-          organizationId: tournaments.organizationId,
-          expiresAt: tournaments.expiresAt,
-        })
-        .from(tournaments)
-        .where(eq(tournaments.id, tournamentId))
-        .limit(1)
-        .execute();
+      const tournament = await db.select().from(tournaments).where(eq(tournaments.id, tournamentId)).limit(1).execute();
 
       if (!tournament.length) {
         return null;

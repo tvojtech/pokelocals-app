@@ -15,6 +15,7 @@ export function DecklistEditor({
   tournamentId,
   playerId,
   playerPokemonId,
+  disabled,
 }: {
   tournamentId: string;
   playerId: string;
@@ -28,6 +29,7 @@ export function DecklistEditor({
     createdAt: Date;
     updatedAt: Date;
   };
+  disabled: boolean;
 }) {
   const router = useRouter();
   const [isSavingDecklist, setIsSavingDecklist] = useState(false);
@@ -56,10 +58,22 @@ export function DecklistEditor({
     <div className="h-full grid-cols-1 gap-2 space-y-2 md:grid md:grid-cols-2 md:grid-rows-[auto_1fr] md:space-y-0">
       <div className="space-y-2 md:col-span-2">
         <div className="flex justify-end gap-2">
-          <LoadingButton onClick={handleSaveDecklist} isLoading={isSavingDecklist} disabled={!selectedDecklistContent}>
-            Submit decklist
-          </LoadingButton>
+          {!disabled && (
+            <LoadingButton
+              onClick={handleSaveDecklist}
+              isLoading={isSavingDecklist}
+              disabled={!selectedDecklistContent}>
+              Submit decklist
+            </LoadingButton>
+          )}
         </div>
+        {disabled && (
+          <Alert variant="warning">
+            <AlertDescription>
+              <p>Decklist submission for this tournament is closed.</p>
+            </AlertDescription>
+          </Alert>
+        )}
         {isSuccess && (
           <Alert variant="success">
             <AlertDescription>Decklist submitted.</AlertDescription>
@@ -74,7 +88,11 @@ export function DecklistEditor({
           </Alert>
         )}
       </div>
-      <DecklistContent decklist={selectedDecklistContent} onDecklistChange={setSelectedDecklistContent} />
+      <DecklistContent
+        decklist={selectedDecklistContent}
+        onDecklistChange={setSelectedDecklistContent}
+        disabled={disabled}
+      />
       {parsedDecklist && <DecklistPreview decklist={parsedDecklist} />}
     </div>
   );

@@ -20,6 +20,8 @@ export const tournaments = pgTable(
 
     playerCount: integer('player_count').notNull().default(0),
 
+    decklistsAllowed: boolean('decklists_allowed').notNull().default(false),
+
     expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'string' })
       .notNull()
       .default(sql`CURRENT_TIMESTAMP + INTERVAL '14 days'`),

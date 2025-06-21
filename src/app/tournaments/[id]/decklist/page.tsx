@@ -44,6 +44,14 @@ export default async function TournamentDecklistPage({ params }: { params: Promi
     );
   }
 
+  if (!tournamentResult.decklistsAllowed) {
+    return (
+      <Alert variant="warning">
+        <AlertDescription>Decklists are not allowed for this tournament.</AlertDescription>
+      </Alert>
+    );
+  }
+
   const decklist = await findTournamentPlayerDecklist(id, userId);
 
   if (decklist && 'error' in decklist) {
@@ -57,7 +65,13 @@ export default async function TournamentDecklistPage({ params }: { params: Promi
   return (
     <>
       <h1 className="text-left text-xl font-medium md:text-center">{tournamentResult.name}</h1>
-      <DecklistEditor decklist={decklist} tournamentId={id} playerId={userId} playerPokemonId={profile.pokemonId} />
+      <DecklistEditor
+        decklist={decklist}
+        tournamentId={id}
+        playerId={userId}
+        playerPokemonId={profile.pokemonId}
+        disabled={tournamentResult.hasPairings}
+      />
     </>
   );
 }

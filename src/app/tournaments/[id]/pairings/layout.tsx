@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import { loadTournament } from '@/actions/tournament';
+import { loadTournament, loadTournamentMetadata } from '@/actions/tournament';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { PageTabs } from '@/app/tournaments/[id]/pairings/PageTabs';
 import { Notifications } from '@/components/Notifications';
@@ -46,7 +46,7 @@ export default async function TournamentPairingsLayout({
 }) {
   const { id } = await params;
 
-  const tournamentResult = await loadTournament(id);
+  const [tournamentResult, tournamentMetadata] = await Promise.all([loadTournament(id), loadTournamentMetadata(id)]);
 
   return (
     <>
@@ -60,7 +60,7 @@ export default async function TournamentPairingsLayout({
             <div className="mb-2 flex items-center justify-end">
               <Notifications />
               <QRCodeOverlay />
-              <TournamentMenu />
+              <TournamentMenu tournament={tournamentMetadata} />
             </div>
             <InlinePokemonIdCheckForm />
             <Alert variant="warning" className="mt-2">
@@ -73,7 +73,7 @@ export default async function TournamentPairingsLayout({
             <div className="flex items-center gap-2">
               <Notifications />
               <QRCodeOverlay />
-              <TournamentMenu />
+              <TournamentMenu tournament={tournamentMetadata} />
             </div>
           </div>
         )}

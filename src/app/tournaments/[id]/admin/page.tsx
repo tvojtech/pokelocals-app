@@ -50,7 +50,7 @@ export default async function TournamentAdminPage({ params }: TournamentAdminPag
         <h1 className="text-2xl font-bold">{tournamentResult.name || 'New tournament'}</h1>
       </div>
       <div className="mx-auto flex max-w-2xl flex-col items-center justify-center space-y-4">
-        <PageActions tournamentId={id} tournamentName={tournamentResult.name} />
+        <PageActions tournament={tournamentResult} />
         <FileUpload tournamentId={id} />
       </div>
     </div>

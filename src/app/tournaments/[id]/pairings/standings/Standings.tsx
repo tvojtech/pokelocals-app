@@ -66,7 +66,8 @@ const StandingsSection: React.FC<{
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <p className="capitalize">{division.toLowerCase()}</p>({standings.finished.length} players)
+          <p className="capitalize">{division.toLowerCase()}</p>({standings.finished.length}{' '}
+          {standings.finished.length > 1 ? 'players' : 'player'})
         </CardTitle>
       </CardHeader>
       <CardContent>

@@ -7,6 +7,7 @@ import { LoadingButton } from '@/components/ui/buttons/loading-button';
 import { DecklistContent } from './DecklistContent';
 import { DecklistPreview } from './DecklistPreview';
 import { DecklistSelector } from './DecklistSelector';
+import { parseDecklist } from './utils';
 
 export function DecklistManager({
   decklistsPromise,
@@ -31,6 +32,8 @@ export function DecklistManager({
     setIsSavingDecklist(false);
   };
 
+  const parsedDecklist = selectedDecklistContent ? parseDecklist(selectedDecklistContent) : null;
+
   return (
     <div className="h-full grid-cols-1 gap-2 space-y-2 md:grid md:grid-cols-2 md:grid-rows-[auto_1fr] md:space-y-0">
       <DecklistSelector
@@ -46,8 +49,14 @@ export function DecklistManager({
           Save decklist
         </LoadingButton>
       </div>
-      <DecklistContent decklist={selectedDecklistContent} onDecklistChange={setSelectedDecklistContent} />
-      <DecklistPreview decklist={selectedDecklistContent} />
+      <DecklistContent
+        decklist={selectedDecklistContent}
+        onDecklistChange={setSelectedDecklistContent}
+        disabled={false}
+      />
+      {parsedDecklist && 'error' in parsedDecklist
+        ? null
+        : parsedDecklist && <DecklistPreview decklist={parsedDecklist} />}
     </div>
   );
 }

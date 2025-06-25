@@ -120,6 +120,10 @@ export function validateDecklist(decklist?: ParsedDecklist) {
     return [];
   }
 
+  if (decklist.pokemonTotal === 0 && decklist.trainerTotal === 0 && decklist.energyTotal === 0) {
+    return [];
+  }
+
   let errors: string[] = [];
 
   const { pokemon, trainer, energy, pokemonTotal, trainerTotal, energyTotal } = decklist;

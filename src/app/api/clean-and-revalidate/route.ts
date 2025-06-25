@@ -7,6 +7,8 @@ import { tournaments } from '@/lib/db/schema';
 import { rollbarServer } from '@/rollbar/server';
 
 export async function POST(request: NextRequest) {
+  rollbarServer.info('clean-and-revalidate: Start');
+  
   if (request.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`) {
     rollbarServer.warning('clean-and-revalidate: Unauthorized request.');
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

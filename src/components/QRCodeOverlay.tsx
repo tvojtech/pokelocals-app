@@ -2,7 +2,7 @@
 
 import { useToggle } from '@uidotdev/usehooks';
 import { QrCode } from 'lucide-react';
-import { QRCodeSVG } from 'qrcode.react';
+import QRCode from 'react-qr-code';
 
 import { useWindowLocation } from '@/app/hooks';
 
@@ -37,7 +37,7 @@ export function QRCodeOverlay() {
         <div
           className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-background bg-opacity-95 p-4 dark:bg-secondary dark:bg-opacity-95"
           onClick={() => toggle()}>
-          <QRCodeSVG value={location.href} className="m-10 h-60 w-60" />
+          <QRCode value={location.href} className="m-10 h-60 w-60" />
           <Card className="p-4">
             <p>Scan the QR code to open this page on your phone.</p>
           </Card>

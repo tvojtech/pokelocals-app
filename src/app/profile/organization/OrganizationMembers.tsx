@@ -68,28 +68,28 @@ function MembersTableBody({
 }) {
   const users = React.use(memberships);
   const { user } = useUser();
-  const currentUserMembership = users.data.find(m => m.publicUserData.userId === user?.id);
+  const currentUserMembership = users.data.find(m => m.publicUserData?.userId === user?.id);
   const isAdmin = currentUserMembership?.role === 'org:admin';
-  const otherAdmins = users.data.filter(m => m.role === 'org:admin' && m.publicUserData.userId !== user?.id);
+  const otherAdmins = users.data.filter(m => m.role === 'org:admin' && m.publicUserData?.userId !== user?.id);
 
   const sortedMembers = users.data.toSorted((a, b) => {
     // Sort members: current user first, then others alphabetically by identifier
-    if (a.publicUserData.userId === user?.id) return -1;
-    if (b.publicUserData.userId === user?.id) return 1;
-    return a.publicUserData.identifier.localeCompare(b.publicUserData.identifier);
+    if (a.publicUserData?.userId === user?.id) return -1;
+    if (b.publicUserData?.userId === user?.id) return 1;
+    return a.publicUserData ? a.publicUserData?.identifier.localeCompare(b.publicUserData?.identifier ?? '') : 0;
   });
 
   return (
     <>
       {sortedMembers.map(member => {
-        const isCurrentUser = member.publicUserData.userId === user?.id;
+        const isCurrentUser = member.publicUserData?.userId === user?.id;
         const canRemove = isAdmin && (!isCurrentUser || otherAdmins.length > 0);
         const canChangeRole = isAdmin && (!isCurrentUser || otherAdmins.length > 0);
 
         return (
           <TableRow key={member.id}>
             <TableCell>
-              {member.publicUserData.identifier}
+              {member.publicUserData?.identifier}
               {isCurrentUser && (
                 <Badge variant="secondary" className="ml-2">
                   YOU
@@ -146,7 +146,7 @@ function MemberRoleSelect({
 }) {
   const { organization } = useOrganization();
   const { user } = useUser();
-  const isCurrentUser = member.publicUserData.userId === user?.id;
+  const isCurrentUser = member.publicUserData?.userId === user?.id;
   const [isChangingRole, setIsChangingRole] = useState(false);
   const [showWarningDialog, setShowWarningDialog] = useState(false);
   const [pendingNewRole, setPendingNewRole] = useState<string | null>(null);
@@ -156,14 +156,14 @@ function MemberRoleSelect({
       if (organization) {
         setIsChangingRole(true);
         await organization.updateMember({
-          userId: member.publicUserData.userId!,
+          userId: member.publicUserData!.userId!,
           role: newRole,
         });
         await organization.reload();
         setIsChangingRole(false);
       }
     },
-    [member.publicUserData.userId, organization]
+    [member.publicUserData, organization]
   );
 
   const handleRoleChange = (newRole: string) => {
@@ -225,10 +225,10 @@ function RemoveMemberButton({ member, canRemove }: { member: OrganizationMembers
 
   const removeMember = useCallback(async () => {
     setIsRemovingMember(true);
-    await organization?.removeMember(member.publicUserData.userId!);
+    await organization?.removeMember(member.publicUserData!.userId!);
     await organization?.reload();
     setIsRemovingMember(false);
-  }, [member.publicUserData.userId, organization]);
+  }, [member.publicUserData, organization]);
 
   return (
     <LoadingButton

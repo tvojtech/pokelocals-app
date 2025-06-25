@@ -80,7 +80,7 @@ export function PlayerProfileForm() {
           />
         )}
       </FormControl>
-      <FormControl label="BirthDate" hint="This is your birthDate" required>
+      <FormControl label="Birth date" hint="This is your birth date" required>
         {({ id }) => (
           <DateInput
             key={profile?.birthDate ? profile.birthDate.toISOString() : ''}

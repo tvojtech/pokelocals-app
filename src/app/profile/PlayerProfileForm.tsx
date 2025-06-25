@@ -1,6 +1,7 @@
 'use client';
 
 import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
 import { useActionState, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -16,6 +17,7 @@ import { useMyPokemonId } from '../hooks';
 export function PlayerProfileForm() {
   const { myId } = useMyPokemonId();
   const { profile } = useUserProfile();
+  const router = useRouter();
 
   const updatePofileAction = async (prevState: unknown, formData: FormData) => {
     const result = await upsertPlayerProfile({
@@ -30,6 +32,7 @@ export function PlayerProfileForm() {
     } else if (result.error) {
       toast.error(result.error, { duration: 10000 });
     }
+    router.refresh();
 
     return result;
   };

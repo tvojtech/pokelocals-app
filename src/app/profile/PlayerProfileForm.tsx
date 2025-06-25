@@ -1,15 +1,20 @@
 'use client';
 
-import { useActionState } from 'react';
+import { format } from 'date-fns';
+import { useActionState, useState } from 'react';
 import { toast } from 'sonner';
 
 import { LoadingButton } from '@/components/ui/buttons/loading-button';
+import { Calendar } from '@/components/ui/calendar';
 import { FormControl } from '@/components/ui/forms/FormControl';
 import { Input } from '@/components/ui/input';
 import { upsertPlayerProfile } from '@/features/profile/actions';
 import { useUserProfile } from '@/features/profile/hooks/useUserProfile';
 
+import { useMyPokemonId } from '../hooks';
+
 export function PlayerProfileForm() {
+  const { myId } = useMyPokemonId();
   const { profile } = useUserProfile();
 
   const updatePofileAction = async (prevState: unknown, formData: FormData) => {
@@ -36,13 +41,15 @@ export function PlayerProfileForm() {
       <FormControl label="Pokémon ID" hint="This is your Pokémon ID" required>
         {({ id }) => (
           <Input
+            key={profile?.pokemonId ?? myId ?? ''}
             id={id}
             name="pokemonId"
-            defaultValue={(profile?.pokemonId as string) ?? ''}
+            defaultValue={profile?.pokemonId ?? myId ?? ''}
             type="text"
             placeholder="Enter your Pokémon ID"
             required
             readOnly={!!profile?.pokemonId}
+            disabled={!!profile?.pokemonId}
           />
         )}
       </FormControl>
@@ -72,13 +79,11 @@ export function PlayerProfileForm() {
       </FormControl>
       <FormControl label="BirthDate" hint="This is your birthDate" required>
         {({ id }) => (
-          <Input
+          <DateInput
+            key={profile?.birthDate ? profile.birthDate.toISOString() : ''}
             id={id}
             name="birthDate"
             defaultValue={profile?.birthDate ? profile.birthDate.toISOString() : ''}
-            type="date"
-            placeholder="Enter your birthDate"
-            required
             readOnly={!!profile?.birthDate}
           />
         )}
@@ -87,5 +92,30 @@ export function PlayerProfileForm() {
         Update profile
       </LoadingButton>
     </form>
+  );
+}
+
+function DateInput({
+  id,
+  name,
+  readOnly,
+  defaultValue,
+}: {
+  id: string;
+  name: string;
+  readOnly: boolean;
+  defaultValue: string;
+}) {
+  const [date, setDate] = useState<Date | undefined>(defaultValue ? new Date(defaultValue) : undefined);
+
+  if (readOnly) {
+    return <Input id={id} name={name} value={date ? format(date, 'PPP') : ''} type="text" readOnly disabled />;
+  }
+
+  return (
+    <>
+      <Input id={id} name={name} value={date?.toISOString() ?? ''} type="hidden" />
+      <Calendar mode="single" selected={date} onSelect={setDate} captionLayout="dropdown" disabled={readOnly} />
+    </>
   );
 }

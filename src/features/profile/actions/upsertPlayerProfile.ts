@@ -34,10 +34,9 @@ export async function upsertPlayerProfile(data: {
       .onConflictDoUpdate({
         target: userProfile.clerkId,
         set: {
-          pokemonId: data.pokemonId,
           firstName: data.firstName,
           lastName: data.lastName,
-          birthDate: data.birthDate,
+          updatedAt: new Date(),
         },
       })
   );

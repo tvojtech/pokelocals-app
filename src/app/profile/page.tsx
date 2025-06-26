@@ -10,7 +10,7 @@ export default async function Profile() {
   const { userId } = await auth();
 
   const isOrganizationStatsEnabled = await organizationStatsFlag.run({
-    identify: { userId: userId ?? 'anonymous' },
+    identify: { userId: userId },
   });
 
   return (

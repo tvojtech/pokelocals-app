@@ -2,10 +2,11 @@
 
 import { useClerk, useSession } from '@clerk/nextjs';
 import { useToggle } from '@uidotdev/usehooks';
-import { BookOpen, LogIn, LogOut, Menu, Settings2, Trophy, X } from 'lucide-react';
+import { BookOpen, LogIn, LogOut, Menu, Settings2, Sparkles, Trophy, X } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'nextjs-toploader/app';
 
+import { ChangelogMenuBadge, ChangelogMobileBadge } from '@/components/ChangelogBadge';
 import { clientOnlyComponent } from '@/components/clientOnlyComponent';
 import { FeedbackDialog } from '@/components/FeedbackDialog';
 import { Logo } from '@/components/Logo';
@@ -28,7 +29,10 @@ export const HeaderDrawer = clientOnlyComponent(
     return (
       <Sheet open={isDrawerOpen} onOpenChange={open => toggleDrawer(open)}>
         <SheetTrigger className="md:hidden">
-          <Menu />
+          <div className="relative">
+            <Menu />
+            <ChangelogMobileBadge />
+          </div>
         </SheetTrigger>
         <SheetContent side="left" className="p-4" aria-describedby={undefined}>
           <SheetHeader>
@@ -71,6 +75,16 @@ export const HeaderDrawer = clientOnlyComponent(
               <Button onClick={sidebarButtonClickHandler('/')} variant="ghost" className="w-full justify-start">
                 <Trophy />
                 Tournaments
+              </Button>
+              <Button
+                onClick={sidebarButtonClickHandler('/changelog')}
+                variant="ghost"
+                className="w-full justify-start">
+                <Sparkles />
+                <span className="flex items-center gap-2">
+                  What&apos;s new
+                  <ChangelogMenuBadge />
+                </span>
               </Button>
               <Button variant="ghost" className="w-full justify-start" asChild>
                 <Link href="https://docs.pokelocals.online/docs" target="_blank">

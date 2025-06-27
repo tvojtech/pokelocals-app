@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 
+import { clientOnlyComponent } from '@/components/clientOnlyComponent';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useChangelog } from '@/hooks/useChangelog';
 
@@ -21,7 +22,7 @@ function formatDate(dateString: string): string {
 /**
  * Changelog page component that displays all changelog items and marks them as viewed
  */
-export default function ChangelogPage() {
+export default clientOnlyComponent(() => {
   const { items, markAllAsViewed } = useChangelog();
 
   useEffect(() => {
@@ -63,4 +64,4 @@ export default function ChangelogPage() {
       </div>
     </div>
   );
-}
+});

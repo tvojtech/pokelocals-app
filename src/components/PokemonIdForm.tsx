@@ -18,12 +18,12 @@ export const PokemonIdForm = clientOnlyComponent(() => {
 
   return (
     <form action={onSubmit} onReset={() => setValue(myId)} className="w-full space-y-2">
-      <label className="block">My pokemon ID:</label>
+      <label className="block">My pokémon ID:</label>
       <Input
         type="text"
         value={value ?? ''}
         onChange={evt => setValue(evt.target.value)}
-        placeholder="Enter your Pokemon ID"
+        placeholder="Enter your Pokémon ID"
       />
       {value !== myId && (
         <div className="flex items-center gap-2">

@@ -20,6 +20,8 @@ export const tournaments = pgTable(
 
     playerCount: integer('player_count').notNull().default(0),
 
+    decklistsAllowed: boolean('decklists_allowed').notNull().default(false),
+
     expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'string' })
       .notNull()
       .default(sql`CURRENT_TIMESTAMP + INTERVAL '14 days'`),
@@ -29,3 +31,28 @@ export const tournaments = pgTable(
     index('tournaments_expires_at_organization_idx').on(table.expiresAt, table.organizationId),
   ]
 );
+
+export const tournamentPlayerDecklists = pgTable('tournament_player_decklist', {
+  id: uuid('id').primaryKey(),
+  playerId: uuid('player_id')
+    .references(() => userProfile.id)
+    .notNull(),
+  playerPokemonId: text('player_pokemon_id').notNull(),
+  tournamentId: uuid('tournament_id')
+    .notNull()
+    .references(() => tournaments.id),
+  decklist: text('decklist').notNull(),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+});
+
+export const userProfile = pgTable('user_profile', {
+  id: uuid('id').primaryKey(),
+  clerkId: text('clerk_id').notNull().unique(),
+  pokemonId: text('pokemon_id').unique(),
+  firstName: text('first_name'),
+  lastName: text('last_name'),
+  birthDate: timestamp('birth_date'),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+});

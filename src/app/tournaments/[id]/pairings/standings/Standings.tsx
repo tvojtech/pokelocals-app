@@ -7,6 +7,15 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function Standings({ tournament }: { tournament: TournamentWithUnofficialStandings }) {
+  const { players } = tournament;
+  if (!players || Object.keys(players).length === 0) {
+    return (
+      <Alert variant="warning">
+        <AlertDescription>Roster not published yet.</AlertDescription>
+      </Alert>
+    );
+  }
+
   const isStandingsOfficial = !!tournament.standings;
 
   const standings = isStandingsOfficial ? tournament.standings : tournament.unofficialStandings;
@@ -57,7 +66,8 @@ const StandingsSection: React.FC<{
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <p className="capitalize">{division.toLowerCase()}</p>({standings.finished.length} players)
+          <p className="capitalize">{division.toLowerCase()}</p>({standings.finished.length}{' '}
+          {standings.finished.length > 1 ? 'players' : 'player'})
         </CardTitle>
       </CardHeader>
       <CardContent>

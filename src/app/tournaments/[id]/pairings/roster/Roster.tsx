@@ -59,7 +59,8 @@ const PlayersSection: React.FC<{
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <p className="capitalize">{division.toLowerCase()}</p>({sortedPlayers.length} players)
+          <p className="capitalize">{division.toLowerCase()}</p>({sortedPlayers.length}{' '}
+          {sortedPlayers.length > 1 ? 'players' : 'player'})
         </CardTitle>
       </CardHeader>
       <CardContent>

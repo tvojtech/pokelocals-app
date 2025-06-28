@@ -19,7 +19,7 @@ export function PlayerProfile() {
       {!user ? (
         <Card className="w-full max-w-2xl">
           <CardHeader>
-            <CardTitle>layer profile</CardTitle>
+            <CardTitle>Player profile</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="w-full">

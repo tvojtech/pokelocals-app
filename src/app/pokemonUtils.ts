@@ -13,7 +13,7 @@ export function getPlayerDivision(playerYear: number, startDate: Date) {
   const now = startDate;
   const currentYear = now.getFullYear();
   const currentMonth = now.getMonth();
-  const seasonStartYear = currentYear - (currentMonth < 7 ? 1 : 0);
+  const seasonStartYear = currentYear - (currentMonth < 6 ? 1 : 0);
   const juniorsCutoff = seasonStartYear - 11;
   const seniorsCutoff = seasonStartYear - 15;
 

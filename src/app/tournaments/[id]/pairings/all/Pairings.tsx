@@ -1,9 +1,12 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 
 import { Pod, Round, Tournament } from '@/actions/tournament';
 import { PairingsRow } from '@/app/tournaments/[id]/pairings/PairingsRow';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export function Pairings({ tournament }: { tournament: Tournament }) {
   const { pods } = tournament;
@@ -20,8 +23,7 @@ export function Pairings({ tournament }: { tournament: Tournament }) {
         if (pod.rounds.length === 0) {
           return null;
         }
-        const round = pod.rounds[pod.rounds.length - 1];
-        return <PairingsSection key={idx} pod={pod} round={round} tournament={tournament} />;
+        return <PairingsSection key={idx} pod={pod} tournament={tournament} />;
       })}
     </div>
   );
@@ -40,26 +42,25 @@ const getDivisionString = (pod: Pod) => categoryToDivision[pod.category] ?? null
 
 const PairingsSection: React.FC<{
   pod: Pod;
-  round: Round;
   tournament: Tournament;
-}> = ({ pod, round, tournament }) => {
-  const divisionString = getDivisionString(pod);
+}> = ({ pod, tournament }) => {
+  const [selectedRound, setSelectedRound] = useState(pod.rounds[pod.rounds.length - 1]);
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>
-          {divisionString && divisionString + ' - '}
-          Round {round.number}
+          <PairingsSectionHeader pod={pod} selectedRound={selectedRound} onRoundSelect={setSelectedRound} />
         </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-3 gap-0 gap-y-1">
-          {round.matches
+          {selectedRound.matches
             .toSorted((a, b) => a.tablenumber - b.tablenumber)
             .map((match, idx) => (
               <React.Fragment key={idx}>
                 <PairingsRow match={match} tournament={tournament} anonymize />
-                {idx < round.matches.length - 1 && <div className="col-span-3 border-t border-t-gray-200" />}
+                {idx < selectedRound.matches.length - 1 && <div className="col-span-3 border-t border-t-gray-200" />}
               </React.Fragment>
             ))}
         </div>
@@ -67,3 +68,34 @@ const PairingsSection: React.FC<{
     </Card>
   );
 };
+
+function PairingsSectionHeader({
+  pod,
+  selectedRound,
+  onRoundSelect,
+}: {
+  pod: Pod;
+  selectedRound: Round;
+  onRoundSelect: (round: Round) => void;
+}) {
+  const divisionString = getDivisionString(pod);
+  return (
+    <div className="flex flex-row items-center justify-between gap-4">
+      <div>{divisionString}</div>
+      <Select value={selectedRound.number} onValueChange={id => onRoundSelect(pod.rounds.find(r => r.number === id)!)}>
+        <SelectTrigger>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {pod.rounds.toReversed().map(round => (
+              <SelectItem key={round.number} value={round.number}>
+                Round {round.number}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}

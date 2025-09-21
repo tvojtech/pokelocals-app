@@ -60,9 +60,13 @@ function ResultRow({
 
   if (!opponent) {
     return (
-      <div className="col-span-3">
-        R{round}: <span className="font-bold text-green-600">BYE</span>
-      </div>
+      <Card>
+        <CardContent className="px-4 py-2">
+          <div className="col-span-3">
+            R{round}: <span className="font-bold text-green-600">BYE</span>
+          </div>
+        </CardContent>
+      </Card>
     );
   }
 

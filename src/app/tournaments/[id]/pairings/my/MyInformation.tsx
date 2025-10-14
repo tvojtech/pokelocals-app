@@ -11,8 +11,12 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useUserProfile } from '@/features/profile/hooks/useUserProfile';
 
 export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(({ tournament }) => {
-  const { profile } = useUserProfile();
+  const { profile, isLoaded } = useUserProfile();
   let { myId } = useMyPokemonId();
+
+  if (!isLoaded) {
+    return null;
+  }
 
   if (profile?.pokemonId) {
     myId = profile.pokemonId;
@@ -27,7 +31,6 @@ export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(({ 
   const me = players[myId];
 
   if (!me) {
-    console.log('me not found');
     return (
       <Alert variant="destructive">
         <AlertTitle>You are not registered in the tournament!</AlertTitle>

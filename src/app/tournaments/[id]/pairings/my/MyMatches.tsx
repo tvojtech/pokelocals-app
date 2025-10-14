@@ -3,8 +3,8 @@
 import { useRollbar } from '@rollbar/react';
 import { useParams } from 'next/navigation';
 
-import { Match, Player, Pod, Tournament } from '@/actions/tournament';
-import { mapOutcomeToPlayerResult, PlayerResult } from '@/actions/tournament/tournamentUtils';
+import { Match, Player, PlayerResult, Pod, Tournament } from '@/actions/tournament';
+import { mapOutcomeToPlayerResult } from '@/actions/tournament/tournamentUtils';
 import { getPlayerName } from '@/app/pokemonUtils';
 import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
 import { Card, CardContent } from '@/components/ui/card';
@@ -87,7 +87,7 @@ function ResultRow({
             {outcome === PlayerResult.not_finished && '?'}
           </span>
           <div>
-            vs. {getPlayerName(tournament, opponent)} <PlayerScore score={tournament.scores[opponent]} />
+            vs. {getPlayerName(tournament, opponent)} <PlayerScore score={tournament.playerResults[opponent]} />
             {tournament.players[opponent].dropped && <span> Dropped</span>}
           </div>
         </div>

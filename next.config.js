@@ -60,6 +60,7 @@ const nextConfig = {
     // dynamicIO: true,
     // ppr: true,
   },
+  reactCompiler: true,
 };
 
 export default nextConfig;

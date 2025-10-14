@@ -46,16 +46,18 @@ export default async function TournamentPairingsLayout({
 }) {
   const { id } = await params;
 
-  const [tournamentResult, tournamentMetadata] = await Promise.all([loadTournament(id), loadTournamentMetadata(id)]);
+  const tournamentMetadata = await loadTournamentMetadata(id);
 
   return (
     <>
-      {tournamentResult && (
-        <h1 className="text-left text-xl font-medium md:text-center">{tournamentResult.data.name}</h1>
+      {tournamentMetadata && (
+        <h1 className="text-left text-xl font-medium md:text-center" translate="no">
+          {tournamentMetadata.name}
+        </h1>
       )}
 
-      <div className="mt-4">
-        {(!tournamentResult && (
+      <div className="mt-4" translate="no">
+        {!tournamentMetadata?.uploaded ? (
           <>
             <div className="mb-2 flex items-center justify-end">
               <Notifications />
@@ -67,7 +69,7 @@ export default async function TournamentPairingsLayout({
               <AlertDescription>Tournament not ready yet.</AlertDescription>
             </Alert>
           </>
-        )) || (
+        ) : (
           <div className="flex items-center justify-between">
             <PageTabs />
             <div className="flex items-center gap-2">

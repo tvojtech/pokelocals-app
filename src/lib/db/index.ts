@@ -7,7 +7,7 @@ import * as schema from './schema';
 
 // for query purposes
 const queryClient = postgres(env.POSTGRES_DB_URL, { prepare: false });
-export const db = drizzle({ schema, client: queryClient, logger: true });
+export const db = drizzle({ schema, client: queryClient, logger: false });
 
 // for migrations
 export const migrationClient = postgres(env.POSTGRES_DB_URL, { max: 1 });

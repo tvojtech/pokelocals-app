@@ -2,7 +2,7 @@
 
 import { auth } from '@clerk/nextjs/server';
 import { and, eq } from 'drizzle-orm';
-import { revalidateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 import { v7 as uuid } from 'uuid';
 
 import { getUserProfile } from '@/features/profile/actions';
@@ -62,7 +62,7 @@ export async function saveTournamentPlayerDecklist(
       .execute();
   }
 
-  revalidateTag(`decklists:${tournamentId}`);
+  updateTag(`decklists:${tournamentId}`);
 
   return { success: true };
 }

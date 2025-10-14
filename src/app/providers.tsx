@@ -2,7 +2,7 @@
 
 import { ClerkProvider } from '@clerk/nextjs';
 import { Provider as RollbarProvider } from '@rollbar/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { isServer, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { PostHogProvider } from '@/posthog';
@@ -15,7 +15,7 @@ function makeQueryClient() {
 let clientQueryClient: QueryClient | undefined = undefined;
 
 function getQueryClient() {
-  if (typeof window === 'undefined') {
+  if (isServer) {
     // Server: always make a new query client
     return makeQueryClient();
   } else {

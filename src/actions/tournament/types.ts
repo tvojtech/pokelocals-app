@@ -16,12 +16,6 @@ export interface Player {
   division: Division;
 }
 
-export type PlayerScore = {
-  wins: number;
-  ties: number;
-  losses: number;
-};
-
 export interface TournamentData {
   name: string;
   id?: string | undefined;
@@ -62,9 +56,17 @@ export interface XmlTournament {
   pods: Pod[];
   standings?: TournamentStandings;
 }
+
+export enum PlayerResult {
+  win = 'win',
+  loss = 'loss',
+  tie = 'tie',
+  bye = 'bye',
+  not_finished = 'not_finished',
+}
 export interface Tournament extends Omit<XmlTournament, 'players'> {
   players: Record<string, Player>;
-  scores: Record<string, PlayerScore>;
+  playerResults: Record<string, PlayerResult[]>;
 }
 
 export interface TournamentWithUnofficialStandings extends Tournament {

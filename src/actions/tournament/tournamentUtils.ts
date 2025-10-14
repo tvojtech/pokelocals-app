@@ -2,54 +2,44 @@ import {
   Division,
   Match,
   Player,
-  PlayerScore,
+  PlayerResult,
   Tournament,
   TournamentWithUnofficialStandings,
   XmlTournament,
 } from '@/actions/tournament/types';
-import { exhaustiveMatchingGuard } from '@/app/utils';
-
-export enum PlayerResult {
-  win = 'win',
-  loss = 'loss',
-  tie = 'tie',
-  bye = 'bye',
-  not_finished = 'not_finished',
-}
 
 export function calculatePlayerScores(tournament: XmlTournament): Tournament {
   const { players, pods } = tournament;
 
-  let scores: Record<string, PlayerScore> = players.reduce(
-    (acc, player) => ({
-      ...acc,
-      [player.userid]: { wins: 0, ties: 0, losses: 0 },
-    }),
-    {} as Record<string, PlayerScore>
-  );
-
-  const addScore = createScoreCalculator(scores);
-
-  pods.forEach(pod => {
-    pod.rounds.forEach(round => {
-      round.matches.forEach(match => {
-        const player1Result = mapOutcomeToPlayerResult(match, match.player1);
-        if (player1Result && player1Result !== PlayerResult.not_finished) {
-          scores = addScore(match.player1, player1Result);
+  const resultsByPlayer = pods
+    .map(pod => pod.rounds)
+    .flat()
+    .map(round => round.matches)
+    .flat()
+    .map(match =>
+      [
+        { playerId: match.player1, outcome: mapOutcomeToPlayerResult(match, match.player1) },
+        match.player2 ? { playerId: match.player2, outcome: mapOutcomeToPlayerResult(match, match.player2) } : null,
+      ].filter(obj => !!obj)
+    )
+    .flat()
+    .filter(obj => !!obj.outcome)
+    .reduce(
+      (acc, next) => {
+        if (!acc[next.playerId]) {
+          acc[next.playerId] = [];
         }
-        if (match.player2) {
-          const player2Result = mapOutcomeToPlayerResult(match, match.player2);
-          if (player2Result && player2Result !== PlayerResult.not_finished) {
-            scores = addScore(match.player2, player2Result);
-          }
+        if (next.outcome) {
+          acc[next.playerId].push(next.outcome);
         }
-      });
-    });
-  });
+        return acc;
+      },
+      {} as Record<string, PlayerResult[]>
+    );
 
   return {
     ...tournament,
-    scores,
+    playerResults: resultsByPlayer,
     players: players.reduce((acc, player) => ({ ...acc, [player.userid]: player }), {}),
   };
 }
@@ -58,7 +48,9 @@ export function calculateUnofficialStandings(tournament: Tournament): Tournament
   const playersByDivision = Object.values(tournament.players)
     .map(player => ({
       ...player,
-      score: tournament.scores[player.userid].wins * 3 + tournament.scores[player.userid].ties,
+      score: (tournament.playerResults[player.userid] ?? [])
+        .map(mapPlayerResultToPoints)
+        .reduce((acc, next) => acc + next, 0),
     }))
     .toSorted((a, b) => {
       if (b.score !== a.score) return b.score - a.score;
@@ -120,33 +112,14 @@ export const mapOutcomeToPlayerResult = (match: Match, player: string): PlayerRe
   }
 };
 
-const createScoreCalculator =
-  (playerScores: Record<string, PlayerScore>) => (player: string, outcome: PlayerResult) => {
-    switch (outcome) {
-      case PlayerResult.win:
-      case PlayerResult.bye:
-        playerScores[player] = {
-          ...playerScores[player],
-          wins: playerScores[player].wins + 1,
-        };
-        break;
-      case PlayerResult.loss:
-        playerScores[player] = {
-          ...playerScores[player],
-          losses: playerScores[player].losses + 1,
-        };
-        break;
-      case PlayerResult.tie:
-        playerScores[player] = {
-          ...playerScores[player],
-          ties: playerScores[player].ties + 1,
-        };
-        break;
-      case PlayerResult.not_finished:
-        break;
-      default:
-        exhaustiveMatchingGuard(outcome, 'Invalid outcome: ' + outcome);
-    }
-
-    return playerScores;
-  };
+export function mapPlayerResultToPoints(result: PlayerResult): number {
+  switch (result) {
+    case PlayerResult.bye:
+    case PlayerResult.win:
+      return 3;
+    case PlayerResult.tie:
+      return 1;
+    default:
+      return 0;
+  }
+}

@@ -6,10 +6,12 @@ export function PairingsRow({
   tournament,
   match,
   anonymize,
+  round,
 }: {
   tournament: Tournament;
   match: Match;
   anonymize?: boolean;
+  round: number;
 }) {
   return (
     <>
@@ -22,7 +24,7 @@ export function PairingsRow({
           )}
         </div>
         <div>
-          <PlayerScore score={tournament.scores[match.player1]} />
+          <PlayerScore score={(tournament.playerResults[match.player1] ?? []).slice(0, round)} />
         </div>
       </div>
       <div className="flex items-center justify-center">Table {match.tablenumber}</div>
@@ -37,7 +39,7 @@ export function PairingsRow({
               )}
             </div>
             <div>
-              <PlayerScore score={tournament.scores[match.player2]} />
+              <PlayerScore score={(tournament.playerResults[match.player2] ?? []).slice(0, round)} />
             </div>
           </>
         ) : (

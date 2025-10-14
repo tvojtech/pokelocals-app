@@ -51,10 +51,12 @@ export default async function TournamentPairingsLayout({
   return (
     <>
       {tournamentMetadata && (
-        <h1 className="text-left text-xl font-medium md:text-center">{tournamentMetadata.name}</h1>
+        <h1 className="text-left text-xl font-medium md:text-center" translate="no">
+          {tournamentMetadata.name}
+        </h1>
       )}
 
-      <div className="mt-4">
+      <div className="mt-4" translate="no">
         {!tournamentMetadata?.uploaded ? (
           <>
             <div className="mb-2 flex items-center justify-end">

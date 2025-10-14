@@ -94,21 +94,4 @@ function ResultRow({
       </CardContent>
     </Card>
   );
-  // return (
-  //   <div className="flex items-center gap-2 rounded-lg border border-gray-200 p-2">
-  //     <span>R{round}:</span>
-  //     <span
-  //       className={cn('font-bold', {
-  //         'text-green-600': outcome === MatchOutcome.WIN,
-  //         'text-red-600': outcome === MatchOutcome.LOSS,
-  //         'text-yellow-600': outcome === MatchOutcome.TIE,
-  //       })}>
-  //       {outcome === MatchOutcome.WIN ? 'W' : outcome === MatchOutcome.LOSS ? 'L' : 'T'}
-  //     </span>
-  //     <div>
-  //       vs. {getPlayerName(tournament, opponent)} <PlayerScore score={tournament.scores[opponent]} />
-  //       {tournament.players[opponent].dropped && <span> Dropped</span>}
-  //     </div>
-  //   </div>
-  // );
 }

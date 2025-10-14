@@ -48,7 +48,9 @@ export function calculateUnofficialStandings(tournament: Tournament): Tournament
   const playersByDivision = Object.values(tournament.players)
     .map(player => ({
       ...player,
-      score: tournament.playerResults[player.userid].map(mapPlayerResultToPoints).reduce((acc, next) => acc + next, 0),
+      score: (tournament.playerResults[player.userid] ?? [])
+        .map(mapPlayerResultToPoints)
+        .reduce((acc, next) => acc + next, 0),
     }))
     .toSorted((a, b) => {
       if (b.score !== a.score) return b.score - a.score;

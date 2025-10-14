@@ -80,22 +80,26 @@ function PairingsSectionHeader({
 }) {
   const divisionString = getDivisionString(pod);
   return (
-    <div className="flex flex-row items-center justify-between gap-4">
-      <div>{divisionString}</div>
-      <Select value={selectedRound.number} onValueChange={id => onRoundSelect(pod.rounds.find(r => r.number === id)!)}>
-        <SelectTrigger>
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            {pod.rounds.toReversed().map(round => (
-              <SelectItem key={round.number} value={round.number}>
-                Round {round.number}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+    <div className="flex flex-row flex-wrap items-center justify-between gap-4">
+      <div className="whitespace-nowrap">{divisionString}</div>
+      <div className="min-w-36 flex-grow">
+        <Select
+          value={selectedRound.number}
+          onValueChange={id => onRoundSelect(pod.rounds.find(r => r.number === id)!)}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {pod.rounds.toReversed().map(round => (
+                <SelectItem key={round.number} value={round.number}>
+                  Round {round.number}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   );
 }

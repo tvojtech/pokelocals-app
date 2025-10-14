@@ -41,7 +41,7 @@ export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(({ 
 
   if (!pods || pods.length === 0 || pods.every(pod => pod.rounds.length === 0)) {
     return (
-      <>
+      <div className="space-y-2">
         <Alert variant="info">
           <AlertTitle>You are registered in the tournament.</AlertTitle>
           <AlertDescription>
@@ -51,7 +51,7 @@ export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(({ 
         <Alert variant="warning">
           <AlertDescription>Pairings not published yet.</AlertDescription>
         </Alert>
-      </>
+      </div>
     );
   }
 

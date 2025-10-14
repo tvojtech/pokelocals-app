@@ -87,7 +87,7 @@ function ResultRow({
             {outcome === PlayerResult.not_finished && '?'}
           </span>
           <div>
-            vs. {getPlayerName(tournament, opponent)} <PlayerScore score={tournament.playerResults[opponent]} />
+            vs. {getPlayerName(tournament, opponent)} <PlayerScore score={tournament.playerResults[opponent] ?? []} />
             {tournament.players[opponent].dropped && <span> Dropped</span>}
           </div>
         </div>

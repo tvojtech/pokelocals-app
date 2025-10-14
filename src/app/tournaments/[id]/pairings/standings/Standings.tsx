@@ -80,7 +80,7 @@ const StandingsSection: React.FC<{
                 <div className="flex items-center gap-2">
                   {getPlayerName(tournament, id, division !== Division.MASTERS)}
                 </div>
-                <PlayerScore score={tournament.playerResults[id]} />
+                <PlayerScore score={tournament.playerResults[id] ?? []} />
                 {idx < standings.finished.length - 1 && <div className="col-span-3 border-t border-t-gray-200" />}
               </React.Fragment>
             ))}

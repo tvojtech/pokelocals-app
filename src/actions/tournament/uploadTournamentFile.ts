@@ -3,7 +3,7 @@
 import { auth } from '@clerk/nextjs/server';
 import { eq } from 'drizzle-orm';
 import admin from 'firebase-admin';
-import { revalidateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 
 // import { listNotificationTokens } from '@/actions/notifications';
 import { xmlToObject } from '@/actions/tournament/xml';
@@ -89,9 +89,9 @@ export async function uploadTournamentFile(formData: FormData, tournamentId: str
       .expire(redisKey, 1209600) // 14 days
       .exec();
 
-    revalidateTag('tournaments');
-    revalidateTag(`tournaments:${tournamentId}`);
-    revalidateTag(`tournaments:org_${orgId}`);
+    updateTag('tournaments');
+    updateTag(`tournaments:${tournamentId}`);
+    updateTag(`tournaments:org_${orgId}`);
 
     // const payload: Message = {
     //   webpush: link && {

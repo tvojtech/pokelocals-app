@@ -34,7 +34,7 @@ export function Standings({ tournament }: { tournament: TournamentWithUnofficial
           </AlertDescription>
         </Alert>
       )}
-      <div className="columns-sm space-y-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {[Division.JUNIORS, Division.SENIORS, Division.MASTERS]
           .filter(division => {
             const standingsPerDivision = standings?.[division];

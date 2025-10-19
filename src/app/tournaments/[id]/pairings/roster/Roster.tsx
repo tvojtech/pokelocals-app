@@ -35,7 +35,7 @@ export function Roster({ tournament }: { tournament: Tournament }) {
   const playersByDivision = groupPlayersByDivision(Object.values(players), new Date(tournament.data.startdate));
 
   return (
-    <div className="columns-sm space-y-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
       {[Division.JUNIORS, Division.SENIORS, Division.MASTERS]
         .filter(division => playersByDivision[division].length > 0)
         .map((division, idx) => (

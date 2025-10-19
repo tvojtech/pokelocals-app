@@ -18,7 +18,7 @@ export function Pairings({ tournament }: { tournament: Tournament }) {
     );
   }
   return (
-    <div className="columns-sm space-y-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
       {pods.map((pod, idx) => {
         if (pod.rounds.length === 0) {
           return null;

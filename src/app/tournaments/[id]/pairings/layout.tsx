@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import { loadTournament, loadTournamentMetadata } from '@/actions/tournament';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { PageTabs } from '@/app/tournaments/[id]/pairings/PageTabs';
+import { FullscreenButton } from '@/components/FullscreenButton';
 import { Notifications } from '@/components/Notifications';
 import { QRCodeOverlay } from '@/components/QRCodeOverlay';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -49,14 +50,14 @@ export default async function TournamentPairingsLayout({
   const tournamentMetadata = await loadTournamentMetadata(id);
 
   return (
-    <>
+    <div className="space-y-4" id="pairings-body">
       {tournamentMetadata && (
         <h1 className="text-left text-xl font-medium md:text-center" translate="no">
           {tournamentMetadata.name}
         </h1>
       )}
 
-      <div className="mt-4" translate="no">
+      <div translate="no">
         {!tournamentMetadata?.uploaded ? (
           <>
             <div className="mb-2 flex items-center justify-end">
@@ -74,6 +75,9 @@ export default async function TournamentPairingsLayout({
             <PageTabs />
             <div className="flex items-center gap-2">
               <Notifications />
+              <div className="hidden lg:block">
+                <FullscreenButton targetElementId="pairings-body" />
+              </div>
               <QRCodeOverlay />
               <TournamentMenu tournament={tournamentMetadata} />
             </div>
@@ -83,6 +87,6 @@ export default async function TournamentPairingsLayout({
           <Suspense>{children}</Suspense>
         </div>
       </div>
-    </>
+    </div>
   );
 }

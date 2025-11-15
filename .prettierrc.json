@@ -9,5 +9,5 @@
   "bracketSpacing": true,
   "printWidth": 120,
   "tabWidth": 2,
-  "tailwindFunctions": ["clsx", "cn", "twMerge"]
+  "tailwindFunctions": ["clsx", "cn", "twMerge", "cva"]
 }

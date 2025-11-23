@@ -25,7 +25,7 @@ export function PlayerMatchesPopover({
       <PopoverTrigger>
         <ChevronsUpDownIcon className="size-4" />
       </PopoverTrigger>
-      <PopoverContent className="w-full" align="start">
+      <PopoverContent className="w-full max-w-[100vw]" align="start">
         <PlayerMatches player={tournament.players[playerId]} pod={pod} tournament={tournament} anonymize={anonymize} />
       </PopoverContent>
     </Popover>

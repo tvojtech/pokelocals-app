@@ -10,10 +10,20 @@ import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
-export function MyMatches({ me, pod: myPod, tournament }: { me: Player; pod: Pod; tournament: Tournament }) {
-  const myMatches = myPod.rounds
+export function PlayerMatches({
+  player,
+  pod: myPod,
+  tournament,
+  anonymize,
+}: {
+  player: Player;
+  pod: Pod;
+  tournament: Tournament;
+  anonymize: boolean;
+}) {
+  const playerMatches = myPod.rounds
     .map(round => ({
-      match: round.matches.find(match => match.player1 === me.userid || match.player2 === me.userid),
+      match: round.matches.find(match => match.player1 === player.userid || match.player2 === player.userid),
       round: round.number,
     }))
     .filter(({ match }) => match !== undefined)
@@ -22,9 +32,19 @@ export function MyMatches({ me, pod: myPod, tournament }: { me: Player; pod: Pod
 
   return (
     <div className="flex flex-col gap-1">
-      {myMatches.map(
+      {playerMatches.map(
         ({ match, round }, idx) =>
-          (match && <ResultRow key={idx} round={round} match={match} tournament={tournament} me={me} />) || null
+          (match && (
+            <ResultRow
+              key={idx}
+              round={round}
+              match={match}
+              tournament={tournament}
+              me={player}
+              anonymize={anonymize}
+            />
+          )) ||
+          null
       )}
     </div>
   );
@@ -35,11 +55,13 @@ function ResultRow({
   match,
   tournament,
   me,
+  anonymize,
 }: {
   round: string;
   match: Match;
   tournament: Tournament;
   me: Player;
+  anonymize: boolean;
 }) {
   const rollbar = useRollbar();
   const { id } = useParams();
@@ -87,7 +109,8 @@ function ResultRow({
             {outcome === PlayerResult.not_finished && '?'}
           </span>
           <div>
-            vs. {getPlayerName(tournament, opponent)} <PlayerScore score={tournament.playerResults[opponent] ?? []} />
+            vs. {getPlayerName(tournament, opponent, anonymize)}{' '}
+            <PlayerScore score={tournament.playerResults[opponent] ?? []} />
             {tournament.players[opponent].dropped && <span> Dropped</span>}
           </div>
         </div>

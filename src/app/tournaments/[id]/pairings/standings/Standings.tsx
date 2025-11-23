@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Division, DivisionStandings, Tournament, TournamentWithUnofficialStandings } from '@/actions/tournament';
+import { PlayerMatchesPopover } from '@/app/__components/PlayerMatchesPopover';
 import { getPlayerName } from '@/app/pokemonUtils';
 import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -46,7 +47,7 @@ export function Standings({ tournament }: { tournament: TournamentWithUnofficial
             standings?.[division] ? (
               <StandingsSection
                 key={division}
-                division={division as Division}
+                division={division}
                 standings={standings[division]}
                 tournament={tournament}
               />
@@ -78,6 +79,11 @@ const StandingsSection: React.FC<{
               <React.Fragment key={idx}>
                 <div className="pl-2">{place}.</div>
                 <div className="flex items-center gap-2">
+                  <PlayerMatchesPopover
+                    tournament={tournament}
+                    playerId={id}
+                    anonymize={division !== Division.MASTERS}
+                  />
                   {getPlayerName(tournament, id, division !== Division.MASTERS)}
                 </div>
                 <PlayerScore score={tournament.playerResults[id] ?? []} />

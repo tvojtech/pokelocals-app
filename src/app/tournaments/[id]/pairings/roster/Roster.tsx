@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Division, Player, Tournament } from '@/actions/tournament';
+import { PlayerMatchesPopover } from '@/app/__components/PlayerMatchesPopover';
 import { getPlayerDivision, getPlayerName } from '@/app/pokemonUtils';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -67,7 +68,14 @@ const PlayersSection: React.FC<{
         <div className="grid grid-cols-2 gap-0 gap-y-1">
           {sortedPlayers.map((player, idx) => (
             <React.Fragment key={idx}>
-              <div className="pl-2">{getPlayerName(tournament, player.userid, division !== Division.MASTERS)}</div>
+              <div className="flex items-center gap-2 pl-2">
+                <PlayerMatchesPopover
+                  tournament={tournament}
+                  playerId={player.userid}
+                  anonymize={division !== Division.MASTERS}
+                />
+                {getPlayerName(tournament, player.userid, division !== Division.MASTERS)}
+              </div>
               <div className="flex items-center gap-2">
                 {player.late && <span className="flex items-center gap-2 text-red-600">Late</span>}
                 {player.byes ? (

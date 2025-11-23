@@ -4,7 +4,7 @@ import { Tournament } from '@/actions/tournament';
 import { useMyPokemonId } from '@/app/hooks';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { MyCurrentPairing } from '@/app/tournaments/[id]/pairings/my/MyCurrentPairing';
-import { MyMatches } from '@/app/tournaments/[id]/pairings/my/MyMatches';
+import { PlayerMatches } from '@/app/tournaments/[id]/pairings/my/PlayerMatches';
 import { guessFullName } from '@/app/utils';
 import { clientOnlyComponent } from '@/components/clientOnlyComponent';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -65,7 +65,7 @@ export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(({ 
   return (
     <div className="space-y-4">
       <MyCurrentPairing me={me} pod={myPod} tournament={tournament} />
-      <MyMatches me={me} pod={myPod} tournament={tournament} />
+      <PlayerMatches player={me} pod={myPod} tournament={tournament} anonymize={false} />
     </div>
   );
 });

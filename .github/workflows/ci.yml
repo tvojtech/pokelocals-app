@@ -24,7 +24,7 @@ jobs:
           node-version: '22' # Specify the Node.js version you want to use
 
       - name: Install dependencies
-        run: npm install --force
+        run: pnpm install --force
 
       - name: Import environment variables from a file
         id: import-env
@@ -32,7 +32,7 @@ jobs:
         run: cat .env.ci >> $GITHUB_ENV
 
       - name: Run lint
-        run: npm run lint
+        run: pnpm run lint
 
       - name: Run tests
-        run: npm test
+        run: pnpm test

@@ -1,7 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
+import { CheckIcon, CircleMinusIcon, CirclePlusIcon } from 'lucide-react';
 import { useState } from 'react';
 
 import { findTournamentPlayerDecklist } from '@/actions/decklists';
+import { Button } from '@/components/ui/button';
 import { DecklistPreview } from '@/features/decklists/DecklistPreview';
 import { getCardKey, parseCardLine, parseDecklist } from '@/features/decklists/utils';
 import { cn } from '@/lib/utils';
@@ -15,7 +17,7 @@ export function DecklistContent({ tournamentId, playerId }: { tournamentId: stri
     enabled: !!playerId,
   });
 
-  const [checked, setChecked] = useState<Record<string, boolean>>({});
+  const [checked, setChecked] = useState<Record<string, number>>({});
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -29,22 +31,52 @@ export function DecklistContent({ tournamentId, playerId }: { tournamentId: stri
     <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-[25rem_1fr]">
       <div>
         {data?.decklist.split('\n').map((line, idx) => {
-          const isHeaderLine = line.startsWith('Pokémon:') || line.startsWith('Trainer:') || line.startsWith('Energy:');
           const card = parseCardLine(line);
           const key = card ? getCardKey(card) : idx;
+
           return (
-            <div
-              key={key}
-              className={cn(
-                !isHeaderLine && 'cursor-pointer',
-                checked[key] && 'line-through',
-                isHeaderLine && 'mt-2 font-semibold'
+            <div key={key} className="flex items-center gap-2">
+              {card && (
+                <div className="flex gap-2">
+                  <Button
+                    variant="link"
+                    className="p-0"
+                    disabled={checked[key] <= 0}
+                    onClick={() => setChecked(old => ({ ...old, [key]: (old[key] ?? 0) - 1 }))}>
+                    <CircleMinusIcon />
+                  </Button>
+                  <Button
+                    variant="link"
+                    className="p-0"
+                    disabled={checked[key] >= card.count}
+                    onClick={() => setChecked(old => ({ ...old, [key]: (old[key] ?? 0) + 1 }))}>
+                    <CirclePlusIcon />
+                  </Button>
+                </div>
               )}
-              onClick={() => {
-                if (isHeaderLine) return;
-                setChecked(prev => ({ ...prev, [key]: !prev[key] }));
-              }}>
-              {line}
+              <div
+                className={cn(
+                  card && 'cursor-pointer',
+                  checked[key] === card?.count && 'line-through',
+                  !card && 'mt-2 font-semibold'
+                )}
+                onClick={() => {
+                  if (!card) return;
+                  setChecked(prev => ({ ...prev, [key]: prev[key] === card.count ? 0 : card.count }));
+                }}>
+                {line}
+              </div>
+              {card && (
+                <div className="flex flex-row gap-0.5">
+                  {Array.from({ length: card.count }, (_, idx) => (
+                    <div
+                      key={idx}
+                      className={cn('rounded', 'text-white', idx + 1 <= checked[key] ? 'bg-green-600' : 'bg-gray-200')}>
+                      <CheckIcon className="size-4" />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           );
         })}
@@ -53,7 +85,7 @@ export function DecklistContent({ tournamentId, playerId }: { tournamentId: stri
         <DecklistPreviewWithParse
           decklist={data.decklist}
           checked={checked}
-          onCardClick={key => setChecked(prev => ({ ...prev, [key]: !prev[key] }))}
+          // onCardClick={key => setChecked(prev => ({ ...prev, [key]: !prev[key] }))}
         />
       )}
     </div>
@@ -66,14 +98,14 @@ function DecklistPreviewWithParse({
   onCardClick,
 }: {
   decklist: string;
-  checked: Record<string, boolean>;
-  onCardClick: (key: string) => void;
+  checked: Record<string, number>;
+  onCardClick?: (key: string) => void;
 }) {
   const parsedDecklist = parseDecklist(decklist);
 
-  if ('error' in parsedDecklist) {
+  if (!parsedDecklist.ok) {
     return null;
   }
 
-  return <DecklistPreview decklist={parsedDecklist} deckcheckStatus={checked} onCardClick={onCardClick} />;
+  return <DecklistPreview decklist={parsedDecklist.value} deckcheckStatus={checked} onCardClick={onCardClick} />;
 }

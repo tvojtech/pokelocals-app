@@ -54,9 +54,7 @@ export function DecklistManager({
         onDecklistChange={setSelectedDecklistContent}
         disabled={false}
       />
-      {parsedDecklist && 'error' in parsedDecklist
-        ? null
-        : parsedDecklist && <DecklistPreview decklist={parsedDecklist} />}
+      {!parsedDecklist?.ok ? null : parsedDecklist && <DecklistPreview decklist={parsedDecklist.value} />}
     </div>
   );
 }

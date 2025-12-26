@@ -57,7 +57,7 @@ export function DecklistContent({ tournamentId, playerId }: { tournamentId: stri
               <div
                 className={cn(
                   card && 'cursor-pointer',
-                  checked[key] === card?.count && 'line-through',
+                  card && checked[key] === card?.count && 'line-through',
                   !card && 'mt-2 font-semibold'
                 )}
                 onClick={() => {

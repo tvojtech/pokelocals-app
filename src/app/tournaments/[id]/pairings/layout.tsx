@@ -7,6 +7,7 @@ import { PageTabs } from '@/app/tournaments/[id]/pairings/PageTabs';
 import { Notifications } from '@/components/Notifications';
 import { QRCodeOverlay } from '@/components/QRCodeOverlay';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { getUserProfile } from '@/features/profile/actions';
 
 import { TournamentMenu } from './TournamentMenu';
 
@@ -44,7 +45,7 @@ export default async function TournamentPairingsLayout({
   children: React.ReactNode;
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
+  const [{ id }, userProfile] = await Promise.all([params, getUserProfile()]);
 
   const tournamentMetadata = await loadTournamentMetadata(id);
 
@@ -64,7 +65,7 @@ export default async function TournamentPairingsLayout({
               <QRCodeOverlay />
               <TournamentMenu tournament={tournamentMetadata} />
             </div>
-            <InlinePokemonIdCheckForm />
+            {!userProfile?.pokemonId && <InlinePokemonIdCheckForm />}
             <Alert variant="warning" className="mt-2">
               <AlertDescription>Tournament not ready yet.</AlertDescription>
             </Alert>

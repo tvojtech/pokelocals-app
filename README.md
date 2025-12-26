@@ -1,37 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# pokelocals-app
+
+A small Next.js application for managing Pokémon TCG tournament pairings, decklists, and related organizer workflows.
 
 ## Getting Started
 
-Install pnpm globally (for example via npm) and install dependencies:
+Install dependencies and start the development server using `pnpm`:
 
 ```bash
-npm install -g pnpm
 pnpm install
 ```
 
-Start the development server with pnpm:
+Start application in dev mode
 
 ```bash
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The project relies on a number of environment variables (see `.env.ci`). Common variables used in development and deployments include:
 
-## Learn More
+- `NEXT_PUBLIC_DEPLOYMENT`: Deployment environment identifier (e.g., `local`, `staging`, `production`).
+- `BLOB_STORAGE`: Storage backend (e.g., `r2`).
+- `AUTH_DISCORD_ID`, `AUTH_DISCORD_SECRET`: Discord OAuth credentials (if Discord auth is enabled).
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`: Clerk (authentication) keys.
+- `NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN`, `ROLLBAR_SERVER_TOKEN`: Rollbar tokens for client and server error reporting.
+- `CLOUDFLARE_R2_BUCKET_NAME`, `CLOUDFLARE_R2_ACCOUNT_ID`, `CLOUDFLARE_R2_ACCESS_KEY_ID`, `CLOUDFLARE_R2_SECRET_ACCESS_KEY`: Cloudflare R2 credentials for object storage.
+- `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`: PostHog analytics configuration.
+- `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`: Upstash Redis connection for caching/queues.
+- `FEEDBACK_DISCORD_WEBHOOK_URL`, `WAITLIST_DISCORD_WEBHOOK_URL`: Webhook URLs used for feedback and waitlist notifications.
+- `POSTGRES_DB_URL`: Postgres connection string used by the server/database layer.
+- `CRON_SECRET`: Secret used to secure scheduled cron endpoints.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Keep sensitive values out of source control and provide them to your deployment environment via your hosting provider's secrets/config. Example local workflow: create a `.env.local` from `.env.ci` (omitting secret values) or set values in your development environment.
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deploying to Vercel is straightforward — see the Next.js deployment docs for details: https://nextjs.org/docs/app/building-your-application/deploying

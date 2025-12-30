@@ -10,6 +10,12 @@ Install dependencies and start the development server using `pnpm`:
 pnpm install
 ```
 
+If you haven't setup your database yet, do it now.
+
+```bash
+pnpm db:push
+```
+
 Start application in dev mode
 
 ```bash

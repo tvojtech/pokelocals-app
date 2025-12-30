@@ -8,7 +8,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-export function Pairings({ tournament }: { tournament: Tournament }) {
+export function Pairings({ isAdmin, tournament }: { isAdmin?: boolean; tournament: Tournament }) {
   const { pods } = tournament;
   if (!pods || pods.length === 0 || pods.every(pod => pod.rounds.length === 0)) {
     return (
@@ -23,7 +23,7 @@ export function Pairings({ tournament }: { tournament: Tournament }) {
         if (pod.rounds.length === 0) {
           return null;
         }
-        return <PairingsSection key={idx} pod={pod} tournament={tournament} />;
+        return <PairingsSection key={idx} isAdmin={isAdmin} pod={pod} tournament={tournament} />;
       })}
     </div>
   );
@@ -41,10 +41,12 @@ const categoryToDivision: Record<string, string> = {
 const getDivisionString = (pod: Pod) => categoryToDivision[pod.category] ?? null;
 
 const PairingsSection: React.FC<{
+  isAdmin?: boolean;
   pod: Pod;
   tournament: Tournament;
-}> = ({ pod, tournament }) => {
+}> = ({ isAdmin, pod, tournament }) => {
   const [selectedRound, setSelectedRound] = useState(pod.rounds[pod.rounds.length - 1]);
+  const allowTimeExtensions = isAdmin && Number(selectedRound.number) === pod.rounds.length;
 
   return (
     <Card>
@@ -59,7 +61,13 @@ const PairingsSection: React.FC<{
             .toSorted((a, b) => a.tablenumber - b.tablenumber)
             .map((match, idx) => (
               <React.Fragment key={idx}>
-                <PairingsRow match={match} tournament={tournament} anonymize round={Number(selectedRound.number)} />
+                <PairingsRow
+                  allowTimeExtensions={allowTimeExtensions}
+                  match={match}
+                  tournament={tournament}
+                  anonymize
+                  round={Number(selectedRound.number)}
+                />
                 {idx < selectedRound.matches.length - 1 && <div className="col-span-3 border-t border-t-gray-200" />}
               </React.Fragment>
             ))}

@@ -1,13 +1,18 @@
+import { ClockPlus } from 'lucide-react';
+
 import { Division, Match, Tournament } from '@/actions/tournament';
 import { getPlayerName } from '@/app/pokemonUtils';
 import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
+import { Button } from '@/components/ui/button';
 
 export function PairingsRow({
+  allowTimeExtensions,
   tournament,
   match,
   anonymize,
   round,
 }: {
+  allowTimeExtensions?: boolean;
   tournament: Tournament;
   match: Match;
   anonymize?: boolean;
@@ -27,7 +32,17 @@ export function PairingsRow({
           <PlayerScore score={(tournament.playerResults[match.player1] ?? []).slice(0, round)} />
         </div>
       </div>
-      <div className="flex items-center justify-center">Table {match.tablenumber}</div>
+      <div className="flex flex-col items-center justify-center">
+        Table {match.tablenumber}
+        {allowTimeExtensions && (
+          <>
+            <p className="text-xs">+0 min</p>
+            <Button variant="secondary" className="m-2 h-8 w-8">
+              <ClockPlus />
+            </Button>
+          </>
+        )}
+      </div>
       <div className="flex flex-col items-end justify-center pr-2">
         {match.player2 ? (
           <>

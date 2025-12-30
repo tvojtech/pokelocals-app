@@ -56,3 +56,14 @@ export const userProfile = pgTable('user_profile', {
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
+
+export const timeExtensions = pgTable('time_extensions', {
+  id: uuid('id').primaryKey(),
+  judgeId: uuid('player_id')
+    .references(() => userProfile.id)
+    .notNull(),
+  judgePokemonId: text('player_pokemon_id').notNull(),
+  roundNumber: integer('round_number').notNull(),
+  tableNumber: integer('table_number').notNull(),
+  extensionMinutes: integer('extension_minutes').notNull(),
+});

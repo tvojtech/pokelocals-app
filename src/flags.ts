@@ -30,3 +30,15 @@ export const decklistsFlag = flag<boolean, { userId: string | null }>({
     return isDecklistsEnabled ?? false;
   },
 });
+
+export const timeExtensionsFlag = flag<boolean, { userId: string | null }>({
+  key: 'time-extensions',
+  async decide({ entities }) {
+    const isTimeExtensionEnabled = await getPostHogClient().isFeatureEnabled(
+      'time-extensions',
+      createFlagDistinct(entities?.userId)
+    );
+
+    return isTimeExtensionEnabled ?? false;
+  },
+});

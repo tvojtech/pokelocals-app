@@ -3,12 +3,21 @@
 import { useRollbar } from '@rollbar/react';
 import { useParams } from 'next/navigation';
 
-import { Player, PlayerResult, Pod, Tournament } from '@/actions/tournament';
+import { Player, PlayerResult, Pod } from '@/actions/tournament';
+import { TournamentWithMetadata } from '@/actions/tournament/loadTournament';
 import { mapOutcomeToPlayerResult } from '@/actions/tournament/tournamentUtils';
 import { PairingsRow } from '@/app/tournaments/[id]/pairings/PairingsRow';
 import { Card, CardContent } from '@/components/ui/card';
 
-export function MyCurrentPairing({ me, pod: myPod, tournament }: { me: Player; pod: Pod; tournament: Tournament }) {
+export function MyCurrentPairing({
+  me,
+  pod: myPod,
+  tournament,
+}: {
+  me: Player;
+  pod: Pod;
+  tournament: TournamentWithMetadata;
+}) {
   const rollbar = useRollbar();
   const { id } = useParams();
 

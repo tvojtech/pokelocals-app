@@ -2,13 +2,14 @@
 
 import React, { useState } from 'react';
 
-import { Pod, Round, Tournament } from '@/actions/tournament';
+import { Pod, Round } from '@/actions/tournament';
+import { TournamentWithMetadata } from '@/actions/tournament/loadTournament';
 import { PairingsRow } from '@/app/tournaments/[id]/pairings/PairingsRow';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-export function Pairings({ tournament }: { tournament: Tournament }) {
+export function Pairings({ tournament }: { tournament: TournamentWithMetadata }) {
   const { pods } = tournament;
   if (!pods || pods.length === 0 || pods.every(pod => pod.rounds.length === 0)) {
     return (
@@ -42,7 +43,7 @@ const getDivisionString = (pod: Pod) => categoryToDivision[pod.category] ?? null
 
 const PairingsSection: React.FC<{
   pod: Pod;
-  tournament: Tournament;
+  tournament: TournamentWithMetadata;
 }> = ({ pod, tournament }) => {
   const [selectedRound, setSelectedRound] = useState(pod.rounds[pod.rounds.length - 1]);
 

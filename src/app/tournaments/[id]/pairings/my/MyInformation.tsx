@@ -1,6 +1,6 @@
 'use client';
 
-import { Tournament } from '@/actions/tournament';
+import { TournamentWithMetadata } from '@/actions/tournament/loadTournament';
 import { useMyPokemonId } from '@/app/hooks';
 import { InlinePokemonIdCheckForm } from '@/app/tournaments/[id]/pairings/InlinePokemonIdForm';
 import { MyCurrentPairing } from '@/app/tournaments/[id]/pairings/my/MyCurrentPairing';
@@ -10,7 +10,7 @@ import { clientOnlyComponent } from '@/components/clientOnlyComponent';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useUserProfile } from '@/features/profile/hooks/useUserProfile';
 
-export const MyInformation = clientOnlyComponent<{ tournament: Tournament }>(({ tournament }) => {
+export const MyInformation = clientOnlyComponent<{ tournament: TournamentWithMetadata }>(({ tournament }) => {
   const { profile, isLoaded } = useUserProfile();
   let { myId } = useMyPokemonId();
 

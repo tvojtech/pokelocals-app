@@ -18,15 +18,3 @@ export const organizationStatsFlag = flag<boolean, { userId: string | null }>({
     return isOrganizationStatsEnabled ?? false;
   },
 });
-
-export const decklistsFlag = flag<boolean, { userId: string | null }>({
-  key: 'decklists',
-  async decide({ entities }) {
-    const isDecklistsEnabled = await getPostHogClient().isFeatureEnabled(
-      'decklists',
-      createFlagDistinct(entities?.userId)
-    );
-
-    return isDecklistsEnabled ?? false;
-  },
-});

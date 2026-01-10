@@ -1,9 +1,8 @@
-import { ClockPlus } from 'lucide-react';
-
 import { Division, Match, Tournament } from '@/actions/tournament';
 import { getPlayerName } from '@/app/pokemonUtils';
 import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
-import { Button } from '@/components/ui/button';
+
+import { TimeExtensionButton } from './TimeExtensionButton';
 
 export function PairingsRow({
   allowTimeExtensions,
@@ -34,14 +33,7 @@ export function PairingsRow({
       </div>
       <div className="flex flex-col items-center justify-center">
         Table {match.tablenumber}
-        {allowTimeExtensions && (
-          <>
-            <p className="text-xs">+0 min</p>
-            <Button variant="secondary" className="m-2 h-8 w-8">
-              <ClockPlus />
-            </Button>
-          </>
-        )}
+        {allowTimeExtensions && <TimeExtensionButton />}
       </div>
       <div className="flex flex-col items-end justify-center pr-2">
         {match.player2 ? (

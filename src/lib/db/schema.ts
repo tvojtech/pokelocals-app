@@ -59,6 +59,7 @@ export const userProfile = pgTable('user_profile', {
 
 export const timeExtensions = pgTable('time_extensions', {
   id: uuid('id').primaryKey(),
+  tournamentId: uuid('tournament_id').notNull(),
   judgeId: uuid('judge_id')
     .references(() => userProfile.id)
     .notNull(),

@@ -9,16 +9,15 @@ export default async function TournamentPairingsAllPage({ params }: { params: Pr
   const { orgId, userId } = await auth();
 
   const tournamentResult = await loadTournament(id);
-  const tournamentMetadataResult = await loadTournamentMetadata(id);
   const timeExtensionsFlagResult = await timeExtensionsFlag.run({
     identify: { userId: userId },
   });
 
-  if (!tournamentResult || !tournamentMetadataResult) {
+  if (!tournamentResult) {
     return null;
   }
 
-  const isTimeExtensionsEnabled = timeExtensionsFlagResult && tournamentMetadataResult.organizationId === orgId;
+  const isTimeExtensionsEnabled = timeExtensionsFlagResult && tournamentResult.__metadata.organizationId === orgId;
 
   return <Pairings isTimeExtensionsEnabled={isTimeExtensionsEnabled} tournament={tournamentResult} />;
 }

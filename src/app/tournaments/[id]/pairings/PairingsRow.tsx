@@ -1,4 +1,5 @@
-import { Division, Match, Tournament } from '@/actions/tournament';
+import { Division, Match } from '@/actions/tournament';
+import { TournamentWithMetadata } from '@/actions/tournament/loadTournament';
 import { getPlayerName } from '@/app/pokemonUtils';
 import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
 
@@ -12,7 +13,7 @@ export function PairingsRow({
   round,
 }: {
   allowTimeExtensions?: boolean;
-  tournament: Tournament;
+  tournament: TournamentWithMetadata;
   match: Match;
   anonymize?: boolean;
   round: number;

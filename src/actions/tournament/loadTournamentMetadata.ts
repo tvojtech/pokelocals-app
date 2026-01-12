@@ -6,6 +6,8 @@ import { unstable_cache } from 'next/cache';
 import { db } from '@/lib/db';
 import { tournaments } from '@/lib/db/schema';
 
+export type TournamentMetadata = NonNullable<Awaited<ReturnType<typeof loadTournamentMetadata>>>;
+
 export async function loadTournamentMetadata(tournamentId: string) {
   const cachedTournament = await unstable_cache(
     async (tournamentId: string) => {

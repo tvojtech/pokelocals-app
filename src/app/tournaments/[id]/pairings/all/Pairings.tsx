@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 
-import { Pod, Round, Tournament } from '@/actions/tournament';
+import { Pod, Round } from '@/actions/tournament';
+import { TournamentWithMetadata } from '@/actions/tournament/loadTournament';
 import { PairingsRow } from '@/app/tournaments/[id]/pairings/PairingsRow';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,7 +14,7 @@ export function Pairings({
   tournament,
 }: {
   isTimeExtensionsEnabled?: boolean;
-  tournament: Tournament;
+  tournament: TournamentWithMetadata;
 }) {
   const { pods } = tournament;
   if (!pods || pods.length === 0 || pods.every(pod => pod.rounds.length === 0)) {
@@ -56,7 +57,7 @@ const getDivisionString = (pod: Pod) => categoryToDivision[pod.category] ?? null
 const PairingsSection: React.FC<{
   isTimeExtensionsEnabled?: boolean;
   pod: Pod;
-  tournament: Tournament;
+  tournament: TournamentWithMetadata;
 }> = ({ isTimeExtensionsEnabled, pod, tournament }) => {
   const [selectedRound, setSelectedRound] = useState(pod.rounds[pod.rounds.length - 1]);
   const allowTimeExtensions = isTimeExtensionsEnabled && Number(selectedRound.number) === pod.rounds.length;

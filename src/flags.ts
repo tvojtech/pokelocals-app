@@ -19,18 +19,6 @@ export const organizationStatsFlag = flag<boolean, { userId: string | null }>({
   },
 });
 
-export const decklistsFlag = flag<boolean, { userId: string | null }>({
-  key: 'decklists',
-  async decide({ entities }) {
-    const isDecklistsEnabled = await getPostHogClient().isFeatureEnabled(
-      'decklists',
-      createFlagDistinct(entities?.userId)
-    );
-
-    return isDecklistsEnabled ?? false;
-  },
-});
-
 export const timeExtensionsFlag = flag<boolean, { userId: string | null }>({
   key: 'time-extensions',
   async decide({ entities }) {

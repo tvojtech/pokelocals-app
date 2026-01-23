@@ -2,13 +2,20 @@
 
 import React, { useState } from 'react';
 
-import { Pod, Round, Tournament } from '@/actions/tournament';
+import { Pod, Round } from '@/actions/tournament';
+import { TournamentWithMetadata } from '@/actions/tournament/loadTournament';
 import { PairingsRow } from '@/app/tournaments/[id]/pairings/PairingsRow';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-export function Pairings({ tournament }: { tournament: Tournament }) {
+export function Pairings({
+  isTimeExtensionsEnabled,
+  tournament,
+}: {
+  isTimeExtensionsEnabled?: boolean;
+  tournament: TournamentWithMetadata;
+}) {
   const { pods } = tournament;
   if (!pods || pods.length === 0 || pods.every(pod => pod.rounds.length === 0)) {
     return (
@@ -23,7 +30,14 @@ export function Pairings({ tournament }: { tournament: Tournament }) {
         if (pod.rounds.length === 0) {
           return null;
         }
-        return <PairingsSection key={idx} pod={pod} tournament={tournament} />;
+        return (
+          <PairingsSection
+            key={idx}
+            isTimeExtensionsEnabled={isTimeExtensionsEnabled}
+            pod={pod}
+            tournament={tournament}
+          />
+        );
       })}
     </div>
   );
@@ -41,10 +55,12 @@ const categoryToDivision: Record<string, string> = {
 const getDivisionString = (pod: Pod) => categoryToDivision[pod.category] ?? null;
 
 const PairingsSection: React.FC<{
+  isTimeExtensionsEnabled?: boolean;
   pod: Pod;
-  tournament: Tournament;
-}> = ({ pod, tournament }) => {
+  tournament: TournamentWithMetadata;
+}> = ({ isTimeExtensionsEnabled, pod, tournament }) => {
   const [selectedRound, setSelectedRound] = useState(pod.rounds[pod.rounds.length - 1]);
+  const allowTimeExtensions = isTimeExtensionsEnabled && Number(selectedRound.number) === pod.rounds.length;
 
   return (
     <Card>
@@ -59,7 +75,13 @@ const PairingsSection: React.FC<{
             .toSorted((a, b) => a.tablenumber - b.tablenumber)
             .map((match, idx) => (
               <React.Fragment key={idx}>
-                <PairingsRow match={match} tournament={tournament} anonymize round={Number(selectedRound.number)} />
+                <PairingsRow
+                  allowTimeExtensions={allowTimeExtensions}
+                  match={match}
+                  tournament={tournament}
+                  anonymize
+                  round={Number(selectedRound.number)}
+                />
                 {idx < selectedRound.matches.length - 1 && <div className="col-span-3 border-t border-t-gray-200" />}
               </React.Fragment>
             ))}

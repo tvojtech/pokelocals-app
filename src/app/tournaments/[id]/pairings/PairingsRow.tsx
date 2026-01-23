@@ -1,14 +1,19 @@
-import { Division, Match, Tournament } from '@/actions/tournament';
+import { Division, Match } from '@/actions/tournament';
+import { TournamentWithMetadata } from '@/actions/tournament/loadTournament';
 import { getPlayerName } from '@/app/pokemonUtils';
 import { PlayerScore } from '@/app/tournaments/[id]/pairings/PlayerScore';
 
+import { TimeExtensionButton } from './TimeExtensionButton';
+
 export function PairingsRow({
+  allowTimeExtensions,
   tournament,
   match,
   anonymize,
   round,
 }: {
-  tournament: Tournament;
+  allowTimeExtensions?: boolean;
+  tournament: TournamentWithMetadata;
   match: Match;
   anonymize?: boolean;
   round: number;
@@ -27,7 +32,10 @@ export function PairingsRow({
           <PlayerScore score={(tournament.playerResults[match.player1] ?? []).slice(0, round)} />
         </div>
       </div>
-      <div className="flex items-center justify-center">Table {match.tablenumber}</div>
+      <div className="flex flex-col items-center justify-center">
+        Table {match.tablenumber}
+        {allowTimeExtensions && <TimeExtensionButton />}
+      </div>
       <div className="flex flex-col items-end justify-center pr-2">
         {match.player2 ? (
           <>

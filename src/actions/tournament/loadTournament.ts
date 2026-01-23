@@ -10,6 +10,8 @@ import { loadTournamentMetadata } from './loadTournamentMetadata';
 import { calculatePlayerScores, calculateUnofficialStandings } from './tournamentUtils';
 import { xmlToObject } from './xml';
 
+export type TournamentWithMetadata = NonNullable<Awaited<ReturnType<typeof loadTournament>>>;
+
 export async function loadTournament(tournamentId: string) {
   const tournamentMetadata = await loadTournamentMetadata(tournamentId);
 
@@ -17,7 +19,13 @@ export async function loadTournament(tournamentId: string) {
     return undefined;
   }
 
-  return _loadTournamentData(tournamentId);
+  const tournamentData = await _loadTournamentData(tournamentId);
+
+  if (!tournamentData) {
+    return undefined;
+  }
+
+  return { ...tournamentData, __metadata: tournamentMetadata };
 }
 
 async function _loadTournamentData(tournamentId: string): Promise<TournamentWithUnofficialStandings | undefined> {

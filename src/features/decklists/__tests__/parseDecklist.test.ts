@@ -15,7 +15,7 @@ vi.mock('postgres', () => {
   return { default: () => {} };
 });
 
-function cardToString(card: { count: number; name: string; set?: string; setNumber?: number }) {
+function cardToString(card: { count: number; name: string; set?: string; setNumber?: string }) {
   return `${card.count}|${card.name}|${card.set}|${card.setNumber}`;
 }
 
@@ -32,7 +32,7 @@ describe('parseDecklist', () => {
         assert.fail(`Expected ${testDeck.data.length} cards, but got ${result.value.cards.length}`);
       }
 
-      const expectedCardSet = new Set(testDeck.data.map(cardToString));
+      const expectedCardSet = new Set(testDeck.data.map(c => cardToString(c)));
 
       result.value.cards.forEach(card => {
         const realCardKey = cardToString(card);

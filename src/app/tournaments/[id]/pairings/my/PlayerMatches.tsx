@@ -72,25 +72,7 @@ function ResultRow({
     rollbar.error(`Unknown match outcome ${JSON.stringify({ match, tournamentId: id })}`);
   }
 
-  let opponent;
-
-  if (match?.player1 === me.userid) {
-    opponent = match?.player2;
-  } else {
-    opponent = match?.player1;
-  }
-
-  if (!opponent) {
-    return (
-      <Card>
-        <CardContent className="px-4 py-2">
-          <div className="col-span-3">
-            R{round}: <span className="font-bold text-green-600">BYE</span>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
+  const opponent = match?.player1 === me.userid ? match?.player2 : match?.player1;
 
   return (
     <Card>
@@ -99,20 +81,23 @@ function ResultRow({
           <span>R{round}:</span>
           <span
             className={cn('font-bold', {
-              'text-green-600': outcome === PlayerResult.win,
+              'text-green-600': outcome === PlayerResult.win || outcome === PlayerResult.bye,
               'text-red-600': outcome === PlayerResult.loss,
               'text-yellow-600': outcome === PlayerResult.tie,
             })}>
             {outcome === PlayerResult.win && 'W'}
+            {outcome === PlayerResult.bye && 'BYE'}
             {outcome === PlayerResult.loss && 'L'}
             {outcome === PlayerResult.tie && 'T'}
             {outcome === PlayerResult.not_finished && '?'}
           </span>
-          <div>
-            vs. {getPlayerName(tournament, opponent, anonymize)}{' '}
-            <PlayerScore score={tournament.playerResults[opponent] ?? []} />
-            {tournament.players[opponent].dropped && <span> Dropped</span>}
-          </div>
+          {opponent && (
+            <div>
+              vs. {getPlayerName(tournament, opponent, anonymize)}{' '}
+              <PlayerScore score={tournament.playerResults[opponent] ?? []} />
+              {tournament.players[opponent].dropped && <span> Dropped</span>}
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
